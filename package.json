@@ -20,6 +20,11 @@
   },
   "homepage": "https://github.com/seungtaek95/voink-server#readme",
   "devDependencies": {
+    "@babel/eslint-parser": "^7.14.7",
+    "eslint": "^7.30.0",
     "nodemon": "^2.0.9"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }

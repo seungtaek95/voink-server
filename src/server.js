@@ -1,5 +1,5 @@
-import http from 'http';
-import serverConfig from './config/server.js'
+import http from "http";
+import serverConfig from "./config/server.js";
 
 function startServer() {
   const server = http.createServer();
