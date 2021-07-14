@@ -1,6 +1,6 @@
 import { Application, json } from "express";
-import cors from "cors";
-import helmet from "helmet";
+import * as cors from "cors";
+import * as helmet from "helmet";
 
 export default function (app: Application) {
   app.use(cors());

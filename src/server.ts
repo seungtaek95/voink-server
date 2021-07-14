@@ -1,13 +1,13 @@
-import http, { Server } from "http";
-import express, { Application } from "express";
+import * as http from "http";
+import * as express from "express";
 import loader from "./loader";
-import serverConfig from "./config/server";
+import { serverConfig } from "./config";
 
 function startServer() {
-  const app: Application = express();
+  const app: express.Application = express();
   loader(app);  
   
-  const server: Server = http.createServer(app);
+  const server: http.Server = http.createServer(app);
 
   server.listen(serverConfig.PORT, () => {
     console.log(`server is listening on ${serverConfig.PORT}`);
