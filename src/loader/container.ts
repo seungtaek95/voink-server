@@ -11,5 +11,3 @@ const storage = new Storage({
 const recordBucket = storage.bucket(gcpConfig.recordBucket);
 
 container.bind<Bucket>('RecordBucket').toConstantValue(recordBucket);
-
-export default container;

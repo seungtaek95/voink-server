@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { Bucket } from '@google-cloud/storage';
-import container from '../loader/container';
+import container from '../utils/container';
 import { SignedUrlService } from './signed-url.service';
 
 describe('SignedUrlService', () => {
