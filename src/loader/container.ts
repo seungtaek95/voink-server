@@ -1,12 +1,7 @@
-import "reflect-metadata";
-import { Container } from "inversify";
-import { Bucket, Storage } from "@google-cloud/storage";
-import { gcpConfig } from "../config";
-
-const container = new Container({
-  autoBindInjectable: true,
-  defaultScope: "Singleton",
-});
+import 'reflect-metadata';
+import { Bucket, Storage } from '@google-cloud/storage';
+import { gcpConfig } from '../config';
+import container from '../utils/container';
 
 const storage = new Storage({
   projectId: gcpConfig.projectId,
@@ -15,6 +10,6 @@ const storage = new Storage({
 
 const recordBucket = storage.bucket(gcpConfig.recordBucket);
 
-container.bind<Bucket>("RecordBucket").toConstantValue(recordBucket);
+container.bind<Bucket>('RecordBucket').toConstantValue(recordBucket);
 
 export default container;

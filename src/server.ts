@@ -1,7 +1,7 @@
-import * as http from "http";
-import * as express from "express";
-import loader from "./loader";
-import { serverConfig } from "./config";
+import * as http from 'http';
+import * as express from 'express';
+import loader from './loader';
+import { serverConfig } from './config';
 
 function startServer() {
   const app: express.Application = express();

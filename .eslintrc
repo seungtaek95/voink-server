@@ -3,7 +3,7 @@
     "plugins": ["@typescript-eslint"],
     "rules": {
         "semi": ["warn", "always"],
-        "quotes": ["warn", "double"],
+        "quotes": ["warn", "single"],
         "comma-dangle": ["warn", "only-multiline"]
     }
 }
