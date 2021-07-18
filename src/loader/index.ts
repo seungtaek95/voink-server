@@ -1,6 +1,8 @@
 import { Application } from 'express';
+import mysqlLoader from './mysql';
 import expressLoader from './express';
 
-export default function (app: Application) {
+export default async function (app: Application) {
+  await mysqlLoader();
   expressLoader(app);
 }

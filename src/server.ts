@@ -3,14 +3,14 @@ import * as express from 'express';
 import loader from './loader';
 import { serverConfig } from './config';
 
-function startServer() {
+async function startServer() {
   const app: express.Application = express();
-  loader(app);  
+  await loader(app);  
   
   const server: http.Server = http.createServer(app);
 
-  server.listen(serverConfig.PORT, () => {
-    console.log(`server is listening on ${serverConfig.PORT}`);
+  server.listen(serverConfig.port, () => {
+    console.log(`server is listening on ${serverConfig.port}`);
   });
 }
 
