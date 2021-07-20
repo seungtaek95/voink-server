@@ -26,7 +26,8 @@
     "helmet": "^4.6.0",
     "inversify": "^5.1.1",
     "mysql2": "^2.2.5",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.34"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",

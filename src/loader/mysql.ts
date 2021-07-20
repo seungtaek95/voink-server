@@ -1,12 +1,19 @@
-import * as mysql from 'mysql2/promise';
+import * as path from 'path';
+import * as typeorm from 'typeorm';
 import { mysqlConfig } from '../config';
 
 export default async function () {
-  const connection = await mysql.createConnection({
+  const connection = await typeorm.createConnection({
+    type: 'mysql',
     host: mysqlConfig.host,
-    user: mysqlConfig.user,
+    port: mysqlConfig.port,
+    username: mysqlConfig.user,
     password: mysqlConfig.password,
     database: mysqlConfig.database,
+    entities: [
+      path.join(__dirname, '../model/*.ts'),
+    ],
+    synchronize: true,
   });
   
   console.log('connected to DB');
