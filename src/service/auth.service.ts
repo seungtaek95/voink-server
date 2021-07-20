@@ -1,5 +1,6 @@
 import { inject, injectable } from 'inversify';
 import * as jwt from 'jsonwebtoken';
+import { IUserToken } from '../interfaces/user.interface';
 
 @injectable()
 export class AuthService {
@@ -7,7 +8,7 @@ export class AuthService {
     @inject('jwtSecretKey') private jwtSecretKey: string
   ) {}
 
-  createJwt(payload) {
+  createJwt(payload: IUserToken): Promise<string> {
     return new Promise((resolve, reject) => {
       jwt.sign(payload, this.jwtSecretKey, (error: Error, token: string) => {
         if (error) return reject(error);
@@ -16,9 +17,9 @@ export class AuthService {
     });
   }
 
-  verifyJwt(token: string) {
+  verifyJwt(token: string): Promise<IUserToken> {
     return new Promise((resolve, reject) => {
-      jwt.verify(token, this.jwtSecretKey, (error: Error, decoded) => {
+      jwt.verify(token, this.jwtSecretKey, (error: Error, decoded: IUserToken) => {
         if (error) return reject(error);
         resolve(decoded);
       });

@@ -1,11 +1,12 @@
 import 'reflect-metadata';
-import { Bucket } from '@google-cloud/storage';
+import { Connection } from 'typeorm';
+import containerLoader from '../loader/container';
 import container from '../utils/container';
 import { SignedUrlService } from './signed-url.service';
 
 describe('SignedUrlService', () => {
-  const recordBucket = container.get<Bucket>('RecordBucket');
-  const signedUrlService = new SignedUrlService(recordBucket);
+  containerLoader({} as Connection);
+  const signedUrlService = container.get(SignedUrlService);
 
   test('레코드 리스트 조회', async () => {
     expect(async () => {

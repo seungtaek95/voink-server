@@ -4,6 +4,7 @@ dotenv.config();
 
 export const serverConfig = {
   port: process.env.SERVER_PORT || 3000,
+  jwtSecretKey: process.env.JWT_SECRET_KEY || 'voink',
 };
 
 export const mysqlConfig = {

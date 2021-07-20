@@ -1,13 +1,17 @@
 import 'reflect-metadata';
 import { Bucket, Storage } from '@google-cloud/storage';
-import { gcpConfig } from '../config';
+import { gcpConfig, serverConfig } from '../config';
 import container from '../utils/container';
+import { Connection } from 'typeorm';
 
-const storage = new Storage({
-  projectId: gcpConfig.projectId,
-  keyFilename: gcpConfig.gcpKeyFilename,
-});
+export default function (mysqlConnection: Connection) {
+  const storage = new Storage({
+    projectId: gcpConfig.projectId,
+    keyFilename: gcpConfig.gcpKeyFilename,
+  });
+  const recordBucket = storage.bucket(gcpConfig.recordBucket);
 
-const recordBucket = storage.bucket(gcpConfig.recordBucket);
-
-container.bind<Bucket>('RecordBucket').toConstantValue(recordBucket);
+  container.bind<Connection>('mysqlConnection').toConstantValue(mysqlConnection);
+  container.bind<Bucket>('RecordBucket').toConstantValue(recordBucket);
+  container.bind('jwtSecretKey').toConstantValue(serverConfig.jwtSecretKey);
+}

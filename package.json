@@ -4,7 +4,7 @@
   "description": "Voink server",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start:dev": "nodemon --watch src --exec 'ts-node' src/server.ts",
     "start:prod": "node dist/src/server.js"
   },
