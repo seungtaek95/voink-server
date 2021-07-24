@@ -10,13 +10,13 @@ describe('AuthService', () => {
 
   test('jwt 생성 및 검증', async () => {
     const payload = {
-      id: '1',
-      name: 'Kim'
+      id: 1,
+      email: 'Kim@voink.com'
     };
 
     const jwt = await authService.createJwt(payload);
     const decoded = await authService.verifyJwt(jwt);
 
-    expect(decoded.name).toBe('Kim');
+    expect(decoded.email).toBe('Kim@voink.com');
   });
 });

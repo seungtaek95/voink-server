@@ -3,7 +3,7 @@ import axios from 'axios';
 import * as jwt from 'jsonwebtoken';
 import { TYPE } from '../constant/type';
 import { UserService } from './user.service';
-import { CreateUserDto } from '../interface/dto';
+import { User } from '../model/entity/user.entity';
 
 export interface IUserInfo {
   name: string;
@@ -11,8 +11,8 @@ export interface IUserInfo {
 }
 
 export interface IUserToken {
-  id: string;
-  name: string;
+  id: number;
+  email: string;
 }
 
 @injectable()
@@ -22,19 +22,16 @@ export class AuthService {
     @inject(TYPE.jwtSecretKey) private jwtSecretKey: string
   ) {}
 
-  async handleFacebookLogin(accessToken: string): Promise<IUserInfo> {
-    const userInfo = await this.getFacebookUserInfo(accessToken);    
-    if (!userInfo.name || !userInfo.email) {
-      throw new Error('not enough user information');
-    }
-    const foundUser = await this.userService.findOneByEmail(userInfo.email);
-    if (foundUser) {
-      return foundUser;
-    }
-    return this.userService.createOne({ provider: 'FACEBOOK', ...userInfo });
+  async handleFacebookLogin(accessToken: string): Promise<User> {
+    const userInfo = await this.getFacebookUserInfo(accessToken);
+    const createUserDto = this.userService.getCreateUserDto('FACEBOOK', userInfo);
+    const foundUser = await this.userService.findOneByEmail(createUserDto.email);    
+    return foundUser
+      ? foundUser
+      : this.userService.createOne(createUserDto);
   }
 
-  createJwt(payload: IUserToken): Promise<string> {
+  createJwt(payload: IUserToken): Promise<string> {    
     return new Promise((resolve, reject) => {
       jwt.sign(payload, this.jwtSecretKey, (error: Error, token: string) => {
         if (error) return reject(error);
