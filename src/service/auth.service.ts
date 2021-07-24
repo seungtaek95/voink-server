@@ -1,4 +1,5 @@
 import { inject, injectable } from 'inversify';
+import axios from 'axios';
 import * as jwt from 'jsonwebtoken';
 import { IUserToken } from '../interfaces/user.interface';
 
@@ -7,6 +8,12 @@ export class AuthService {
   constructor(
     @inject('jwtSecretKey') private jwtSecretKey: string
   ) {}
+
+  async getFacebookUserInfo(accessToken: string) {
+    const url = `https://graph.facebook.com/me?fields=id,name,email&access_token=${accessToken}`;
+    const response = await axios.get(url);    
+    return response.data;
+  }
 
   createJwt(payload: IUserToken): Promise<string> {
     return new Promise((resolve, reject) => {
