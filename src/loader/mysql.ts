@@ -11,7 +11,7 @@ export default async function () {
     password: mysqlConfig.password,
     database: mysqlConfig.database,
     entities: [
-      path.join(__dirname, '../model/*.ts'),
+      path.join(__dirname, '../model/entity/*.ts'),
     ],
     synchronize: true,
   });

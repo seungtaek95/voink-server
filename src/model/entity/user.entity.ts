@@ -6,14 +6,23 @@ export class User {
   id: number;
 
   @Column()
+  provier: string;
+
+  @Column({
+    unique: true,
+  })
   email: string;
 
   @Column()
   name: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   profileImage: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   description: string;
 }

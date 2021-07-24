@@ -1,10 +1,11 @@
 import { Bucket } from '@google-cloud/storage';
 import { inject, injectable } from 'inversify';
+import { TYPE } from '../constant/type';
 
 @injectable()
 class SignedUrlService {
   constructor(
-    @inject('RecordBucket') private bucket: Bucket,
+    @inject(TYPE.recordBucket) private bucket: Bucket,
   ) {}
 
   getFiles() {

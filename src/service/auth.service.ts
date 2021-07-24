@@ -1,18 +1,37 @@
 import { inject, injectable } from 'inversify';
 import axios from 'axios';
 import * as jwt from 'jsonwebtoken';
-import { IUserToken } from '../interfaces/user.interface';
+import { TYPE } from '../constant/type';
+import { UserService } from './user.service';
+import { CreateUserDto } from '../interface/dto';
+
+export interface IUserInfo {
+  name: string;
+  email: string;
+}
+
+export interface IUserToken {
+  id: string;
+  name: string;
+}
 
 @injectable()
 export class AuthService {
   constructor(
-    @inject('jwtSecretKey') private jwtSecretKey: string
+    @inject(UserService) private userService: UserService,
+    @inject(TYPE.jwtSecretKey) private jwtSecretKey: string
   ) {}
 
-  async getFacebookUserInfo(accessToken: string) {
-    const url = `https://graph.facebook.com/me?fields=id,name,email&access_token=${accessToken}`;
-    const response = await axios.get(url);    
-    return response.data;
+  async handleFacebookLogin(accessToken: string): Promise<IUserInfo> {
+    const userInfo = await this.getFacebookUserInfo(accessToken);    
+    if (!userInfo.name || !userInfo.email) {
+      throw new Error('not enough user information');
+    }
+    const foundUser = await this.userService.findOneByEmail(userInfo.email);
+    if (foundUser) {
+      return foundUser;
+    }
+    return this.userService.createOne({ provider: 'FACEBOOK', ...userInfo });
   }
 
   createJwt(payload: IUserToken): Promise<string> {
@@ -31,5 +50,11 @@ export class AuthService {
         resolve(decoded);
       });
     });
+  }
+
+  private async getFacebookUserInfo(accessToken: string): Promise<IUserInfo> {
+    const url = `https://graph.facebook.com/me?fields=name,email&access_token=${accessToken}`;
+    const response = await axios.get<IUserInfo>(url);
+    return response.data;
   }
 }

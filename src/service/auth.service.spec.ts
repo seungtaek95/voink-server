@@ -9,7 +9,10 @@ describe('AuthService', () => {
   const authService = container.get(AuthService);
 
   test('jwt 생성 및 검증', async () => {
-    const payload = { name: 'Kim' };
+    const payload = {
+      id: '1',
+      name: 'Kim'
+    };
 
     const jwt = await authService.createJwt(payload);
     const decoded = await authService.verifyJwt(jwt);

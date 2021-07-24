@@ -3,6 +3,8 @@ import { Bucket, Storage } from '@google-cloud/storage';
 import { gcpConfig, serverConfig } from '../config';
 import container from '../utils/container';
 import { Connection } from 'typeorm';
+import { TYPE } from '../constant/type';
+import { UserRepository } from '../model/repository/user.repository';
 
 export default function (mysqlConnection: Connection) {
   const storage = new Storage({
@@ -10,8 +12,10 @@ export default function (mysqlConnection: Connection) {
     keyFilename: gcpConfig.gcpKeyFilename,
   });
   const recordBucket = storage.bucket(gcpConfig.recordBucket);
+  const userRepository = mysqlConnection.getCustomRepository(UserRepository);
 
-  container.bind<Connection>('mysqlConnection').toConstantValue(mysqlConnection);
-  container.bind<Bucket>('RecordBucket').toConstantValue(recordBucket);
-  container.bind('jwtSecretKey').toConstantValue(serverConfig.jwtSecretKey);
+  container.bind<Connection>(TYPE.mysqlConnection).toConstantValue(mysqlConnection);
+  container.bind<UserRepository>(TYPE.userRepository).toConstantValue(userRepository);
+  container.bind<Bucket>(TYPE.recordBucket).toConstantValue(recordBucket);
+  container.bind<string>(TYPE.jwtSecretKey).toConstantValue(serverConfig.jwtSecretKey);
 }
