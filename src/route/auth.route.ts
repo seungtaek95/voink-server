@@ -14,10 +14,7 @@ export default function (app: Router) {
       try {
         const user = await authService.handleFacebookLogin(req.body.accessToken);
         const jwt = await authService.createJwt({ id: user.id, email: user.email });
-        res.cookie('accessToken', jwt, {
-          httpOnly: true,
-        });
-        res.status(200).json(user);
+        res.status(200).json({ accessToken: jwt });
       } catch (error) {
         res.status(400).json({ message: error.message });
       }

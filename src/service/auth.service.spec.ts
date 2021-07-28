@@ -1,11 +1,12 @@
-import 'reflect-metadata';
 import { Connection } from 'typeorm';
 import containerLoader from '../loader/container';
 import container from '../utils/container';
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
-  containerLoader({} as Connection);
+  containerLoader({
+    getCustomRepository: () => {}
+  } as unknown as Connection);
   const authService = container.get(AuthService);
 
   test('jwt 생성 및 검증', async () => {

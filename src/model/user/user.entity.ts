@@ -19,10 +19,5 @@ export class User {
   @Column({
     nullable: true,
   })
-  profileImage: string;
-
-  @Column({
-    nullable: true,
-  })
   description: string;
 }

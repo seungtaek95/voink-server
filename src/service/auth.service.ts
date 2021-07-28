@@ -3,7 +3,7 @@ import axios from 'axios';
 import * as jwt from 'jsonwebtoken';
 import { TYPE } from '../constant/type';
 import { UserService } from './user.service';
-import { User } from '../model/entity/user.entity';
+import { User } from '../model/user/user.entity';
 
 export interface IUserInfo {
   name: string;
@@ -23,12 +23,11 @@ export class AuthService {
   ) {}
 
   async handleFacebookLogin(accessToken: string): Promise<User> {
-    const userInfo = await this.getFacebookUserInfo(accessToken);
-    const createUserDto = this.userService.getCreateUserDto('FACEBOOK', userInfo);
-    const foundUser = await this.userService.findOneByEmail(createUserDto.email);    
+    const userInfo: IUserInfo = await this.getFacebookUserInfo(accessToken);
+    const foundUser: User = await this.userService.findOneByEmail(userInfo.email);    
     return foundUser
       ? foundUser
-      : this.userService.createOne(createUserDto);
+      : this.userService.saveOne('FACEBOOK', userInfo);
   }
 
   createJwt(payload: IUserToken): Promise<string> {    

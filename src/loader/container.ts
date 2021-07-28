@@ -4,7 +4,7 @@ import { gcpConfig, serverConfig } from '../config';
 import container from '../utils/container';
 import { Connection } from 'typeorm';
 import { TYPE } from '../constant/type';
-import { UserRepository } from '../model/repository/user.repository';
+import { UserRepository } from '../model/user/user.repository';
 
 export default function (mysqlConnection: Connection) {
   const storage = new Storage({

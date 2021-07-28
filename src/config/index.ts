@@ -3,8 +3,9 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 export const serverConfig = {
-  port: process.env.SERVER_PORT || 3000,
+  port: parseInt(process.env.SERVER_PORT) || 3000,
   jwtSecretKey: process.env.JWT_SECRET_KEY || 'voink',
+  jwtExpiresIn: process.env.JWT_EXPIRES_IN || '365d'
 };
 
 export const mysqlConfig = {
