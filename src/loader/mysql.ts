@@ -1,6 +1,7 @@
 import * as path from 'path';
 import * as typeorm from 'typeorm';
 import { mysqlConfig } from '../config';
+import { User } from '../model/user/user.entity';
 
 export default async function () {
   const connection = await typeorm.createConnection({
@@ -11,7 +12,7 @@ export default async function () {
     password: mysqlConfig.password,
     database: mysqlConfig.database,
     entities: [
-      path.join(__dirname, '../model/user/user.entity.ts'),
+      User,
     ],
     synchronize: true,
   });

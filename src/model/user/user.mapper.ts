@@ -5,10 +5,7 @@ import { IUserInfo } from '../../service/auth.service';
 
 @injectable()
 export class UserMapper {
-  async toCreateUserDto(
-    provider: string,
-    userInfo: IUserInfo
-  ): Promise<CreateUserDto> {
+  async toCreateUserDto(provider: string, userInfo: IUserInfo ) {
     const createUserDto = new CreateUserDto();
     createUserDto.provider = provider;
     createUserDto.name = userInfo.name;
