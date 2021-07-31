@@ -3,7 +3,7 @@ import { inject, injectable } from 'inversify';
 import { TYPE } from '../constant/type';
 
 @injectable()
-class SignedUrlService {
+export class CloudStorageService {
   constructor(
     @inject(TYPE.recordBucket) private bucket: Bucket,
   ) {}
@@ -11,6 +11,8 @@ class SignedUrlService {
   getFiles() {
     return this.bucket.getFiles();
   }
-}
 
-export { SignedUrlService };
+  uploadProfile() {
+
+  }
+}

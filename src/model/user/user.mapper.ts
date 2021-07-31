@@ -1,7 +1,7 @@
 import { validateOrReject } from 'class-validator';
 import { injectable } from 'inversify';
 import { CreateUserDto } from '../../dto/user.dto';
-import { IUserInfo } from '../../service/auth.service';
+import { IUserInfo } from '../../interface/user.interface';
 
 @injectable()
 export class UserMapper {

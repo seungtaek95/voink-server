@@ -2,17 +2,17 @@ import 'reflect-metadata';
 import { Connection } from 'typeorm';
 import containerLoader from '../loader/container';
 import container from '../utils/container';
-import { SignedUrlService } from './signed-url.service';
+import { CloudStorageService } from './cloud-storage.service';
 
-describe('SignedUrlService', () => {
+describe('CloudStorageService', () => {
   containerLoader({
     getCustomRepository: () => {}
   } as unknown as Connection);
-  const signedUrlService = container.get(SignedUrlService);
+  const cloudStorageService = container.get(CloudStorageService);
 
-  test('레코드 리스트 조회', async () => {
+  test('프로필 이미지 업로드', async () => {
     expect(async () => {
-      await signedUrlService.getFiles();      
+      await cloudStorageService.uploadProfile();
     }).not.toThrow();
   });
 });

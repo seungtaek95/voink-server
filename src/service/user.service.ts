@@ -1,9 +1,9 @@
 import { inject, injectable } from 'inversify';
 import { TYPE } from '../constant/type';
+import { IUserInfo } from '../interface/user.interface';
 import { User } from '../model/user/user.entity';
 import { UserMapper } from '../model/user/user.mapper';
 import { UserRepository } from '../model/user/user.repository';
-import { IUserInfo } from './auth.service';
 
 @injectable()
 export class UserService {

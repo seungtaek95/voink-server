@@ -1,14 +1,10 @@
 import { inject, injectable } from 'inversify';
-import axios from 'axios';
 import * as jwt from 'jsonwebtoken';
 import { TYPE } from '../constant/type';
 import { UserService } from './user.service';
 import { User } from '../model/user/user.entity';
-
-export interface IUserInfo {
-  name: string;
-  email: string;
-}
+import { FacebookOAuth } from '../utils/oauth';
+import { IUserInfo } from '../interface/user.interface';
 
 export interface IUserToken {
   id: number;
@@ -18,12 +14,13 @@ export interface IUserToken {
 @injectable()
 export class AuthService {
   constructor(
+    @inject(FacebookOAuth) private facebookOAuth: FacebookOAuth,
     @inject(UserService) private userService: UserService,
     @inject(TYPE.jwtSecretKey) private jwtSecretKey: string
   ) {}
 
   async handleFacebookLogin(accessToken: string): Promise<User> {
-    const userInfo: IUserInfo = await this.getFacebookUserInfo(accessToken);
+    const userInfo: IUserInfo = await this.facebookOAuth.getUserInfo(accessToken);
     const foundUser: User = await this.userService.findOneByEmail(userInfo.email);    
     return foundUser
       ? foundUser
@@ -46,11 +43,5 @@ export class AuthService {
         resolve(decoded);
       });
     });
-  }
-
-  private async getFacebookUserInfo(accessToken: string): Promise<IUserInfo> {
-    const url = `https://graph.facebook.com/me?fields=name,email&access_token=${accessToken}`;
-    const response = await axios.get<IUserInfo>(url);
-    return response.data;
   }
 }
