@@ -1,17 +1,16 @@
-import { AxiosInstance } from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { inject, injectable } from 'inversify';
+import { Readable } from 'stream';
 import { TYPE } from '../constant/type';
 import { IUserInfo } from '../interface/user.interface';
 
 interface IOAuth {
   getUserInfo(accessToken: string): Promise<IUserInfo>
-  getUserProfile(accessToken: string, size: number): any
+  getUserImageStream(accessToken: string, size: number): any
 }
 
 @injectable()
 export class FacebookOAuth implements IOAuth {
-  private url: string
-
   constructor(
     @inject(TYPE.fbRequest) private fbRequest: AxiosInstance,
   ) {}
@@ -22,11 +21,20 @@ export class FacebookOAuth implements IOAuth {
     return response.data;
   }
 
-  async getUserProfile(accessToken: string, size: number) {
-    const query = `?fields=profile.height(${size})&access_token=${accessToken}`;
-    const response = await this.fbRequest.get(query, {
-      responseType: 'stream',
-    });
-    return response;
+  async getUserImageStream(accessToken: string, size: number): Promise<Readable> {
+    const query = `?fields=picture.height(${size})&access_token=${accessToken}`;
+    try {
+      const oauthRes = await this.fbRequest.get(query);
+      const imageUrl = oauthRes.data.picture?.data?.url;
+      const imageRes = await axios.get(imageUrl, {
+        responseType: 'stream',
+      });
+      return imageRes.data;
+    } catch (error) {
+      if (error.response?.data) {
+        throw new Error(`error from server: ${error.response.data}`);
+      }
+      throw error;
+    }
   }
 }
