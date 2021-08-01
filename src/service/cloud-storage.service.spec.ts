@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import * as fs from 'fs';
 import { Connection } from 'typeorm';
 import containerLoader from '../loader/container';
 import container from '../utils/container';
@@ -11,8 +12,9 @@ describe('CloudStorageService', () => {
   const cloudStorageService = container.get(CloudStorageService);
 
   test('프로필 이미지 업로드', async () => {
-    expect(async () => {
-      await cloudStorageService.uploadProfile();
-    }).not.toThrow();
+    const rs = fs.createReadStream('');
+    expect(
+      await cloudStorageService.uploadUserPicture(rs, 2, 'small')
+    ).not.toThrow();
   });
 });

@@ -20,4 +20,5 @@ export const gcpConfig = {
   projectId: process.env.GCP_PROJECT_ID,
   gcpKeyFilename: process.env.GCP_KEY_FILENAME,
   recordBucket: process.env.GCP_RECORD_BUCKET,
+  profileBucket: process.env.GCP_PROFILE_BUCKET,
 };
