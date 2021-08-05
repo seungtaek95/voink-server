@@ -1,10 +1,10 @@
 import { inject, injectable } from 'inversify';
 import * as jwt from 'jsonwebtoken';
-import { TYPE } from '../constant/type';
 import { UserService } from './user.service';
 import { User } from '../model/user/user.entity';
 import { FacebookOAuth } from '../utils/oauth';
 import { IUserInfo } from '../interface/user.interface';
+import { TYPE } from '../loader/container';
 
 export interface IUserToken {
   id: number;
@@ -21,10 +21,11 @@ export class AuthService {
 
   async handleFacebookLogin(accessToken: string): Promise<User> {
     const userInfo: IUserInfo = await this.facebookOAuth.getUserInfo(accessToken);
-    const foundUser: User = await this.userService.findOneByEmail(userInfo.email);    
-    return foundUser
-      ? foundUser
-      : this.userService.saveOne('FACEBOOK', userInfo);
+    const foundUser: User = await this.userService.findOneByEmail(userInfo.email);
+    if (foundUser) {
+      return foundUser;
+    }
+    return this.userService.saveOne('FACEBOOK', userInfo);
   }
 
   createJwt(payload: IUserToken): Promise<string> {    

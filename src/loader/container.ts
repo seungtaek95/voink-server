@@ -3,7 +3,6 @@ import { Bucket, Storage } from '@google-cloud/storage';
 import { gcpConfig, serverConfig } from '../config';
 import container from '../utils/container';
 import { Connection } from 'typeorm';
-import { TYPE } from '../constant/type';
 import { UserRepository } from '../model/user/user.repository';
 import axios, { AxiosInstance } from 'axios';
 
@@ -26,3 +25,12 @@ export default function (mysqlConnection: Connection) {
   container.bind<string>(TYPE.jwtSecretKey).toConstantValue(serverConfig.jwtSecretKey);
   container.bind<AxiosInstance>(TYPE.fbRequest).toConstantValue(fbRequest);
 }
+
+export const TYPE = {
+  jwtSecretKey: 'JSON_SECRET_KEY',
+  recordBucket: 'RECORD_BUCKET',
+  profileBucket: 'PROFILE_BUCKET',
+  mysqlConnection: 'MYSQL_CONNECTION',
+  userRepository: 'UER_REPOSITORY',
+  fbRequest: 'FACEBOOK_REQUEST',
+};

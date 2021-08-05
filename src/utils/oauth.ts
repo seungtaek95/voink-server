@@ -1,8 +1,8 @@
 import axios, { AxiosInstance } from 'axios';
 import { inject, injectable } from 'inversify';
 import { Readable } from 'stream';
-import { TYPE } from '../constant/type';
 import { IUserInfo } from '../interface/user.interface';
+import { TYPE } from '../loader/container';
 
 interface IOAuth {
   getUserInfo(accessToken: string): Promise<IUserInfo>

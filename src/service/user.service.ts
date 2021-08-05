@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
-import { TYPE } from '../constant/type';
 import { IUserInfo } from '../interface/user.interface';
+import { TYPE } from '../loader/container';
 import { User } from '../model/user/user.entity';
 import { UserMapper } from '../model/user/user.mapper';
 import { UserRepository } from '../model/user/user.repository';

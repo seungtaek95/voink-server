@@ -1,7 +1,7 @@
 import { Bucket } from '@google-cloud/storage';
 import { inject, injectable } from 'inversify';
 import { Readable } from 'stream';
-import { TYPE } from '../constant/type';
+import { TYPE } from '../loader/container';
 
 @injectable()
 export class CloudStorageService {
