@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { IUserToken } from '../service/auth.service';
+import { ITokenPayload } from '../service/auth.service';
 
 export interface OAuthRequest extends Request {
   body: {
@@ -8,5 +8,5 @@ export interface OAuthRequest extends Request {
 }
 
 export interface RequestWithUser extends Request {
-  user: IUserToken;
+  user: ITokenPayload;
 }
