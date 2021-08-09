@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { RecordGroup } from '../record-group/record-group.entity';
 
 @Entity()
 export class User {
@@ -20,4 +21,7 @@ export class User {
     nullable: true,
   })
   description: string;
+
+  @OneToMany(() => RecordGroup, RecordGroup => RecordGroup.user)
+  RecordGroups: RecordGroup[];
 }

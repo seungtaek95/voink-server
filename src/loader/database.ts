@@ -1,6 +1,6 @@
-import * as path from 'path';
 import * as typeorm from 'typeorm';
 import { mysqlConfig } from '../config';
+import { RecordGroup } from '../model/record-group/record-group.entity';
 import { User } from '../model/user/user.entity';
 
 export default async function () {
@@ -13,6 +13,7 @@ export default async function () {
     database: mysqlConfig.database,
     entities: [
       User,
+      RecordGroup,
     ],
     synchronize: true,
   });
