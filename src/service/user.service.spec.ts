@@ -1,4 +1,4 @@
-import mysqlLoader from '../loader/mysql';
+import mysqlLoader from '../loader/database';
 import containerLoader from '../loader/container';
 import container from '../utils/container';
 import { UserService } from './user.service';

@@ -1,10 +1,10 @@
 import { Application } from 'express';
-import mysqlLoader from './mysql';
+import dbLoader from './database';
 import containerLoader from './container';
 import expressLoader from './express';
 
 export default async function (app: Application) {
-  const mysqlConnection = await mysqlLoader();
+  const mysqlConnection = await dbLoader();
   containerLoader(mysqlConnection);
   expressLoader(app);
 }
