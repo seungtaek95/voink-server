@@ -1,10 +1,11 @@
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
+import { TYPE } from '../loader/container';
 import { RecordGroupRepository } from '../model/record-group/record-group.repository';
 
 @injectable()
 export class RecordGroupService {
   constructor(
-    private recordGroupRepository: RecordGroupRepository
+    @inject(TYPE.recordGroupRepository) private recordGroupRepository: RecordGroupRepository
   ) {}
 
   findById(id: number) {

@@ -6,6 +6,9 @@ import container from '../utils/container';
 export function tokenParser() {
   return async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const authService = container.get(AuthService);
+    if (!req.headers.authorization) {
+      return next(new Error('No token found'));
+    }
     const token = req.headers.authorization.split(' ')[1];    
     try {
       const verifiedUser = await authService.verifyJwt(token);

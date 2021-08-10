@@ -30,7 +30,7 @@ export class AuthService {
 
   createJwt(payload: ITokenPayload): Promise<string> {    
     return new Promise((resolve, reject) => {
-      jwt.sign(payload, this.jwtSecretKey, (error: Error, token: string) => {
+      jwt.sign(payload, this.jwtSecretKey, (error: Error, token: string) => {        
         if (error) return reject(error);
         resolve(token);
       });
@@ -41,7 +41,10 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       jwt.verify(token, this.jwtSecretKey, (error: Error, decoded: ITokenPayload) => {
         if (error) return reject(error);
-        resolve(decoded);
+        resolve({
+          id: decoded.id,
+          email: decoded.email,
+        });
       });
     });
   }

@@ -5,6 +5,7 @@ import container from '../utils/container';
 import { Connection } from 'typeorm';
 import { UserRepository } from '../model/user/user.repository';
 import axios, { AxiosInstance } from 'axios';
+import { RecordGroupRepository } from '../model/record-group/record-group.repository';
 
 export default function (mysqlConnection: Connection) {
   const storage = new Storage({
@@ -14,12 +15,14 @@ export default function (mysqlConnection: Connection) {
   const recordBucket = storage.bucket(gcpConfig.recordBucket);
   const profileBucket = storage.bucket(gcpConfig.profileBucket);
   const userRepository = mysqlConnection.getCustomRepository(UserRepository);
+  const recordGroupRepository = mysqlConnection.getCustomRepository(RecordGroupRepository);
   const fbRequest = axios.create({
     baseURL: 'https://graph.facebook.com/me',
   });
 
   container.bind<Connection>(TYPE.mysqlConnection).toConstantValue(mysqlConnection);
   container.bind<UserRepository>(TYPE.userRepository).toConstantValue(userRepository);
+  container.bind<RecordGroupRepository>(TYPE.recordGroupRepository).toConstantValue(recordGroupRepository);
   container.bind<Bucket>(TYPE.recordBucket).toConstantValue(recordBucket);
   container.bind<Bucket>(TYPE.profileBucket).toConstantValue(profileBucket);
   container.bind<string>(TYPE.jwtSecretKey).toConstantValue(serverConfig.jwtSecretKey);
@@ -31,6 +34,7 @@ export const TYPE = {
   recordBucket: 'RECORD_BUCKET',
   profileBucket: 'PROFILE_BUCKET',
   mysqlConnection: 'MYSQL_CONNECTION',
-  userRepository: 'UER_REPOSITORY',
+  userRepository: 'USER_REPOSITORY',
+  recordGroupRepository: 'RECORD_GROUP_REPOSITORY',
   fbRequest: 'FACEBOOK_REQUEST',
 };

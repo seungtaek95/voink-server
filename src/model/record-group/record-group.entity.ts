@@ -21,17 +21,25 @@ export class RecordGroup {
   @Column()
   location: string;
   
-  @Column()
-  type: string;
+  @Column({
+    name: 'record_type'
+  })
+  recordType: string;
   
-  @Column('point')
-  latitude: number;
-  
-  @Column('point')
-  longitude: number;
+  @Column({
+    type: 'geometry',
+    spatialFeatureType: 'Point',
+    srid: 4326,
+    nullable: true,
+  })
+  point: string;
 
   @CreateDateColumn({
     name: 'created_at'
   })
   createdAt: Date;
+}
+
+function transformPoint(point: string) {
+
 }

@@ -11,6 +11,7 @@ export default async function () {
     username: mysqlConfig.user,
     password: mysqlConfig.password,
     database: mysqlConfig.database,
+    legacySpatialSupport: false,
     entities: [
       User,
       RecordGroup,
