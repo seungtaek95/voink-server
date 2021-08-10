@@ -19,6 +19,6 @@ describe('RecordGroupService', () => {
   });
 
   test('레코드 그룹 가져오기', async () => {
-    console.log(await recordGroupService.findById(1));
+    console.log(await recordGroupService.findByUser(1));
   });
 });

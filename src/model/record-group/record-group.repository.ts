@@ -19,7 +19,14 @@ export class RecordGroupRepository extends Repository<RecordGroup> {
   findById(id: string | number) {
     return this.createQueryBuilder('record_group')
       .leftJoinAndSelect('record_group.user', 'user')
-      .where('record_group.user_id = :id', { id })
+      .where('record_group.id = :id', { id })
       .getOne();
+  }
+
+  findByUser(userId: string | number) {
+    return this.createQueryBuilder('record_group')
+      .leftJoinAndSelect('record_group.user', 'user')
+      .where('record_group.user_id = :userId', { userId })
+      .getMany();
   }
 }

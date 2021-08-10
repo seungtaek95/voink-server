@@ -16,4 +16,8 @@ export class RecordGroupService {
   findById(id: string | number) {
     return this.recordGroupRepository.findById(id);
   }
+
+  findByUser(userId: string | number) {
+    return this.recordGroupRepository.findByUser(userId);
+  }
 }

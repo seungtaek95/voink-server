@@ -23,6 +23,19 @@ export default function (app: Router) {
     }
   );
 
+  router.get('/',
+    tokenParser(),
+    async (req: RequestWithUser, res: Response) => {
+      try {
+        const recordGroups = await recordGroupService.findByUser(req.user.id);
+        res.status(200).json(recordGroups);
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+      }
+    } 
+  );
+
   router.get('/:id',
     tokenParser(),
     async (req: RequestWithUser, res: Response) => {
