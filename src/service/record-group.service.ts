@@ -13,7 +13,7 @@ export class RecordGroupService {
     return this.recordGroupRepository.createAndSave(createRecordGroupDto);
   }
 
-  findById(id: number) {
-    return this.recordGroupRepository.findOne(id);
+  findById(id: string | number) {
+    return this.recordGroupRepository.findById(id);
   }
 }

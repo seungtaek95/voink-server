@@ -22,4 +22,17 @@ export default function (app: Router) {
       }
     }
   );
+
+  router.get('/:id',
+    tokenParser(),
+    async (req: RequestWithUser, res: Response) => {
+      try {
+        const recordGroup = await recordGroupService.findById(req.params.id);
+        res.status(200).json(recordGroup);
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+      }
+    } 
+  );
 }

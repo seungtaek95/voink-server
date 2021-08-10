@@ -15,4 +15,11 @@ export class RecordGroupRepository extends Repository<RecordGroup> {
 
     return this.save(recordGroup);
   }
+
+  findById(id: string | number) {
+    return this.createQueryBuilder('record_group')
+      .leftJoinAndSelect('record_group.user', 'user')
+      .where('record_group.user_id = :id', { id })
+      .getOne();
+  }
 }

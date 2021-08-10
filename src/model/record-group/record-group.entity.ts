@@ -39,7 +39,3 @@ export class RecordGroup {
   })
   createdAt: Date;
 }
-
-function transformPoint(point: string) {
-
-}
