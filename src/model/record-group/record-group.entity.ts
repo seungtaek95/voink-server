@@ -10,7 +10,7 @@ export class RecordGroup {
 
   @ManyToOne(() => User, user => user.RecordGroups)
   @JoinColumn({ name: 'user_id' })
-  user: User;
+  user: User | number;
 
   @Column()
   category: string;

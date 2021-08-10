@@ -33,8 +33,6 @@ describe('GET auth requests', () => {
         .set('Authorization', `Bearer ${token}`)
         .send(recordGroup)
         .expect(201);
-
-      //then
     });
   });
 });
