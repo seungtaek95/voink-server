@@ -24,7 +24,7 @@ export class Record {
   @JoinColumn({
     name: 'record_group_id'
   })
-  RecordGroup: RecordGroup
+  RecordGroup: RecordGroup | number
 
   @CreateDateColumn({
     name: 'created_at'

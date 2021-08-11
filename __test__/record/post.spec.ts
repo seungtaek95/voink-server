@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as supertest from 'supertest';
-import { CreateRecordGroupDto } from '../../src/model/record-group/record-group.dto';
+import { CreateRecordDto } from '../../src/model/record/record.dto';
 import { AuthService } from '../../src/service/auth.service';
 import container from '../../src/utils/container';
 import { setup } from '../setup';
@@ -8,30 +8,28 @@ import { setup } from '../setup';
 const app = express();
 setup(app);
 
-describe('POST record-groups requests', () => {
+describe('POST records requests', () => {
   const agent = supertest(app);
 
-  describe('POST /record-groups', () => {
+  describe('POST /records', () => {
     test('201 response, 레코드 그룹 생성', async () => {
       // given
       const authServcie = container.get(AuthService);
       const testUser = { email: 'test@google.co.kr', id: 1 };
       const token = await authServcie.createJwt(testUser);
-      const recordGroup: CreateRecordGroupDto = {
-        userId: 1,
-        category: 'testCategory',
+      const record: CreateRecordDto = {
+        recordGroupId: 1,
         title: 'testTitle',
-        location: 'testLocation',
-        recordType: 'testRecordType',
+        duration: 300,
         latitude: 20,
         longitude: 20,
       };
 
       // when
       const res = await agent
-        .post('/record-groups')
+        .post('/records')
         .set('Authorization', `Bearer ${token}`)
-        .send(recordGroup)
+        .send(record)
         .expect(201);
     });
   });
