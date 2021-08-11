@@ -1,5 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { RecordGroup } from '../record-group/record-group.entity';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User {
@@ -22,6 +21,8 @@ export class User {
   })
   description: string;
 
-  @OneToMany(() => RecordGroup, RecordGroup => RecordGroup.user)
-  RecordGroups: RecordGroup[];
+  @CreateDateColumn({
+    name: 'created_at'
+  })
+  createdAt: Date;
 }

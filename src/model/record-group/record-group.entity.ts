@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Record } from '../record/record.entity';
 import { User } from '../user/user.entity';
 
 @Entity({
@@ -8,7 +9,7 @@ export class RecordGroup {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, user => user.RecordGroups)
+  @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
   user: User | number;
 
@@ -33,6 +34,9 @@ export class RecordGroup {
     nullable: true,
   })
   point: string;
+
+  @OneToMany(() => Record, Record => Record.RecordGroup)
+  Records: Record[];
 
   @CreateDateColumn({
     name: 'created_at'
