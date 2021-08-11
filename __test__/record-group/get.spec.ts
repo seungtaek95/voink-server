@@ -1,6 +1,5 @@
 import * as express from 'express';
 import * as supertest from 'supertest';
-import { CreateRecordGroupDto } from '../../src/model/record-group/record-group.dto';
 import { AuthService } from '../../src/service/auth.service';
 import container from '../../src/utils/container';
 import { setup } from '../setup';

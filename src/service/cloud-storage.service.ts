@@ -18,4 +18,16 @@ export class CloudStorageService {
         .on('error', reject);
     });
   }
+
+  async getUploadUrl(userId: number, groupId: number, filename: string): Promise<string> {
+    const [url] = await this.recordBucket
+      .file(`${userId}/${groupId}/${filename}`)
+      .getSignedUrl({
+        version: 'v4',
+        action: 'write',
+        expires: Date.now() + 10 * 60 * 1000, // 10 minutes
+        contentType: 'application/octet-stream',
+      });
+    return url;
+  }
 }
