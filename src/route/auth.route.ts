@@ -1,15 +1,23 @@
 import { Response, Router } from 'express';
-import { OAuthRequest } from '../interface/request.interface';
+import { OAuthRequest, RequestWithUser } from '../interface/request.interface';
+import { tokenParser } from '../middleware/auth.middleware';
 import { AuthService } from '../service/auth.service';
 import container from '../utils/container';
 
 export default function (app: Router) {
-  const authRouter = Router();
+  const router = Router();
   const authService = container.get(AuthService);
 
-  app.use('/auth', authRouter);
+  app.use('/auth', router);
 
-  authRouter.post('/login/facebook',
+  router.get('/',
+    tokenParser(),
+    (req: RequestWithUser, res: Response) => {
+      res.status(200).json(req.user);
+    }
+  );
+
+  router.post('/login/facebook',
     async (req: OAuthRequest, res: Response) => {
       try {
         const user = await authService.handleFacebookLogin(req.body.accessToken);

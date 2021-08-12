@@ -7,4 +7,8 @@ export default async function (app: Application) {
   const mysqlConnection = await dbLoader();
   containerLoader(mysqlConnection);
   expressLoader(app);
+
+  return {
+    dbConnection: mysqlConnection,
+  };
 }

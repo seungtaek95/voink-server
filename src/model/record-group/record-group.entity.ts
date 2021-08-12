@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Record } from '../record/record.entity';
 import { User } from '../user/user.entity';
 
 @Entity({
@@ -8,8 +9,16 @@ export class RecordGroup {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, user => user.RecordGroups)
-  @JoinColumn({ name: 'user_id' })
+  @Column({
+    name: 'user_id',
+    nullable: true,
+  })
+  userId: number
+
+  @ManyToOne(() => User)
+  @JoinColumn({
+    name: 'user_id'
+  })
   user: User;
 
   @Column()
@@ -21,14 +30,21 @@ export class RecordGroup {
   @Column()
   location: string;
   
-  @Column()
-  type: string;
+  @Column({
+    name: 'record_type'
+  })
+  recordType: string;
   
-  @Column('point')
-  latitude: number;
-  
-  @Column('point')
-  longitude: number;
+  @Column({
+    type: 'geometry',
+    spatialFeatureType: 'Point',
+    srid: 4326,
+    nullable: true,
+  })
+  point: string;
+
+  @OneToMany(() => Record, record => record.recordGroupId)
+  records: Record[];
 
   @CreateDateColumn({
     name: 'created_at'
