@@ -6,7 +6,7 @@ import { RecordGroup } from './record-group.entity';
 export class RecordGroupRepository extends Repository<RecordGroup> {
   createAndSave(createRecordGroupDto: CreateRecordGroupDto) {
     const recordGroup = this.create();
-    recordGroup.user = createRecordGroupDto.userId;
+    recordGroup.userId = createRecordGroupDto.userId;
     recordGroup.category = createRecordGroupDto.category;
     recordGroup.title = createRecordGroupDto.title;
     recordGroup.location = createRecordGroupDto.location;

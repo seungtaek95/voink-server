@@ -9,9 +9,15 @@ export class RecordGroup {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({
+    name: 'user_id',
+    nullable: true,
+  })
+  userId: number
+
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
-  user: User | number;
+  user: User;
 
   @Column()
   category: string;
@@ -36,7 +42,7 @@ export class RecordGroup {
   point: string;
 
   @OneToMany(() => Record, record => record.recordGroupId)
-  Records: Record[];
+  records: Record[];
 
   @CreateDateColumn({
     name: 'created_at'

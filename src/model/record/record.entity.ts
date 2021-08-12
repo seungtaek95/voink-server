@@ -23,11 +23,17 @@ export class Record {
   @Column()
   filename: string;
 
-  @ManyToOne(() => RecordGroup)
+  @Column({
+    name: 'record_group_id',
+    nullable: true,
+  })
+  recordGroupId: number
+
+  @ManyToOne(() => RecordGroup, recordGroup => recordGroup.records)
   @JoinColumn({
     name: 'record_group_id'
   })
-  recordGroupId: number
+  recordGroup: RecordGroup
 
   @CreateDateColumn({
     name: 'created_at'

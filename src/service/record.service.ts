@@ -8,12 +8,12 @@ export class RecordService {
   constructor(
     @inject(TYPE.recordRepository) private recordRepository: RecordRepository
   ) {}
-
-  findById(recordId: number | string) {
-    return this.recordRepository.findOne(recordId);
-  }
-
+  
   saveOne(createRecordDto: CreateRecordDto) {
     return this.recordRepository.createAndSave(createRecordDto);
+  }
+
+  findById(recordId: number | string) {
+    return this.recordRepository.findById(recordId);
   }
 }

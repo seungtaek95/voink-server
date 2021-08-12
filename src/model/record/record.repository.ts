@@ -13,4 +13,9 @@ export class RecordRepository extends Repository<Record> {
 
     return this.save(record);
   }
+
+  async findById(recordId: number | string) {
+    const result = await this.findOne(recordId);
+    return result;
+  }
 }
