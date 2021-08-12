@@ -1,6 +1,7 @@
+import { Readable } from 'stream';
 import { Bucket } from '@google-cloud/storage';
 import { inject, injectable } from 'inversify';
-import { Readable } from 'stream';
+import { nanoid } from 'nanoid';
 import { TYPE } from '../loader/container';
 
 @injectable()
@@ -19,14 +20,28 @@ export class CloudStorageService {
     });
   }
 
-  async getUploadUrl(userId: number, groupId: number, filename: string): Promise<string> {
+  async getUploadUrl(userId: string | number, recordGroupId: string | number): Promise<string> {
+    const filename = nanoid();
+    const filepath = `${userId}/${recordGroupId}/${filename}`;
     const [url] = await this.recordBucket
-      .file(`${userId}/${groupId}/${filename}`)
+      .file(filepath)
       .getSignedUrl({
         version: 'v4',
         action: 'write',
         expires: Date.now() + 10 * 60 * 1000, // 10 minutes
         contentType: 'application/octet-stream',
+      });
+    return url;
+  }
+
+  async getDownloadUrl(userId: string | number, recordGroupId: string | number, filename: string): Promise<string> {
+    const filepath = `${userId}/${recordGroupId}/${filename}`;
+    const [url] = await this.recordBucket
+      .file(filepath)
+      .getSignedUrl({
+        version: 'v4',
+        action: 'read',
+        expires: Date.now() + 10 * 60 * 1000, // 10 minutes
       });
     return url;
   }

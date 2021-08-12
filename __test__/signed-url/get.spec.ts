@@ -21,7 +21,25 @@ describe('GET signed url requests', () => {
 
       // when
       const res = await agent
-        .get(`/signed-url/upload?groupId=${groupId}&filename=${filename}`)
+        .get(`/signed-url/upload?recordGroupId=${groupId}&filename=${filename}`)
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200);
+
+      console.log(res.body);
+    });
+  });
+
+  describe('GET /signed-url/download', () => {
+    test('200 response, 다운로드 url 가져오기', async () => {
+      // given
+      const authServcie = container.get(AuthService);
+      const testUser = { email: 'test@google.co.kr', id: 1 };
+      const token = await authServcie.createJwt(testUser);
+      const recordId = 1;
+
+      // when
+      const res = await agent
+        .get(`/signed-url/download?recordGroupId=${recordId}`)
         .set('Authorization', `Bearer ${token}`)
         .expect(200);
 

@@ -6,7 +6,7 @@ import { Record } from './record.entity';
 export class RecordRepository extends Repository<Record> {
   createAndSave(createRecordDto: CreateRecordDto) {
     const record = this.create();
-    record.RecordGroup = createRecordDto.recordGroupId;
+    record.recordGroupId = createRecordDto.recordGroupId;
     record.title = createRecordDto.title;
     record.duration = createRecordDto.duration;
     record.point = `POINT(${createRecordDto.latitude} ${createRecordDto.longitude})`;

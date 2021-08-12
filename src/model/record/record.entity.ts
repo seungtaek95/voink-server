@@ -20,11 +20,14 @@ export class Record {
   })
   point: string;
 
-  @ManyToOne(() => RecordGroup, RecordGroup => RecordGroup.Records)
+  @Column()
+  filename: string;
+
+  @ManyToOne(() => RecordGroup)
   @JoinColumn({
     name: 'record_group_id'
   })
-  RecordGroup: RecordGroup | number
+  recordGroupId: number
 
   @CreateDateColumn({
     name: 'created_at'

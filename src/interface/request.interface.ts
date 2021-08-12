@@ -10,3 +10,7 @@ export interface OAuthRequest extends Request {
 export interface RequestWithUser extends Request {
   user: ITokenPayload;
 }
+
+export interface RequestWithData<T> extends RequestWithUser {
+  data: T
+}

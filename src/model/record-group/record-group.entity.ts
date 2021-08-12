@@ -35,7 +35,7 @@ export class RecordGroup {
   })
   point: string;
 
-  @OneToMany(() => Record, Record => Record.RecordGroup)
+  @OneToMany(() => Record, record => record.recordGroupId)
   Records: Record[];
 
   @CreateDateColumn({
