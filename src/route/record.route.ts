@@ -1,6 +1,8 @@
 import { Response, Router } from 'express';
-import { RequestWithUser } from '../interface/request.interface';
+import { RequestWithData, RequestWithUser } from '../interface/request.interface';
 import { tokenParser } from '../middleware/auth.middleware';
+import { attachRecord } from '../middleware/record.middleware';
+import { Record } from '../model/record/record.entity';
 import { RecordService } from '../service/record.service';
 import container from '../utils/container';
 
@@ -20,6 +22,13 @@ export default function (app: Router) {
         console.log(error);
         res.status(500).json({ message: error.message });
       }
+    }
+  );
+
+  router.get('/:id',
+    tokenParser(), attachRecord(),
+    (req: RequestWithData<Record>, res: Response) => {
+      res.status(200).json(req.data);
     }
   );
 }
