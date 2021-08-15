@@ -40,7 +40,7 @@ describe('GET signed url requests', () => {
 
       // when
       const res = await agent
-        .get(`/signed-url/download?recordGroupId=${recordId}`)
+        .get(`/signed-url/download?recordId=${recordId}`)
         .set('Authorization', `Bearer ${token}`)
         .expect(200);
 

@@ -1,7 +1,9 @@
 import { Response, Router } from 'express';
-import { RequestWithData, RequestWithUser } from '../interface/request.interface';
+import { RequestWithData } from '../interface/request.interface';
 import { tokenParser } from '../middleware/auth.middleware';
+import { attachRecordGroup } from '../middleware/record-roup.middleware';
 import { attachRecord } from '../middleware/record.middleware';
+import { RecordGroup } from '../model/record-group/record-group.entity';
 import { Record } from '../model/record/record.entity';
 import { CloudStorageService } from '../service/cloud-storage.service';
 import container from '../utils/container';
@@ -14,12 +16,14 @@ export default function (app: Router) {
 
   router.get('/upload',
     tokenParser(),
-    async (req: RequestWithUser, res: Response) => {
+    attachRecordGroup('query'),
+    async (req: RequestWithData<RecordGroup>, res: Response) => {
       try {
         const userId = req.user.id;
-        const groupId = req.query.groupId as string;
-        const result = await cloudStorageService.getUploadUrl(userId, groupId);
-        res.status(200).json(result);
+        const recordGroupId = req.data.id;
+        const filename = cloudStorageService.generateFilename();
+        const url = await cloudStorageService.getUploadUrl(userId, recordGroupId, filename);
+        res.status(200).json({ url, filename });
       } catch (error) {
         console.log(error);
         res.status(500).json({ message: error.message });
@@ -29,13 +33,13 @@ export default function (app: Router) {
 
   router.get('/download',
     tokenParser(),
-    attachRecord(),
+    attachRecord('query'),
     async (req: RequestWithData<Record>, res: Response) => {
       try {
         const userId = req.user.id;
         const { recordGroupId, filename } = req.data;
-        const result = await cloudStorageService.getDownloadUrl(userId, recordGroupId, filename);
-        res.status(200).json(result);
+        const url = await cloudStorageService.getDownloadUrl(userId, recordGroupId, filename);
+        res.status(200).json({ url });
       } catch (error) {
         console.log(error);
         res.status(500).json({ message: error.message });

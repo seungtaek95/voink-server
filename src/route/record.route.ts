@@ -26,7 +26,8 @@ export default function (app: Router) {
   );
 
   router.get('/:id',
-    tokenParser(), attachRecord(),
+    tokenParser(),
+    attachRecord(),
     (req: RequestWithData<Record>, res: Response) => {
       res.status(200).json(req.data);
     }
