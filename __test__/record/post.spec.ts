@@ -12,14 +12,15 @@ describe('POST records requests', () => {
   const agent = supertest(app);
 
   describe('POST /records', () => {
-    test('201 response, 레코드 그룹 생성', async () => {
+    test('201 response, 레코드 생성', async () => {
       // given
       const authServcie = container.get(AuthService);
       const testUser = { email: 'test@google.co.kr', id: 1 };
       const token = await authServcie.createJwt(testUser);
       const record: CreateRecordDto = {
         recordGroupId: 1,
-        title: 'testTitle',
+        filename: 'new.m4a',
+        title: 'new record',
         duration: 300,
         latitude: 20,
         longitude: 20,

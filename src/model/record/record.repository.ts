@@ -10,6 +10,7 @@ export class RecordRepository extends Repository<Record> {
     record.title = createRecordDto.title;
     record.duration = createRecordDto.duration;
     record.point = `POINT(${createRecordDto.latitude} ${createRecordDto.longitude})`;
+    record.filename = createRecordDto.filename;
 
     return this.save(record);
   }

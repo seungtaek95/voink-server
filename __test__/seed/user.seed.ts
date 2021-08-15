@@ -8,8 +8,8 @@ const users: CreateUserDto[] = [
   },
   {
     provider: 'FACEBOOK',
-    email: 'test1@test.com',
-    name: 'test1',
+    email: 'test2@test.com',
+    name: 'test2',
   },
 ];
 

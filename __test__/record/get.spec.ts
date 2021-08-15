@@ -15,7 +15,7 @@ describe('GET records requests', () => {
     test('200 response, 레코드 조회', async () => {
       // given
       const authServcie = container.get(AuthService);
-      const testUser = { email: 'test@google.co.kr', id: 1 };
+      const testUser = { email: 'test1@test.com', id: 1 };
       const token = await authServcie.createJwt(testUser);
       const recordId = 1;
 

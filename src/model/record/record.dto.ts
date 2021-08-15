@@ -5,6 +5,9 @@ export class CreateRecordDto {
   recordGroupId: number;
 
   @IsString()
+  filename: string;
+
+  @IsString()
   title: string;
 
   @IsNumber()

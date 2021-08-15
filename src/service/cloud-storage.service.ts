@@ -20,7 +20,7 @@ export class CloudStorageService {
     });
   }
 
-  async getUploadUrl(userId: string | number, recordGroupId: string | number): Promise<string> {
+  async getUploadUrl(userId: string | number, recordGroupId: string | number): Promise<Record<string, string>> {
     const filename = nanoid();
     const filepath = `${userId}/${recordGroupId}/${filename}`;
     const [url] = await this.recordBucket
@@ -31,7 +31,10 @@ export class CloudStorageService {
         expires: Date.now() + 10 * 60 * 1000, // 10 minutes
         contentType: 'application/octet-stream',
       });
-    return url;
+    return {
+      url,
+      filename
+    };
   }
 
   async getDownloadUrl(userId: string | number, recordGroupId: string | number, filename: string): Promise<string> {
