@@ -14,7 +14,7 @@ describe('GET auth requests', () => {
     test('200 response, 사용자 레코드 리스트 가져오기', async () => {
       // given
       const authServcie = container.get(AuthService);
-      const testUser = { email: 'test@google.co.kr', id: 1 };
+      const testUser = { email: 'test1@test.com', id: 1 };
       const token = await authServcie.createJwt(testUser);
 
       // when
@@ -23,7 +23,8 @@ describe('GET auth requests', () => {
         .set('Authorization', `Bearer ${token}`)
         .expect(200);
 
-      console.log(res.body);
+      // then
+      expect(res.body.length).toBe(2);
     });
   });
 
@@ -31,9 +32,9 @@ describe('GET auth requests', () => {
     test('200 response, 레코드 가져오기', async () => {
       // given
       const authServcie = container.get(AuthService);
-      const testUser = { email: 'test@google.co.kr', id: 1 };
+      const testUser = { email: 'test1@test.com', id: 1 };
       const token = await authServcie.createJwt(testUser);
-      const targetId = 2;
+      const targetId = 1;
 
       // when
       const res = await agent
@@ -41,7 +42,8 @@ describe('GET auth requests', () => {
         .set('Authorization', `Bearer ${token}`)
         .expect(200);
 
-      console.log(res.body);
+      // then
+      expect(res.body.id).toBe(targetId);
     });
   });
 });

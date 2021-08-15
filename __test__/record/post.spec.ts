@@ -15,11 +15,12 @@ describe('POST records requests', () => {
     test('201 response, 레코드 생성', async () => {
       // given
       const authServcie = container.get(AuthService);
-      const testUser = { email: 'test@google.co.kr', id: 1 };
+      const testUser = { email: 'test1@test.com', id: 1 };
       const token = await authServcie.createJwt(testUser);
+      const newRecordFilename = 'new.m4a';
       const record: CreateRecordDto = {
         recordGroupId: 1,
-        filename: 'new.m4a',
+        filename: newRecordFilename,
         title: 'new record',
         duration: 300,
         latitude: 20,
@@ -32,6 +33,9 @@ describe('POST records requests', () => {
         .set('Authorization', `Bearer ${token}`)
         .send(record)
         .expect(201);
+      
+      // then
+      expect(res.body.filename).toBe(newRecordFilename);
     });
   });
 });

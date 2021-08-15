@@ -1,6 +1,5 @@
 import * as express from 'express';
 import * as supertest from 'supertest';
-import { CreateRecordDto } from '../../src/model/record/record.dto';
 import { AuthService } from '../../src/service/auth.service';
 import container from '../../src/utils/container';
 import { setup } from '../setup';
@@ -24,8 +23,9 @@ describe('GET records requests', () => {
         .get(`/records/${recordId}`)
         .set('Authorization', `Bearer ${token}`)
         .expect(200);
-      console.log(res.body);
-      
+
+      //then
+      expect(res.body.id).toBe(recordId);
     });
   });
 });

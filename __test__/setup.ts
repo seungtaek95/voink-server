@@ -15,16 +15,17 @@ export function setup(app: Application) {
     const { dbConnection } = await loader(app);
     connection = dbConnection;
   });
-
+  
   beforeEach(async () => {
     await seedDatabase(connection);
   });
-
+  
   afterEach(async () => {
     await emptyDatabase(connection);
   });
-
-  afterAll(() => {
+  
+  afterAll(async () => {
+    await emptyDatabase(connection);
     connection.close();
   });
 }
