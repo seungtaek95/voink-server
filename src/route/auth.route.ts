@@ -3,6 +3,7 @@ import { OAuthRequest, RequestWithUser } from '../interface/request.interface';
 import { tokenParser } from '../middleware/auth.middleware';
 import { AuthService } from '../service/auth.service';
 import container from '../utils/container';
+import { wrapAsync } from '../utils/util';
 
 export default function (app: Router) {
   const router = Router();
@@ -18,14 +19,10 @@ export default function (app: Router) {
   );
 
   router.post('/login/facebook',
-    async (req: OAuthRequest, res: Response) => {
-      try {
-        const user = await authService.handleFacebookLogin(req.body.accessToken);
-        const jwt = await authService.createJwt({ id: user.id, email: user.email });
-        res.status(200).json({ accessToken: jwt });
-      } catch (error) {
-        res.status(400).json({ message: error.message });
-      }
-    }
+    wrapAsync(async (req: OAuthRequest, res: Response) => {
+      const user = await authService.handleFacebookLogin(req.body.accessToken);
+      const jwt = await authService.createJwt({ id: user.id, email: user.email });
+      res.status(200).json({ accessToken: jwt });
+    })
   );
 }

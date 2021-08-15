@@ -15,15 +15,10 @@ export default function (app: Router) {
 
   router.post('/',
     tokenParser(),
-    async (req: RequestWithUser, res: Response) => {
-      try {
-        const recordGroup = await recordService.saveOne(req.body);
-        res.status(201).json(recordGroup);
-      } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: error.message });
-      }
-    }
+    wrapAsync(async (req: RequestWithUser, res: Response) => {
+      const recordGroup = await recordService.saveOne(req.body);
+      res.status(201).json(recordGroup);
+    })
   );
 
   router.get('/:id',
