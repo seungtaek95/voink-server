@@ -16,4 +16,8 @@ export class RecordService {
   findById(recordId: number | string) {
     return this.recordRepository.findById(recordId);
   }
+
+  deleteById(recordId: number | string) {
+    return this.recordRepository.delete(recordId);
+  }
 }

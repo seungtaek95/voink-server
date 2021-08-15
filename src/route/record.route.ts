@@ -5,6 +5,7 @@ import { attachRecord } from '../middleware/record.middleware';
 import { Record } from '../model/record/record.entity';
 import { RecordService } from '../service/record.service';
 import container from '../utils/container';
+import { wrapAsync } from '../utils/util';
 
 export default function (app: Router) {
   const router = Router();
@@ -31,5 +32,14 @@ export default function (app: Router) {
     (req: RequestWithData<Record>, res: Response) => {
       res.status(200).json(req.data);
     }
+  );
+
+  router.delete('/:id', 
+    tokenParser(),
+    attachRecord(),
+    wrapAsync(async (req: RequestWithData<Record>, res: Response) => {
+      await recordService.deleteById(req.data.id);
+      res.status(200).json({ message: 'record deleted' });
+    })
   );
 }
