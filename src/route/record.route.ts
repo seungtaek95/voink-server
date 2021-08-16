@@ -33,7 +33,7 @@ export default function (app: Router) {
     tokenParser(),
     attachRecord(),
     wrapAsync(async (req: RequestWithData<Record>, res: Response) => {
-      await recordService.deleteById(req.data.id);
+      await recordService.deleteOne(req.data);
       res.status(200).json({ message: 'record deleted' });
     })
   );

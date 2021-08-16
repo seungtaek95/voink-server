@@ -22,7 +22,8 @@ export default function (app: Router) {
       const userId = req.user.id;
       const recordGroupId = req.data.id;
       const filename = cloudStorageService.generateFilename();
-      const url = await cloudStorageService.getUploadUrl(userId, recordGroupId, filename);
+      const filepath = `${userId}/${recordGroupId}/${filename}`;
+      const url = await cloudStorageService.getUploadUrl(filepath);
       res.status(200).json({ url, filename });
     })
   );
@@ -31,9 +32,8 @@ export default function (app: Router) {
     tokenParser(),
     attachRecord('query'),
     wrapAsync(async (req: RequestWithData<Record>, res: Response) => {
-      const userId = req.user.id;
-      const { recordGroupId, filename } = req.data;
-      const url = await cloudStorageService.getDownloadUrl(userId, recordGroupId, filename);
+      const { filepath } = req.data;
+      const url = await cloudStorageService.getDownloadUrl(filepath);
       res.status(200).json({ url });
     })
   );

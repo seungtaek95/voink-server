@@ -25,8 +25,7 @@ export class CloudStorageService {
     return `${uniqueId}.m4a`;
   }
 
-  async getUploadUrl(userId: string | number, recordGroupId: string | number, filename: string): Promise<string> {
-    const filepath = `${userId}/${recordGroupId}/${filename}`;
+  async getUploadUrl(filepath: string): Promise<string> {
     const [url] = await this.recordBucket
       .file(filepath)
       .getSignedUrl({
@@ -38,8 +37,7 @@ export class CloudStorageService {
     return url;
   }
 
-  async getDownloadUrl(userId: string | number, recordGroupId: string | number, filename: string): Promise<string> {
-    const filepath = `${userId}/${recordGroupId}/${filename}`;
+  async getDownloadUrl(filepath: string): Promise<string> {
     const [url] = await this.recordBucket
       .file(filepath)
       .getSignedUrl({
@@ -48,5 +46,9 @@ export class CloudStorageService {
         expires: Date.now() + 10 * 60 * 1000, // 10 minutes
       });
     return url;
+  }
+
+  deleteRecord(filepath: string) {
+    return this.recordBucket.file(filepath).delete();
   }
 }

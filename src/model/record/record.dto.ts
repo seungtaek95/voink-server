@@ -5,7 +5,7 @@ export class CreateRecordDto {
   recordGroupId: number;
 
   @IsString()
-  filename: string;
+  filepath: string;
 
   @IsString()
   title: string;

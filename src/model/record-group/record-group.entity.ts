@@ -39,7 +39,6 @@ export class RecordGroup {
     type: 'geometry',
     spatialFeatureType: 'Point',
     srid: 4326,
-    nullable: true,
   })
   point: string;
 
