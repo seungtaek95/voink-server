@@ -1,6 +1,8 @@
 import { Response, Router } from 'express';
-import { RequestWithUser } from '../interface/request.interface';
+import { RequestWithData, RequestWithUser } from '../interface/request.interface';
 import { tokenParser } from '../middleware/auth.middleware';
+import { attachRecordGroup } from '../middleware/record-roup.middleware';
+import { RecordGroup } from '../model/record-group/record-group.entity';
 import { RecordGroupService } from '../service/record-group.service';
 import container from '../utils/container';
 import { wrapAsync } from '../utils/util';
@@ -29,9 +31,17 @@ export default function (app: Router) {
 
   router.get('/:id',
     tokenParser(),
-    wrapAsync(async (req: RequestWithUser, res: Response) => {
-      const recordGroup = await recordGroupService.findById(req.params.id);
-      res.status(200).json(recordGroup);
+    attachRecordGroup(),
+    wrapAsync(async (req: RequestWithData<RecordGroup>, res: Response) => {
+      res.status(200).json(req.params.data);
+    })
+  );
+
+  router.delete('/:id',
+    tokenParser(),
+    wrapAsync(async (req: RequestWithData<RecordGroup>, res: Response) => {
+      await recordGroupService.deleteOne(req.data);
+      res.status(200).json({ message: 'record-group deleted' });
     })
   );
 }

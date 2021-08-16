@@ -48,7 +48,11 @@ export class CloudStorageService {
     return url;
   }
 
-  deleteRecord(filepath: string) {
-    return this.recordBucket.file(filepath).delete();
+  deleteRecord(recordPath: string) {
+    return this.recordBucket.file(recordPath).delete();
+  }
+
+  deleteRecordGroup(recordGroupPath: string) {
+    return this.recordBucket.file(recordGroupPath).delete();
   }
 }

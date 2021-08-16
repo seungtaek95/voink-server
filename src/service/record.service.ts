@@ -9,7 +9,7 @@ import { CloudStorageService } from './cloud-storage.service';
 export class RecordService {
   constructor(
     @inject(TYPE.recordRepository) private recordRepository: RecordRepository,
-    private cloudStorageService: CloudStorageService
+    private cloudStorageService: CloudStorageService,
   ) {}
   
   saveOne(createRecordDto: CreateRecordDto) {
@@ -22,6 +22,6 @@ export class RecordService {
 
   async deleteOne(record: Record) {
     await this.recordRepository.delete(record.id);
-    await this.cloudStorageService.deleteRecord(record.filepath);
+    return this.cloudStorageService.deleteRecord(record.filepath);
   }
 }
