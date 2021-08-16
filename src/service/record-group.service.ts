@@ -12,8 +12,8 @@ export class RecordGroupService {
     private cloudStorageService: CloudStorageService,
   ) {}
 
-  getRecordGroupPath(userId: string | number, recordGroupId: string | number) {
-    return `${userId}/${recordGroupId}`;
+  getRecordGroupPath(recordGroup: RecordGroup) {
+    return `${recordGroup.userId}/${recordGroup.id}`;
   }
 
   saveOne(createRecordGroupDto: CreateRecordGroupDto) {
@@ -24,13 +24,13 @@ export class RecordGroupService {
     return this.recordGroupRepository.findById(id);
   }
 
-  findByUser(userId: string | number) {
-    return this.recordGroupRepository.findByUser(userId);
+  findByUserId(userId: string | number) {
+    return this.recordGroupRepository.findByUserId(userId);
   }
 
   async deleteOne(recordGroup: RecordGroup) {
     await this.recordGroupRepository.delete(recordGroup.id);
-    const recordGroupPath = this.getRecordGroupPath(recordGroup.userId, recordGroup.id);
+    const recordGroupPath = this.getRecordGroupPath(recordGroup);
     return this.cloudStorageService.deleteRecordGroup(recordGroupPath);
   }
 }

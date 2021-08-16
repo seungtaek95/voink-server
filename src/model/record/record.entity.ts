@@ -28,7 +28,9 @@ export class Record {
   })
   recordGroupId: number
 
-  @ManyToOne(() => RecordGroup, recordGroup => recordGroup.records)
+  @ManyToOne(() => RecordGroup, recordGroup => recordGroup.records, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({
     name: 'record_group_id'
   })

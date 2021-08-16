@@ -7,7 +7,7 @@ import { setup } from '../setup';
 const app = express();
 setup(app);
 
-describe('DELETE records requests', () => {
+describe('DELETE record-groups requests', () => {
   const agent = supertest(app);
 
   describe('DELETE /records:id', () => {
@@ -16,16 +16,16 @@ describe('DELETE records requests', () => {
       const authServcie = container.get(AuthService);
       const testUser = { email: 'test1@test.com', id: 1 };
       const token = await authServcie.createJwt(testUser);
-      const recordId = 1;
+      const recordGroupId = 1;
 
       // when
       const res = await agent
-        .delete(`/records/${recordId}`)
+        .delete(`/record-groups/${recordGroupId}`)
         .set('Authorization', `Bearer ${token}`)
         .expect(200);
 
       //then      
-      expect(res.body.message).toBe('record deleted');
+      expect(res.body.message).toBe('record group deleted');
     });
   });
 });

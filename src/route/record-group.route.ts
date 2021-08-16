@@ -24,7 +24,7 @@ export default function (app: Router) {
   router.get('/',
     tokenParser(),
     wrapAsync(async (req: RequestWithUser, res: Response) => {
-      const recordGroups = await recordGroupService.findByUser(req.user.id);
+      const recordGroups = await recordGroupService.findByUserId(req.user.id);
       res.status(200).json(recordGroups);
     } )
   );
@@ -39,9 +39,10 @@ export default function (app: Router) {
 
   router.delete('/:id',
     tokenParser(),
+    attachRecordGroup(),
     wrapAsync(async (req: RequestWithData<RecordGroup>, res: Response) => {
       await recordGroupService.deleteOne(req.data);
-      res.status(200).json({ message: 'record-group deleted' });
+      res.status(200).json({ message: 'record group deleted' });
     })
   );
 }

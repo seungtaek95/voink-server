@@ -16,7 +16,7 @@ export class AuthService {
   constructor(
     @inject(FacebookOAuth) private facebookOAuth: FacebookOAuth,
     @inject(UserService) private userService: UserService,
-    @inject(TYPE.jwtSecretKey) private jwtSecretKey: string
+    @inject(TYPE.jwtSecretKey) private jwtSecretKey: string,
   ) {}
 
   async handleFacebookLogin(accessToken: string): Promise<User> {
