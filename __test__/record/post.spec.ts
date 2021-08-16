@@ -17,10 +17,10 @@ describe('POST records requests', () => {
       const authServcie = container.get(AuthService);
       const testUser = { email: 'test1@test.com', id: 1 };
       const token = await authServcie.createJwt(testUser);
-      const newRecordFilename = 'new.m4a';
+      const newRecordfilepath = '1/1/new.m4a';
       const record: CreateRecordDto = {
         recordGroupId: 1,
-        filename: newRecordFilename,
+        filepath: newRecordfilepath,
         title: 'new record',
         duration: 300,
         latitude: 20,
@@ -35,7 +35,7 @@ describe('POST records requests', () => {
         .expect(201);
       
       // then
-      expect(res.body.filename).toBe(newRecordFilename);
+      expect(res.body.filepath).toBe(newRecordfilepath);
     });
   });
 });

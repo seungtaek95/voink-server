@@ -7,7 +7,7 @@ import { setup } from '../setup';
 const app = express();
 setup(app);
 
-describe('GET auth requests', () => {
+describe('GET record-groups requests', () => {
   const agent = supertest(app);
 
   describe('GET /record-groups/:id', () => {
