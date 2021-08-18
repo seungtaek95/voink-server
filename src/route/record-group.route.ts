@@ -33,7 +33,7 @@ export default function (app: Router) {
     tokenParser(),
     attachRecordGroup(),
     wrapAsync(async (req: RequestWithData<RecordGroup>, res: Response) => {
-      res.status(200).json(req.params.data);
+      res.status(200).json(req.data);
     })
   );
 
