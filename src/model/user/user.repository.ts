@@ -6,7 +6,7 @@ import { User } from './user.entity';
 export class UserRepository extends Repository<User> {
   createAndSave(createUserDto: CreateUserDto) {
     const user = this.create();
-    user.provier = createUserDto.provider;
+    user.provider = createUserDto.provider;
     user.name = createUserDto.name;
     user.email = createUserDto.email;
 

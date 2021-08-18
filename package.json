@@ -4,7 +4,8 @@
   "description": "Voink server",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "insert": "ts-node __test__/insert.ts",
+    "test": "jest --runInBand",
     "start:dev": "nodemon --watch src --exec 'ts-node' src/server.ts",
     "start:prod": "node dist/src/server.js"
   },

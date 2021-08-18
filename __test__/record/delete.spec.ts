@@ -7,11 +7,11 @@ import { setup } from '../setup';
 const app = express();
 setup(app);
 
-describe('GET records requests', () => {
+describe('DELETE records requests', () => {
   const agent = supertest(app);
 
-  describe('GET /records:id', () => {
-    test('200 response, 레코드 조회', async () => {
+  describe('DELETE /records:id', () => {
+    test('200 response, 레코드 삭제', async () => {
       // given
       const authServcie = container.get(AuthService);
       const testUser = { email: 'test1@test.com', id: 1 };
@@ -20,12 +20,12 @@ describe('GET records requests', () => {
 
       // when
       const res = await agent
-        .get(`/records/${recordId}`)
+        .delete(`/records/${recordId}`)
         .set('Authorization', `Bearer ${token}`)
         .expect(200);
 
-      //then
-      expect(res.body.id).toBe(recordId);
+      //then      
+      expect(res.body.message).toBe('record deleted');
     });
   });
 });

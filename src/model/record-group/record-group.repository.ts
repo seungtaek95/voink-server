@@ -23,7 +23,7 @@ export class RecordGroupRepository extends Repository<RecordGroup> {
       .getOne();
   }
 
-  findByUser(userId: string | number) {
+  findByUserId(userId: string | number) {
     return this.createQueryBuilder('record_group')
       .leftJoinAndSelect('record_group.user', 'user')
       .where('record_group.user_id = :userId', { userId })

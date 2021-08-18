@@ -6,7 +6,7 @@ export class User {
   id: number;
 
   @Column()
-  provier: string;
+  provider: string;
 
   @Column({
     unique: true,

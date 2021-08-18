@@ -14,18 +14,19 @@ describe('GET signed url requests', () => {
     test('200 response, 업로드 url 가져오기', async () => {
       // given
       const authServcie = container.get(AuthService);
-      const testUser = { email: 'test@google.co.kr', id: 1 };
+      const testUser = { email: 'test1@test.com', id: 1 };
       const token = await authServcie.createJwt(testUser);
       const groupId = 1;
-      const filename = 'foo.m4a';
 
       // when
       const res = await agent
-        .get(`/signed-url/upload?recordGroupId=${groupId}&filename=${filename}`)
+        .get(`/signed-url/upload?recordGroupId=${groupId}`)
         .set('Authorization', `Bearer ${token}`)
         .expect(200);
 
-      console.log(res.body);
+      // then
+      expect(res.body).toHaveProperty('url');
+      expect(res.body).toHaveProperty('filename');
     });
   });
 
@@ -33,17 +34,18 @@ describe('GET signed url requests', () => {
     test('200 response, 다운로드 url 가져오기', async () => {
       // given
       const authServcie = container.get(AuthService);
-      const testUser = { email: 'test@google.co.kr', id: 1 };
+      const testUser = { email: 'test1@test.com', id: 1 };
       const token = await authServcie.createJwt(testUser);
       const recordId = 1;
 
       // when
       const res = await agent
-        .get(`/signed-url/download?recordGroupId=${recordId}`)
+        .get(`/signed-url/download?recordId=${recordId}`)
         .set('Authorization', `Bearer ${token}`)
         .expect(200);
 
-      console.log(res.body);
+      // then
+      expect(res.body).toHaveProperty('url');
     });
   });
 });

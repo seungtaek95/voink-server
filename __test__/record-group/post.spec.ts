@@ -15,12 +15,13 @@ describe('POST record-groups requests', () => {
     test('201 response, 레코드 그룹 생성', async () => {
       // given
       const authServcie = container.get(AuthService);
-      const testUser = { email: 'test@google.co.kr', id: 1 };
+      const testUser = { email: 'test1@test.com', id: 1 };
       const token = await authServcie.createJwt(testUser);
+      const newRecordGroupTitle = 'test title';
       const recordGroup: CreateRecordGroupDto = {
         userId: 1,
         category: 'testCategory',
-        title: 'testTitle',
+        title: newRecordGroupTitle,
         location: 'testLocation',
         recordType: 'testRecordType',
         latitude: 20,
@@ -33,6 +34,9 @@ describe('POST record-groups requests', () => {
         .set('Authorization', `Bearer ${token}`)
         .send(recordGroup)
         .expect(201);
+      
+      // then
+      expect(res.body.title).toBe(newRecordGroupTitle);
     });
   });
 });

@@ -16,12 +16,11 @@ export class Record {
     type: 'geometry',
     spatialFeatureType: 'Point',
     srid: 4326,
-    nullable: true,
   })
   point: string;
 
   @Column()
-  filename: string;
+  filepath: string;
 
   @Column({
     name: 'record_group_id',
@@ -29,7 +28,9 @@ export class Record {
   })
   recordGroupId: number
 
-  @ManyToOne(() => RecordGroup, recordGroup => recordGroup.records)
+  @ManyToOne(() => RecordGroup, recordGroup => recordGroup.records, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({
     name: 'record_group_id'
   })

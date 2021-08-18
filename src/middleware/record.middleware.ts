@@ -1,20 +1,30 @@
 import { NextFunction, Response } from 'express';
-import { RequestWithData } from '../interface/request.interface';
+import { RequestWithData, RequestWithUser } from '../interface/request.interface';
 import { Record } from '../model/record/record.entity';
 import { RecordService } from '../service/record.service';
 import container from '../utils/container';
 
-export function attachRecord() {
+export function attachRecord(paramLocation = 'path') {
   return async (req: RequestWithData<Record>, res: Response, next: NextFunction) => {
     const recordService = container.get(RecordService);
     try {
-      const recordId = req.params.id;
+      const recordId = getRecordId(req, paramLocation);
       const record = await recordService.findById(recordId);
       req.data = record;
       next();
     } catch (error) {
       next(error);
     }
-    next();
   };
+}
+
+function getRecordId(req: RequestWithUser, paramLocation: string): string {
+  switch (paramLocation) {
+    case 'query':
+      return req.query.recordId as string;
+    case 'path':
+      return req.params.id;
+    default:
+      return req.params.id;
+  }
 }
