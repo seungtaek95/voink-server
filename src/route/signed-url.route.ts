@@ -1,9 +1,7 @@
 import { Response, Router } from 'express';
 import { RequestWithData } from '../interface/request.interface';
 import { tokenParser } from '../middleware/auth.middleware';
-import { attachRecordGroup } from '../middleware/record-roup.middleware';
 import { attachRecord } from '../middleware/record.middleware';
-import { RecordGroup } from '../model/record-group/record-group.entity';
 import { Record } from '../model/record/record.entity';
 import { CloudStorageService } from '../service/cloud-storage.service';
 import container from '../utils/container';
@@ -19,7 +17,7 @@ export default function (app: Router) {
     tokenParser(),
     attachRecord('query'),
     wrapAsync(async (req: RequestWithData<Record>, res: Response) => {
-      const { filepath } = req.data;
+      const filepath = `${req.user.id}${req.data.recordGroupId}${req.data.id}.m4a`;
       const url = await cloudStorageService.getDownloadUrl(filepath);
       res.status(200).json({ url });
     })

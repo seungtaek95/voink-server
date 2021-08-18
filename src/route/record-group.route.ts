@@ -41,7 +41,7 @@ export default function (app: Router) {
     tokenParser(),
     attachRecordGroup(),
     wrapAsync(async (req: RequestWithData<RecordGroup>, res: Response) => {
-      await recordGroupService.deleteOne(req.data);
+      await recordGroupService.deleteOne(req.user.id, req.data);
       res.status(200).json({ message: 'record group deleted' });
     })
   );

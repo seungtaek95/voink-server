@@ -26,8 +26,9 @@ export class RecordService {
     return this.recordRepository.findById(recordId);
   }
 
-  async deleteOne(record: Record) {
+  async deleteOne(userId: number | string, record: Record) {
     await this.recordRepository.delete(record.id);
-    return this.cloudStorageService.deleteRecord(record.filepath);
+    const recordFilepath = `${userId}/${record.recordGroupId}/${record.id}.m4a`;
+    return this.cloudStorageService.deleteRecord(recordFilepath);
   }
 }
