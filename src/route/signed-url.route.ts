@@ -15,19 +15,6 @@ export default function (app: Router) {
 
   app.use('/signed-url', router);
 
-  router.get('/upload',
-    tokenParser(),
-    attachRecordGroup('query'),
-    wrapAsync(async (req: RequestWithData<RecordGroup>, res: Response) => {
-      const userId = req.user.id;
-      const recordGroupId = req.data.id;
-      const filename = cloudStorageService.generateFilename();
-      const filepath = `${userId}/${recordGroupId}/${filename}`;
-      const url = await cloudStorageService.getUploadUrl(filepath);
-      res.status(200).json({ url, filename });
-    })
-  );
-
   router.get('/download',
     tokenParser(),
     attachRecord('query'),

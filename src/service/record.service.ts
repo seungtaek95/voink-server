@@ -12,8 +12,14 @@ export class RecordService {
     private cloudStorageService: CloudStorageService,
   ) {}
   
-  saveOne(createRecordDto: CreateRecordDto) {
-    return this.recordRepository.createAndSave(createRecordDto);
+  async saveOne(userId: number | string, createRecordDto: CreateRecordDto) {
+    const record = await this.recordRepository.createAndSave(createRecordDto);
+    const recordFilepath = `${userId}/${record.recordGroupId}/${record.id}.m4a`;
+    const signedUrl = await this.cloudStorageService.getUploadUrl(recordFilepath);
+    return {
+      record,
+      signedUrl,
+    };
   }
 
   findById(recordId: number | string) {

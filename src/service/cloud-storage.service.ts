@@ -1,7 +1,6 @@
 import { Readable } from 'stream';
 import { Bucket } from '@google-cloud/storage';
 import { inject, injectable } from 'inversify';
-import { nanoid } from 'nanoid';
 import { TYPE } from '../loader/container';
 
 @injectable()
@@ -18,11 +17,6 @@ export class CloudStorageService {
         .on('finish', resolve)
         .on('error', reject);
     });
-  }
-
-  generateFilename() {
-    const uniqueId = nanoid();
-    return `${uniqueId}.m4a`;
   }
 
   async getUploadUrl(filepath: string): Promise<string> {

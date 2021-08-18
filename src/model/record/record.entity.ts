@@ -19,7 +19,9 @@ export class Record {
   })
   point: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   filepath: string;
 
   @Column({
