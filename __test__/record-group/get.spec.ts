@@ -13,7 +13,7 @@ describe('GET record-groups requests', () => {
   const token = getTestUserToken(testUser1);
 
   describe('GET /record-groups/:id', () => {
-    test('200 response, 사용자 레코드 리스트 가져오기', async () => {
+    test('200 response, 사용자 레코드 그룹 리스트 가져오기', async () => {
       // given
 
       // when
@@ -28,7 +28,7 @@ describe('GET record-groups requests', () => {
   });
 
   describe('GET /record-groups/:id', () => {
-    test('200 response, 레코드 가져오기', async () => {
+    test('200 response, 레코드 그룹 가져오기', async () => {
       // given
       const targetId = 1;
 
@@ -40,6 +40,17 @@ describe('GET record-groups requests', () => {
 
       // then
       expect(res.body.id).toBe(targetId);
+    });
+
+    test('200 response, 다른 사용자의 레코드 그룹 가져올 수 없음', (done) => {
+      // given
+      const targetId = 3;
+
+      // when
+      agent
+        .get(`/record-groups/${targetId}`)
+        .set('Authorization', `Bearer ${token}`)
+        .expect(403, done);
     });
   });
 });

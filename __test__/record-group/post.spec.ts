@@ -18,7 +18,6 @@ describe('POST record-groups requests', () => {
       // given
       const newRecordGroupTitle = 'test title';
       const recordGroup: CreateRecordGroupDto = {
-        userId: 1,
         category: 'testCategory',
         title: newRecordGroupTitle,
         location: 'testLocation',
@@ -35,7 +34,7 @@ describe('POST record-groups requests', () => {
         .expect(201);
       
       // then
-      expect(res.body.title).toBe(newRecordGroupTitle);
+      expect(res.body.userId).toBe(testUser1.id);
     });
   });
 });
