@@ -4,8 +4,9 @@ import { Record } from './record.entity';
 
 @EntityRepository(Record)
 export class RecordRepository extends Repository<Record> {
-  createAndSave(createRecordDto: CreateRecordDto) {
+  createAndSave(userId: number, createRecordDto: CreateRecordDto) {
     const record = this.create();
+    record.userId = userId;
     record.recordGroupId = createRecordDto.recordGroupId;
     record.title = createRecordDto.title;
     record.duration = createRecordDto.duration;

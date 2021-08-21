@@ -2,9 +2,6 @@ import { IsNumber, IsString } from 'class-validator';
 import { User } from '../user/user.entity';
 
 export class CreateRecordGroupDto {
-  @IsNumber()
-  userId: number;
-
   @IsString()
   category: string;
 

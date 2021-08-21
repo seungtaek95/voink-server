@@ -16,7 +16,7 @@ export default function (app: Router) {
   router.post('/',
     tokenParser(),
     wrapAsync(async (req: RequestWithUser, res: Response) => {
-      const recordGroup = await recordGroupService.saveOne(req.body);
+      const recordGroup = await recordGroupService.saveOne(req.user.id, req.body);
       res.status(201).json(recordGroup);
     })
   );

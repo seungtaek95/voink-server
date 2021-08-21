@@ -32,8 +32,7 @@ describe('POST records requests', () => {
         .expect(201);
       
       // then
-      expect(res.body).toHaveProperty('record');
-      expect(res.body).toHaveProperty('signedUrl');
+      expect(res.body.record.userId).toBe(testUser1.id);
     });
   });
 });

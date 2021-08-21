@@ -12,8 +12,8 @@ export class RecordGroupService {
     private cloudStorageService: CloudStorageService,
   ) {}
 
-  saveOne(createRecordGroupDto: CreateRecordGroupDto) {
-    return this.recordGroupRepository.createAndSave(createRecordGroupDto);
+  saveOne(userId: number, createRecordGroupDto: CreateRecordGroupDto) {
+    return this.recordGroupRepository.createAndSave(userId, createRecordGroupDto);
   }
 
   findById(id: string | number) {
