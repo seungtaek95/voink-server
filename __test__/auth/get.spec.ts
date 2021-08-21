@@ -24,7 +24,8 @@ describe('GET auth requests', () => {
         .expect(200);
 
       //then
-      expect(res.body).toStrictEqual(testUser);
+      expect(res.body).toHaveProperty('id');
+      expect(res.body).toHaveProperty('email');
     });
   });
 });
