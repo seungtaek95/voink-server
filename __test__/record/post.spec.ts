@@ -1,8 +1,8 @@
 import * as express from 'express';
 import * as supertest from 'supertest';
+import { getTestUserToken } from '../seed/auth.seed';
+import testUsers from '../seed/user.seed';
 import { CreateRecordDto } from '../../src/model/record/record.dto';
-import { AuthService } from '../../src/service/auth.service';
-import container from '../../src/utils/container';
 import { setup } from '../setup';
 
 const app = express();
@@ -10,13 +10,12 @@ setup(app);
 
 describe('POST records requests', () => {
   const agent = supertest(app);
+  const testUser1 = testUsers[0];
+  const token = getTestUserToken(testUser1);
 
   describe('POST /records', () => {
     test('201 response, 레코드 생성', async () => {
       // given
-      const authServcie = container.get(AuthService);
-      const testUser = { email: 'test1@test.com', id: 1 };
-      const token = await authServcie.createJwt(testUser);
       const record: CreateRecordDto = {
         recordGroupId: 1,
         title: 'new record',

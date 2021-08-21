@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as supertest from 'supertest';
-import { AuthService } from '../../src/service/auth.service';
-import container from '../../src/utils/container';
+import { getTestUserToken } from '../seed/auth.seed';
+import testUsers from '../seed/user.seed';
 import { setup } from '../setup';
 
 const app = express();
@@ -9,13 +9,12 @@ setup(app);
 
 describe('GET record-groups requests', () => {
   const agent = supertest(app);
+  const testUser1 = testUsers[0];
+  const token = getTestUserToken(testUser1);
 
   describe('GET /record-groups/:id', () => {
     test('200 response, 사용자 레코드 리스트 가져오기', async () => {
       // given
-      const authServcie = container.get(AuthService);
-      const testUser = { email: 'test1@test.com', id: 1 };
-      const token = await authServcie.createJwt(testUser);
 
       // when
       const res = await agent
@@ -31,9 +30,6 @@ describe('GET record-groups requests', () => {
   describe('GET /record-groups/:id', () => {
     test('200 response, 레코드 가져오기', async () => {
       // given
-      const authServcie = container.get(AuthService);
-      const testUser = { email: 'test1@test.com', id: 1 };
-      const token = await authServcie.createJwt(testUser);
       const targetId = 1;
 
       // when

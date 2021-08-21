@@ -1,22 +1,21 @@
 import * as express from 'express';
 import * as supertest from 'supertest';
+import testUsers from '../seed/user.seed';
 import { CreateRecordGroupDto } from '../../src/model/record-group/record-group.dto';
-import { AuthService } from '../../src/service/auth.service';
-import container from '../../src/utils/container';
 import { setup } from '../setup';
+import { getTestUserToken } from '../seed/auth.seed';
 
 const app = express();
 setup(app);
 
 describe('POST record-groups requests', () => {
   const agent = supertest(app);
+  const testUser1 = testUsers[0];
+  const token = getTestUserToken(testUser1);
 
   describe('POST /record-groups', () => {
     test('201 response, 레코드 그룹 생성', async () => {
       // given
-      const authServcie = container.get(AuthService);
-      const testUser = { email: 'test1@test.com', id: 1 };
-      const token = await authServcie.createJwt(testUser);
       const newRecordGroupTitle = 'test title';
       const recordGroup: CreateRecordGroupDto = {
         userId: 1,

@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as supertest from 'supertest';
-import { AuthService } from '../../src/service/auth.service';
-import container from '../../src/utils/container';
+import { getTestUserToken } from '../seed/auth.seed';
+import testUsers from '../seed/user.seed';
 import { setup } from '../setup';
 
 const app = express();
@@ -13,9 +13,8 @@ describe('GET auth requests', () => {
   describe('GET /auth', () => {
     test('200 response, 사용자 정보 응답', async () => {
       // given
-      const authServcie = container.get(AuthService);
-      const testUser = { email: 'test1@test.com', id: 1 };
-      const token = await authServcie.createJwt(testUser);
+      const testUser1 = testUsers[0];
+      const token = getTestUserToken(testUser1);
 
       // when
       const res = await agent

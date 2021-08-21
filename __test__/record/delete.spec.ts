@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as supertest from 'supertest';
-import { AuthService } from '../../src/service/auth.service';
-import container from '../../src/utils/container';
+import { getTestUserToken } from '../seed/auth.seed';
+import testUsers from '../seed/user.seed';
 import { setup } from '../setup';
 
 const app = express();
@@ -9,13 +9,12 @@ setup(app);
 
 describe('DELETE records requests', () => {
   const agent = supertest(app);
+  const testUser1 = testUsers[0];
+  const token = getTestUserToken(testUser1);
 
   describe('DELETE /records:id', () => {
     test('200 response, 레코드 삭제', async () => {
       // given
-      const authServcie = container.get(AuthService);
-      const testUser = { email: 'test1@test.com', id: 1 };
-      const token = await authServcie.createJwt(testUser);
       const recordId = 1;
 
       // when
