@@ -1,5 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { RecordGroup } from '../record-group/record-group.entity';
+import { User } from '../user/user.entity';
 
 @Entity()
 export class Record {
@@ -23,6 +24,18 @@ export class Record {
     nullable: true,
   })
   filepath: string;
+
+  @Column({
+    name: 'user_id',
+    nullable: true,
+  })
+  userId: number
+
+  @ManyToOne(() => User)
+  @JoinColumn({
+    name: 'user_id'
+  })
+  user: User;
 
   @Column({
     name: 'record_group_id',

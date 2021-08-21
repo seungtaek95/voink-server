@@ -1,9 +1,9 @@
 import { Application } from 'express';
 import { Connection } from 'typeorm';
 import loader from '../src/loader';
+import { User } from '../src/model/user/user.entity';
 import { RecordGroup } from '../src/model/record-group/record-group.entity';
 import { Record } from '../src/model/record/record.entity';
-import { User } from '../src/model/user/user.entity';
 import recordGroups from './seed/record-group.seed';
 import records from './seed/record.seed';
 import users from './seed/user.seed';

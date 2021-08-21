@@ -3,6 +3,7 @@ import { RequestWithData, RequestWithUser } from '../interface/request.interface
 import { Record } from '../model/record/record.entity';
 import { RecordService } from '../service/record.service';
 import container from '../utils/container';
+import { HttpError } from '../utils/util';
 
 export function attachRecord(paramLocation = 'path') {
   return async (req: RequestWithData<Record>, res: Response, next: NextFunction) => {
@@ -10,6 +11,12 @@ export function attachRecord(paramLocation = 'path') {
     try {
       const recordId = getRecordId(req, paramLocation);
       const record = await recordService.findById(recordId);
+      if (!record) {
+        next(new HttpError('Record not found', 404));
+      }
+      if (req.user.id !== record.userId) {
+        next(new HttpError('Permission denied', 403));
+      }
       req.data = record;
       next();
     } catch (error) {
