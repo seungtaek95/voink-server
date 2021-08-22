@@ -14,7 +14,6 @@ export function attachRecordGroup(paramLocation = 'path') {
       if (!recordGroup) {
         next(new HttpError('Record not found', 404));
       }
-      console.log(recordGroup);
       
       if (req.user.id !== recordGroup.user.id) {
         next(new HttpError('Permission denied', 403));
