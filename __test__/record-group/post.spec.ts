@@ -34,7 +34,7 @@ describe('POST record-groups requests', () => {
         .expect(201);
       
       // then
-      expect(res.body.userId).toBe(testUser1.id);
+      expect(res.body.user.id).toBe(testUser1.id);
     });
   });
 });

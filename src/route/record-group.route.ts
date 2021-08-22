@@ -1,7 +1,7 @@
 import { Response, Router } from 'express';
 import { RequestWithData, RequestWithUser } from '../interface/request.interface';
 import { tokenParser } from '../middleware/auth.middleware';
-import { attachRecordGroup } from '../middleware/record-roup.middleware';
+import { attachRecordGroup } from '../middleware/record-group.middleware';
 import { RecordGroup } from '../model/record-group/record-group.entity';
 import { RecordGroupService } from '../service/record-group.service';
 import container from '../utils/container';

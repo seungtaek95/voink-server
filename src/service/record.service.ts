@@ -20,7 +20,7 @@ export class RecordService {
     const record = await this.recordRepository.createAndSave(userId, filepath, createRecordDto);
     const signedUrl = await this.cloudStorageService.getUploadUrl(filepath);
     return {
-      record: this.recordMapper.toRecordDto(record),
+      record,
       signedUrl,
     };
   }

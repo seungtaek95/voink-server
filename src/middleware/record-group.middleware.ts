@@ -1,20 +1,22 @@
 import { NextFunction, Response } from 'express';
 import { RequestWithData, RequestWithUser } from '../interface/request.interface';
-import { RecordGroup } from '../model/record-group/record-group.entity';
+import { RecordGroupDto } from '../model/record-group/record-group.dto';
 import { RecordGroupService } from '../service/record-group.service';
 import container from '../utils/container';
 import { HttpError } from '../utils/util';
 
 export function attachRecordGroup(paramLocation = 'path') {
-  return async (req: RequestWithData<RecordGroup>, res: Response, next: NextFunction) => {
+  return async (req: RequestWithData<RecordGroupDto>, res: Response, next: NextFunction) => {
     const recordGroupService = container.get(RecordGroupService);
     try {
       const recordGroupId = getRecordGroupId(req, paramLocation);
-      const recordGroup = await recordGroupService.findById(recordGroupId);
+      const recordGroup = await recordGroupService.findById(recordGroupId) as RecordGroupDto;
       if (!recordGroup) {
         next(new HttpError('Record not found', 404));
       }
-      if (req.user.id !== recordGroup.userId) {
+      console.log(recordGroup);
+      
+      if (req.user.id !== recordGroup.user.id) {
         next(new HttpError('Permission denied', 403));
       }
       req.data = recordGroup;

@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsObject, IsString } from 'class-validator';
 import { User } from '../user/user.entity';
 
 export class CreateRecordGroupDto {
@@ -22,7 +22,7 @@ export class CreateRecordGroupDto {
 }
 
 export class RecordGroupDto {
-  @IsNumber()
+  @IsObject()
   user: User;
 
   @IsString()
