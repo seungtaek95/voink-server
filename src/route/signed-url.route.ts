@@ -17,8 +17,7 @@ export default function (app: Router) {
     tokenParser(),
     attachRecord('query'),
     wrapAsync(async (req: RequestWithData<Record>, res: Response) => {
-      const filepath = `${req.user.id}${req.data.recordGroupId}${req.data.id}.m4a`;
-      const url = await cloudStorageService.getDownloadUrl(filepath);
+      const url = await cloudStorageService.getDownloadUrl(req.data.filepath);
       res.status(200).json({ url });
     })
   );
