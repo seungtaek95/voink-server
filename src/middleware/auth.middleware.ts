@@ -14,11 +14,16 @@ export function tokenParser() {
     if (!req.headers.authorization) {
       return next(new HttpError('No token found', 401));
     }
-
+    
     const token = req.headers.authorization.split(' ')[1];
     try {
       const verifiedUser = await authService.verifyJwt(token);
-      const user = await userService.findOneByEmail(verifiedUser.email);
+      const user = await userService.findOneByEmail(verifiedUser.email);   
+
+      if (!user) {
+        return next(new HttpError('Unauthorized', 401));
+      }
+
       req.user = user;
       next();
     } catch (error) {
