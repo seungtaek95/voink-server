@@ -1,12 +1,12 @@
 import { NextFunction, Response } from 'express';
 import { RequestWithData, RequestWithUser } from '../interface/request.interface';
-import { Record } from '../model/record/record.entity';
+import { RecordDto } from '../model/record/record.dto';
 import { RecordService } from '../service/record.service';
 import container from '../utils/container';
 import { HttpError } from '../utils/util';
 
 export function attachRecord(paramLocation = 'path') {
-  return async (req: RequestWithData<Record>, res: Response, next: NextFunction) => {
+  return async (req: RequestWithData<RecordDto>, res: Response, next: NextFunction) => {
     const recordService = container.get(RecordService);
     try {
       const recordId = getRecordId(req, paramLocation);

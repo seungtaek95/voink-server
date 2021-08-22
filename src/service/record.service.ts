@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid';
 import { TYPE } from '../loader/container';
 import { CreateRecordDto } from '../model/record/record.dto';
 import { Record } from '../model/record/record.entity';
+import { RecordMapper } from '../model/record/record.mapper';
 import { RecordRepository } from '../model/record/record.repository';
 import { CloudStorageService } from './cloud-storage.service';
 
@@ -11,6 +12,7 @@ export class RecordService {
   constructor(
     @inject(TYPE.recordRepository) private recordRepository: RecordRepository,
     private cloudStorageService: CloudStorageService,
+    private recordMapper: RecordMapper,
   ) {}
   
   async saveOne(userId: number, createRecordDto: CreateRecordDto) {
@@ -18,13 +20,14 @@ export class RecordService {
     const record = await this.recordRepository.createAndSave(userId, filepath, createRecordDto);
     const signedUrl = await this.cloudStorageService.getUploadUrl(filepath);
     return {
-      record,
+      record: this.recordMapper.toRecordDto(record),
       signedUrl,
     };
   }
 
-  findById(recordId: number | string) {
-    return this.recordRepository.findById(recordId);
+  async findById(recordId: number | string) {
+    const record = await this.recordRepository.findById(recordId);
+    return this.recordMapper.toRecordDto(record);
   }
 
   async deleteOne(userId: number | string, record: Record) {

@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsDate, IsNumber, IsString } from 'class-validator';
 
 export class CreateRecordDto {
   @IsNumber()
@@ -19,6 +19,12 @@ export class CreateRecordDto {
 
 export class RecordDto {
   @IsNumber()
+  id: number;
+
+  @IsNumber()
+  userId: number;
+
+  @IsNumber()
   recordGroupId: number;
 
   @IsString()
@@ -32,4 +38,7 @@ export class RecordDto {
   
   @IsNumber()
   longitude: number;
+
+  @IsDate()
+  createdAt: Date;
 }
