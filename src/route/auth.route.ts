@@ -22,7 +22,10 @@ export default function (app: Router) {
     wrapAsync(async (req: OAuthRequest, res: Response) => {
       const user = await authService.handleFacebookLogin(req.body.accessToken);
       const jwt = await authService.createJwt({ id: user.id, email: user.email });
-      res.status(200).json({ accessToken: jwt });
+      res.status(200).json({
+        accessToken: jwt,
+        userInfo: user,
+      });
     })
   );
 }
