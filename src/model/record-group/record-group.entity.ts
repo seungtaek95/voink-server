@@ -26,6 +26,11 @@ export class RecordGroup {
   
   @Column()
   title: string;
+
+  @Column({
+    default: ''
+  })
+  content: string;
   
   @Column()
   location: string;

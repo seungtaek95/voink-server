@@ -4,15 +4,24 @@ import { Record } from './record.entity';
 
 @EntityRepository(Record)
 export class RecordRepository extends Repository<Record> {
-  createAndSave(userId: number, filepath: string, createRecordDto: CreateRecordDto) {
-    const record = this.create();
-    record.userId = userId;
-    record.filepath = filepath;
-    record.recordGroupId = createRecordDto.recordGroupId;
-    record.title = createRecordDto.title;
-    record.duration = createRecordDto.duration;
-    record.point = `POINT(${createRecordDto.latitude} ${createRecordDto.longitude})`;
+  _createEntity(userId: number, recordGroupId: number, createRecordDto: CreateRecordDto) {
+    return this.create({
+      userId,
+      recordGroupId,
+      filepath: `/${userId}/${recordGroupId}/${createRecordDto.key}.m4a`,
+      title: createRecordDto.title,
+      duration: createRecordDto.duration,
+      point: `POINT(${createRecordDto.latitude} ${createRecordDto.longitude})`,
+    });
+  }
 
+  createAndSave(userId: number, recordGroupId: number, createRecordDto: CreateRecordDto | CreateRecordDto[]) {
+    if (Array.isArray(createRecordDto)) {
+      const records = createRecordDto.map(dto => this._createEntity(userId, recordGroupId, dto));
+      return this.save(records);
+    }
+
+    const record = this._createEntity(userId, recordGroupId, createRecordDto);
     return this.save(record);
   }
 

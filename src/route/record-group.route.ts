@@ -17,7 +17,7 @@ export default function (app: Router) {
     tokenParser(),
     wrapAsync(async (req: RequestWithUser, res: Response) => {
       const recordGroup = await recordGroupService.saveOne(req.user.id, req.body);
-      res.status(201).json(recordGroup);
+      res.status(201).json({ id: recordGroup.id });
     })
   );
 

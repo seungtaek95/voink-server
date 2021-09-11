@@ -1,9 +1,9 @@
 import { IsDate, IsNumber, IsString } from 'class-validator';
 
 export class CreateRecordDto {
-  @IsNumber()
-  recordGroupId: number;
-
+  @IsString()
+  key: string;
+  
   @IsString()
   title: string;
 

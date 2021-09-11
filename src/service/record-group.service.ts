@@ -5,17 +5,23 @@ import { RecordGroup } from '../model/record-group/record-group.entity';
 import { RecordGroupMapper } from '../model/record-group/record-group.mapper';
 import { RecordGroupRepository } from '../model/record-group/record-group.repository';
 import { CloudStorageService } from './cloud-storage.service';
+import { RecordService } from './record.service';
 
 @injectable()
 export class RecordGroupService {
   constructor(
     @inject(TYPE.recordGroupRepository) private recordGroupRepository: RecordGroupRepository,
     private cloudStorageService: CloudStorageService,
+    private recordService: RecordService,
     private recordGroupMapper: RecordGroupMapper,
   ) {}
 
-  saveOne(userId: number, createRecordGroupDto: CreateRecordGroupDto) {
-    return this.recordGroupRepository.createAndSave(userId, createRecordGroupDto);
+  async saveOne(userId: number, createRecordGroupDto: CreateRecordGroupDto) {
+    const recordGroup = await this.recordGroupRepository.createAndSave(userId, createRecordGroupDto);
+    if (createRecordGroupDto.records?.length > 0) {      
+      await this.recordService.save(userId, recordGroup.id, createRecordGroupDto.records);
+    }
+    return recordGroup;
   }
 
   async findById(id: string | number) {

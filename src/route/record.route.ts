@@ -13,14 +13,6 @@ export default function (app: Router) {
 
   app.use('/records', router);
 
-  router.post('/',
-    tokenParser(),
-    wrapAsync(async (req: RequestWithUser, res: Response) => {
-      const result = await recordService.saveOne(req.user.id, req.body);
-      res.status(201).json(result);
-    })
-  );
-
   router.get('/:id',
     tokenParser(),
     attachRecord(),

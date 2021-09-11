@@ -12,6 +12,22 @@ describe('GET signed url requests', () => {
   const testUser1 = testUsers[0];
   const token = getTestUserToken(testUser1);
 
+  describe('GET /signed-url/upload', () => {
+    test('200 response, 업로드 url 가져오기', async () => {
+      // given
+
+      // when
+      const res = await agent
+        .get('/signed-url/upload')
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200);
+
+      // then
+      expect(res.body).toHaveProperty('url');
+      expect(res.body).toHaveProperty('key');
+    });
+  });
+
   describe('GET /signed-url/download', () => {
     test('200 response, 다운로드 url 가져오기', async () => {
       // given

@@ -1,4 +1,6 @@
-import { IsNumber, IsObject, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsArray, IsNumber, IsObject, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { CreateRecordDto } from '../record/record.dto';
 import { User } from '../user/user.entity';
 
 export class CreateRecordGroupDto {
@@ -7,6 +9,9 @@ export class CreateRecordGroupDto {
 
   @IsString()
   title: string;
+
+  @IsString()
+  content: string;
 
   @IsString()
   location: string;
@@ -19,6 +24,12 @@ export class CreateRecordGroupDto {
   
   @IsNumber()
   longitude: number;
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateRecordDto)
+  records?: CreateRecordDto[];
 }
 
 export class RecordGroupDto {

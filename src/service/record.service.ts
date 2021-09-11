@@ -14,15 +14,9 @@ export class RecordService {
     private cloudStorageService: CloudStorageService,
     private recordMapper: RecordMapper,
   ) {}
-  
-  async saveOne(userId: number, createRecordDto: CreateRecordDto) {
-    const filepath = this.getFilepath(userId, createRecordDto.recordGroupId);
-    const record = await this.recordRepository.createAndSave(userId, filepath, createRecordDto);
-    const signedUrl = await this.cloudStorageService.getUploadUrl(filepath);
-    return {
-      record,
-      signedUrl,
-    };
+
+  save(userId: number, recordGroupId: number, createRecordDto: CreateRecordDto | CreateRecordDto[]) {
+    return this.recordRepository.createAndSave(userId, recordGroupId, createRecordDto);
   }
 
   async findById(recordId: number | string) {
