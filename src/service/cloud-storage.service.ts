@@ -39,15 +39,28 @@ export class CloudStorageService {
     };
   }
 
-  async getDownloadUrl(filepath: string): Promise<string> {
+  async getDownloadUrl(recordPath: string): Promise<string> {
     const [url] = await this.recordBucket
-      .file(filepath)
+      .file(recordPath)
       .getSignedUrl({
         version: 'v4',
         action: 'read',
         expires: Date.now() + 10 * 60 * 1000, // 10 minutes
       });
     return url;
+  }
+
+  getTempDirPath(userId: number) {
+    return `/${userId}/${this.tempDirName}`;
+  }
+
+  getRecordGroupPath(userId: number, recordGroupId: number) {
+    return `/${userId}/${recordGroupId}`;
+  }
+
+  moveRecordToGroupDir(userId: number, recordGroupPath: string, key: string) {
+    const recordPath = `/${this.getTempDirPath(userId)}/${key}.m4a`;
+    return this.recordBucket.file(recordPath).move(`/${recordGroupPath}/${key}.m4a`);
   }
 
   deleteRecord(recordPath: string) {

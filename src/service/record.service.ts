@@ -15,8 +15,9 @@ export class RecordService {
     private recordMapper: RecordMapper,
   ) {}
 
-  save(userId: number, recordGroupId: number, createRecordDto: CreateRecordDto | CreateRecordDto[]) {
-    return this.recordRepository.createAndSave(userId, recordGroupId, createRecordDto);
+  save<T extends CreateRecordDto | CreateRecordDto[]>(userId: number, recordGroupId: number, recordGroupPath: string, createRecordDto: T): T extends CreateRecordDto ? Promise<Record> : Promise<Record[]>
+  save(userId: number, recordGroupId: number, recordGroupPath: string, createRecordDto: CreateRecordDto | CreateRecordDto[]) {
+    return this.recordRepository.createAndSave(userId, recordGroupId, recordGroupPath, createRecordDto);
   }
 
   async findById(recordId: number | string) {
