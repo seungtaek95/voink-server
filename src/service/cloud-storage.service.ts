@@ -6,7 +6,7 @@ import { nanoid } from 'nanoid';
 
 @injectable()
 export class CloudStorageService {
-  tempDirName = 'temp';
+  private tempDirName = 'temp';
 
   constructor(
     @inject(TYPE.recordBucket) private recordBucket: Bucket,
@@ -24,7 +24,7 @@ export class CloudStorageService {
 
   async getUploadUrl(userId: number) {
     const key = nanoid();
-    const filepath = `/${userId}/${this.tempDirName}/${key}.m4a`;
+    const filepath = `${userId}/${this.tempDirName}/${key}.m4a`;
     const [url] = await this.recordBucket
       .file(filepath)
       .getSignedUrl({
@@ -51,16 +51,16 @@ export class CloudStorageService {
   }
 
   getTempDirPath(userId: number) {
-    return `/${userId}/${this.tempDirName}`;
+    return `${userId}/${this.tempDirName}`;
   }
 
   getRecordGroupPath(userId: number, recordGroupId: number) {
-    return `/${userId}/${recordGroupId}`;
+    return `${userId}/${recordGroupId}`;
   }
 
   moveRecordToGroupDir(userId: number, recordGroupPath: string, key: string) {
-    const recordPath = `/${this.getTempDirPath(userId)}/${key}.m4a`;
-    return this.recordBucket.file(recordPath).move(`/${recordGroupPath}/${key}.m4a`);
+    const recordPath = `${this.getTempDirPath(userId)}/${key}.m4a`;
+    return this.recordBucket.file(recordPath).move(`${recordGroupPath}/${key}.m4a`);
   }
 
   deleteRecord(recordPath: string) {

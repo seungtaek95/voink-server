@@ -4,6 +4,7 @@ import { RecordGroup } from './record-group.entity';
 
 @injectable()
 export class RecordGroupMapper {
+  // toRecordGroupDto<T extends RecordGroup | RecordGroup[]>(recordGroup: T): T extends RecordGroup ? RecordGroup : RecordGroup[];
   toRecordGroupDto(recordGroup: RecordGroup | RecordGroup[]) {
     if (Array.isArray(recordGroup)) {
       return recordGroup.map(group => {

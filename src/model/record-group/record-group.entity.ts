@@ -21,7 +21,9 @@ export class RecordGroup {
   })
   user: User;
 
-  @Column()
+  @Column({
+    nullable: true
+  })
   category: string;
   
   @Column()

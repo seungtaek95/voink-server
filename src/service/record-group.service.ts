@@ -20,7 +20,7 @@ export class RecordGroupService {
     const recordGroup = await this.recordGroupRepository.createAndSave(userId, createRecordGroupDto);
     if (createRecordGroupDto.records?.length > 0) {
       const recordGroupPath = this.cloudStorageService.getRecordGroupPath(userId, recordGroup.id);
-      const created = await this.recordService.save(userId, recordGroup.id, recordGroupPath, createRecordGroupDto.records);
+      await this.recordService.save(userId, recordGroup.id, recordGroupPath, createRecordGroupDto.records);
       await Promise.all(createRecordGroupDto.records.map(record => {
         this.cloudStorageService.moveRecordToGroupDir(userId, recordGroupPath, record.key);
       }));

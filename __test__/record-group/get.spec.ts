@@ -30,6 +30,8 @@ describe('GET record-groups requests', () => {
       expect(res.body.location).toBe(targetRecordGroup.location);
       expect(res.body.category).toBe(targetRecordGroup.category);
       expect(res.body.recordType).toBe(targetRecordGroup.recordType);
+      expect(res.body).toHaveProperty('latitude');
+      expect(res.body).toHaveProperty('longitude');
       expect(res.body).toHaveProperty('user');
       expect(res.body).toHaveProperty('records');
     });
