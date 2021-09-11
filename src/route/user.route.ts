@@ -4,6 +4,7 @@ import { tokenParser } from '../middleware/auth.middleware';
 import { attachRecord } from '../middleware/record.middleware';
 import { UserService } from '../service/user.service';
 import container from '../utils/container';
+import { wrapAsync } from '../utils/util';
 
 export default function (app: Router) {
   const router = Router();
@@ -14,9 +15,9 @@ export default function (app: Router) {
   router.get('/me',
     tokenParser(),
     attachRecord(),
-    async (req: RequestWithUser, res: Response) => {
+    wrapAsync(async (req: RequestWithUser, res: Response) => {
       const user = await userService.findById(req.user.id);
       res.status(200).json(user);
-    }
+    })
   );
 }
