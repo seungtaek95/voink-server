@@ -1,5 +1,6 @@
 import { Request } from 'express';
 import { User } from '../model/user/user.entity';
+import { UserToken } from '../service/auth.service';
 
 export interface OAuthRequest extends Request {
   body: {
@@ -8,7 +9,7 @@ export interface OAuthRequest extends Request {
 }
 
 export interface RequestWithUser extends Request {
-  user: User;
+  user: UserToken;
 }
 
 export interface RequestWithData<T> extends RequestWithUser {

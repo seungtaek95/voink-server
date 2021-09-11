@@ -6,9 +6,14 @@ import { FacebookOAuth } from '../utils/oauth';
 import { IUserInfo } from '../interface/user.interface';
 import { TYPE } from '../loader/container';
 
-export interface ITokenPayload {
+export interface UserTokenPayload {
   id: number;
   email: string;
+}
+
+export interface UserToken extends UserTokenPayload {
+  iat: number;
+  exp: number;
 }
 
 @injectable()
@@ -28,7 +33,7 @@ export class AuthService {
     return this.userService.saveOne('FACEBOOK', userInfo);
   }
 
-  createJwt(payload: ITokenPayload): Promise<string> {    
+  createJwt(payload: UserTokenPayload): Promise<string> {    
     return new Promise((resolve, reject) => {
       jwt.sign(payload, this.jwtSecretKey, (error: Error, token: string) => {        
         if (error) return reject(error);
@@ -37,14 +42,13 @@ export class AuthService {
     });
   }
 
-  verifyJwt(token: string): Promise<ITokenPayload> {
+  verifyJwt(token: string): Promise<UserToken> {
     return new Promise((resolve, reject) => {
-      jwt.verify(token, this.jwtSecretKey, (error: Error, decoded: ITokenPayload) => {
-        if (error) return reject(error);
-        resolve({
-          id: decoded.id,
-          email: decoded.email,
-        });
+      jwt.verify(token, this.jwtSecretKey, (error: Error, decoded: UserToken) => {
+        if (error) {
+          return reject(error);
+        }
+        resolve(decoded);
       });
     });
   }
