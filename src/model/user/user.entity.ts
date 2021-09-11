@@ -17,7 +17,7 @@ export class User {
   name: string;
 
   @Column({
-    nullable: true,
+    default: ''
   })
   description: string;
 
