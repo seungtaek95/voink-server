@@ -1,5 +1,5 @@
 import { Response, Router } from 'express';
-import { RequestWithData } from '../interface/request.interface';
+import { RequestWithData, RequestWithUser } from '../interface/request.interface';
 import { tokenParser } from '../middleware/auth.middleware';
 import { attachRecordGroup } from '../middleware/record-group.middleware';
 import { attachRecord } from '../middleware/record.middleware';
@@ -17,10 +17,9 @@ export default function (app: Router) {
 
   router.get('/upload',
     tokenParser(),
-    attachRecordGroup('query'),
-    wrapAsync(async (req: RequestWithData<RecordGroup>, res: Response) => {
-      const url = await cloudStorageService.getUploadUrl(req.user.id);
-      res.status(200).json({ url });
+    wrapAsync(async (req: RequestWithUser, res: Response) => {
+      const result = await cloudStorageService.getUploadUrl(req.user.id);
+      res.status(200).json(result);
     })
   );
 
