@@ -26,7 +26,7 @@ export class AuthService {
 
   async handleFacebookLogin(accessToken: string): Promise<User> {
     const userInfo: IUserInfo = await this.facebookOAuth.getUserInfo(accessToken);
-    const foundUser: User = await this.userService.findOneByEmail(userInfo.email);
+    const foundUser: User = await this.userService.findByEmail(userInfo.email);
     if (foundUser) {
       return foundUser;
     }

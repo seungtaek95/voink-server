@@ -12,7 +12,11 @@ export class UserService {
     @inject(UserMapper) private userMapper: UserMapper,
   ) {}
 
-  findOneByEmail(email: string) {
+  findById(id: number) {
+    return this.userRepository.findOne(id);
+  }
+  
+  findByEmail(email: string) {
     return this.userRepository.findOne({ email });
   }
 
