@@ -1,5 +1,6 @@
 const recordGroups = [
   {
+    id: 1,
     userId: 1,
     category: 'diary',
     title: '우리집',
@@ -8,6 +9,7 @@ const recordGroups = [
     point: 'Point(37.549076 126.945173)'
   },
   {
+    id: 2,
     userId: 1,
     category: 'diary',
     title: '공덕역',
@@ -16,6 +18,7 @@ const recordGroups = [
     point: 'Point(37.5439174744669 126.95096134487497)'
   },
   {
+    id: 3,
     userId: 2,
     category: 'diary',
     title: '공덕역',
