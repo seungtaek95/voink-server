@@ -14,7 +14,12 @@ export default function (app: Router) {
   router.get('/',
     tokenParser(),
     (req: RequestWithUser, res: Response) => {
-      res.status(200).json(req.user);
+      const now = Math.round(Date.now() / 1000);
+      res.status(200).json({
+        id: req.user.id,
+        email: req.user.email,
+        expiresIn: req.user.exp - now,
+      });
     }
   );
 

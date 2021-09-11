@@ -40,8 +40,9 @@ describe('GET auth requests', () => {
         .expect(200);
 
       //then
-      expect(res.body).toHaveProperty('id');
-      expect(res.body).toHaveProperty('email');
+      expect(res.body.id).toBe(testUser1.id);
+      expect(res.body.email).toBe(testUser1.email);
+      expect(res.body).toHaveProperty('expiresIn');
     });
   });
 });
