@@ -21,9 +21,9 @@ export class Record {
   point: string;
 
   @Column({
-    nullable: true,
+    name: 'record_path',
   })
-  filepath: string;
+  recordPath: string;
 
   @Column({
     name: 'user_id',

@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
 import { parsePointToObject } from '../../utils/geomatric';
-import { RecordGroupDto } from './record-group.dto';
+import { RecordGroupDto } from './dto/record-group.dto';
 import { RecordGroup } from './record-group.entity';
 
 @injectable()

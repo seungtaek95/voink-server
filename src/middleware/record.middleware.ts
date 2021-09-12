@@ -1,6 +1,6 @@
 import { NextFunction, Response } from 'express';
 import { RequestWithData, RequestWithUser } from '../interface/request.interface';
-import { RecordDto } from '../model/record/record.dto';
+import { RecordDto } from '../model/record/dto/record.dto';
 import { RecordService } from '../service/record.service';
 import container from '../utils/container';
 import { HttpError } from '../utils/util';

@@ -1,10 +1,10 @@
 import * as express from 'express';
 import * as supertest from 'supertest';
 import testUsers from '../seed/user.seed';
-import { CreateRecordGroupDto } from '../../src/model/record-group/record-group.dto';
 import { setup } from '../setup';
 import { getTestUserToken } from '../seed/auth.seed';
-import { CreateRecordDto } from '../../src/model/record/record.dto';
+import { CreateRecordDto } from '../../src/model/record/dto/create-record.dto';
+import { CreateRecordGroupDto } from '../../src/model/record-group/dto/create-record-group.dto';
 
 const app = express();
 setup(app);

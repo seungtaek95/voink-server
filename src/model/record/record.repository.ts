@@ -1,5 +1,5 @@
 import { EntityRepository, Repository } from 'typeorm';
-import { CreateRecordDto } from './record.dto';
+import { CreateRecordDto } from './dto/create-record.dto';
 import { Record } from './record.entity';
 
 @EntityRepository(Record)
@@ -8,7 +8,7 @@ export class RecordRepository extends Repository<Record> {
     return this.create({
       userId,
       recordGroupId,
-      filepath: `${recordGroupPath}/${createRecordDto.key}.m4a`,
+      recordPath: `${recordGroupPath}/${createRecordDto.key}.m4a`,
       title: createRecordDto.title,
       duration: createRecordDto.duration,
       point: `POINT(${createRecordDto.latitude} ${createRecordDto.longitude})`,

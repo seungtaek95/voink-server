@@ -1,6 +1,6 @@
 import { NextFunction, Response } from 'express';
 import { RequestWithData, RequestWithUser } from '../interface/request.interface';
-import { RecordGroupDto } from '../model/record-group/record-group.dto';
+import { RecordGroupDto } from '../model/record-group/dto/record-group.dto';
 import { RecordGroupService } from '../service/record-group.service';
 import container from '../utils/container';
 import { HttpError } from '../utils/util';
@@ -15,7 +15,7 @@ export function attachRecordGroup(paramLocation = 'path') {
         next(new HttpError('Record not found', 404));
       }
       
-      if (req.user.id !== recordGroup.user.id) {
+      if (req.user.id !== recordGroup.userId) {
         next(new HttpError('Permission denied', 403));
       }
       req.data = recordGroup;

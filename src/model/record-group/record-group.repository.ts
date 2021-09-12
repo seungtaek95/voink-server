@@ -1,6 +1,6 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { Record } from '../record/record.entity';
-import { CreateRecordGroupDto } from './record-group.dto';
+import { CreateRecordGroupDto } from './dto/create-record-group.dto';
 import { RecordGroup } from './record-group.entity';
 
 @EntityRepository(RecordGroup)

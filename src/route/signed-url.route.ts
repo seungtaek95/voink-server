@@ -20,13 +20,4 @@ export default function (app: Router) {
       res.status(200).json(result);
     })
   );
-
-  router.get('/download',
-    tokenParser(),
-    attachRecord('query'),
-    wrapAsync(async (req: RequestWithData<Record>, res: Response) => {
-      const url = await cloudStorageService.getDownloadUrl(req.data.filepath);
-      res.status(200).json({ url });
-    })
-  );
 }

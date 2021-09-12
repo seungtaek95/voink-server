@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { TYPE } from '../loader/container';
-import { CreateRecordGroupDto } from '../model/record-group/record-group.dto';
+import { CreateRecordGroupDto } from '../model/record-group/dto/create-record-group.dto';
 import { RecordGroup } from '../model/record-group/record-group.entity';
 import { RecordGroupMapper } from '../model/record-group/record-group.mapper';
 import { RecordGroupRepository } from '../model/record-group/record-group.repository';
@@ -20,7 +20,9 @@ export class RecordGroupService {
     const recordGroup = await this.recordGroupRepository.createAndSave(userId, createRecordGroupDto);
     if (createRecordGroupDto.records?.length > 0) {
       const recordGroupPath = this.cloudStorageService.getRecordGroupPath(userId, recordGroup.id);
+      // 레코드 저장
       await this.recordService.save(userId, recordGroup.id, recordGroupPath, createRecordGroupDto.records);
+      // 임시 폴더의 레코드 파일을 그룹 디렉토리로 이동
       await Promise.all(createRecordGroupDto.records.map(record => {
         this.cloudStorageService.moveRecordToGroupDir(userId, recordGroupPath, record.key);
       }));
@@ -35,12 +37,7 @@ export class RecordGroupService {
 
   async findByUserId(userId: string | number) {
     const recordGroups = await this.recordGroupRepository.findByUserId(userId);
-    const recordGroupDtos = this.recordGroupMapper.toRecordGroupDto(recordGroups);
-    return Promise.all(recordGroupDtos.map(async recordGroupDto => {
-      const recordDtos = await Promise.all(this.recordService.toDownloadable(recordGroupDto.records));
-      recordGroupDto.records = recordDtos as any;
-      return recordGroupDto;
-    }));
+    return this.recordGroupMapper.toRecordGroupDto(recordGroups);
   }
 
   async deleteOne(userId: string | number, recordGroup: RecordGroup) {

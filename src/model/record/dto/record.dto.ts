@@ -1,22 +1,5 @@
 import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 
-export class CreateRecordDto {
-  @IsString()
-  key: string;
-  
-  @IsString()
-  title: string;
-
-  @IsNumber()
-  duration: number;
-
-  @IsNumber()
-  latitude: number;
-  
-  @IsNumber()
-  longitude: number;
-}
-
 export class RecordDto {
   @IsNumber()
   id: number;
@@ -35,7 +18,7 @@ export class RecordDto {
 
   @IsOptional()
   @IsString()
-  path?: string;
+  recordUrl: string;
 
   @IsNumber()
   latitude: number;
