@@ -1,29 +1,19 @@
 import { injectable } from 'inversify';
 import { parsePointToObject } from '../../utils/geomatric';
+import { RecordDto } from '../record/dto/record.dto';
 import { RecordGroupDto } from './dto/record-group.dto';
 import { RecordGroup } from './record-group.entity';
 
 @injectable()
 export class RecordGroupMapper {
-  toRecordGroupDto<T extends RecordGroup | RecordGroup[]>(recordGroup: T): T extends RecordGroup ? RecordGroupDto : RecordGroupDto[];
-  toRecordGroupDto(recordGroup: RecordGroup | RecordGroup[]) {
-    if (Array.isArray(recordGroup)) {
-      return recordGroup.map(group => {
-        const { point, ...rest } = group;
-        const { latitude, longitude } = parsePointToObject(point);
-        return {
-          ...rest,
-          latitude,
-          longitude,
-        };
-      });
-    }
+  toRecordGroupDto(recordGroup: RecordGroup, recordDtos: RecordDto[]): RecordGroupDto {
     const { point, ...rest } = recordGroup;
     const { latitude, longitude } = parsePointToObject(point);
     return {
       ...rest,
       latitude,
       longitude,
+      records: recordDtos
     };
   }
 }

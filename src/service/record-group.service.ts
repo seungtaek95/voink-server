@@ -1,6 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { TYPE } from '../loader/container';
 import { CreateRecordGroupDto } from '../model/record-group/dto/create-record-group.dto';
+import { RecordGroupDto } from '../model/record-group/dto/record-group.dto';
 import { RecordGroup } from '../model/record-group/record-group.entity';
 import { RecordGroupMapper } from '../model/record-group/record-group.mapper';
 import { RecordGroupRepository } from '../model/record-group/record-group.repository';
@@ -32,11 +33,23 @@ export class RecordGroupService {
 
   async findById(id: string | number) {
     const recordGroup = await this.recordGroupRepository.findById(id);
-    return this.recordGroupMapper.toRecordGroupDto(recordGroup);
+    return this.matToDto(recordGroup);
   }
 
   async findByUserId(userId: string | number) {
     const recordGroups = await this.recordGroupRepository.findByUserId(userId);
-    return this.recordGroupMapper.toRecordGroupDto(recordGroups);
+    return this.matToDto(recordGroups);
+  }
+
+  matToDto<T extends RecordGroup | RecordGroup[]>(recordGroups: T): T extends RecordGroup ? RecordGroupDto : RecordGroupDto[];
+  matToDto(recordGroups: RecordGroup | RecordGroup[]) {
+    if (Array.isArray(recordGroups)) {
+      return recordGroups.map(recordGroup => {
+        const recordDtos = this.recordService.mapToDto(recordGroup.records);
+        return this.recordGroupMapper.toRecordGroupDto(recordGroup, recordDtos);
+      });
+    }
+    const recordDtos = this.recordService.mapToDto(recordGroups.records);
+    return this.recordGroupMapper.toRecordGroupDto(recordGroups, recordDtos);
   }
 }

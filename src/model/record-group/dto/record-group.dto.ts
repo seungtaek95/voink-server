@@ -1,4 +1,5 @@
 import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { RecordDto } from '../../record/dto/record.dto';
 import { Record } from '../../record/record.entity';
 
 export class RecordGroupDto {
@@ -24,5 +25,5 @@ export class RecordGroupDto {
   longitude: number;
 
   @IsOptional()
-  records?: Record[]
+  records?: RecordDto[]
 }

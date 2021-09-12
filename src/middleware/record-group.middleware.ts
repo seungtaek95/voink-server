@@ -1,6 +1,7 @@
 import { NextFunction, Response } from 'express';
 import { RequestWithData, RequestWithUser } from '../interface/request.interface';
 import { RecordGroupDto } from '../model/record-group/dto/record-group.dto';
+import { RecordDto } from '../model/record/dto/record.dto';
 import { RecordGroupService } from '../service/record-group.service';
 import container from '../utils/container';
 import { HttpError } from '../utils/util';
@@ -10,7 +11,7 @@ export function attachRecordGroup(paramLocation = 'path') {
     const recordGroupService = container.get(RecordGroupService);
     try {
       const recordGroupId = getRecordGroupId(req, paramLocation);
-      const recordGroup = await recordGroupService.findById(recordGroupId) as RecordGroupDto;
+      const recordGroup = await recordGroupService.findById(recordGroupId);
       if (!recordGroup) {
         next(new HttpError('Record not found', 404));
       }
