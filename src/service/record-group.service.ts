@@ -39,10 +39,4 @@ export class RecordGroupService {
     const recordGroups = await this.recordGroupRepository.findByUserId(userId);
     return this.recordGroupMapper.toRecordGroupDto(recordGroups);
   }
-
-  async deleteOne(userId: string | number, recordGroup: RecordGroup) {
-    await this.recordGroupRepository.delete(recordGroup.id);
-    const recordGroupPath = `${userId}/${recordGroup.id}`;
-    return this.cloudStorageService.deleteRecordGroup(recordGroupPath);
-  }
 }

@@ -6,13 +6,15 @@ import { RecordGroup } from './record-group.entity';
 @EntityRepository(RecordGroup)
 export class RecordGroupRepository extends Repository<RecordGroup> {
   createAndSave(userId: number, createRecordGroupDto: CreateRecordGroupDto) {
-    const recordGroup = this.create();
-    recordGroup.userId = userId;
-    recordGroup.category = createRecordGroupDto.category;
-    recordGroup.title = createRecordGroupDto.title;
-    recordGroup.location = createRecordGroupDto.location;
-    recordGroup.recordType = createRecordGroupDto.recordType;
-    recordGroup.point = `POINT(${createRecordGroupDto.latitude} ${createRecordGroupDto.longitude})`;
+    const recordGroup = this.create({
+      userId,
+      category: createRecordGroupDto.category,
+      title: createRecordGroupDto.title,
+      content: createRecordGroupDto.content,
+      location: createRecordGroupDto.location,
+      recordType: createRecordGroupDto.recordType,
+      point: `POINT(${createRecordGroupDto.latitude} ${createRecordGroupDto.longitude}`,
+    });
 
     return this.save(recordGroup);
   }

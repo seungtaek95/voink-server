@@ -24,14 +24,4 @@ export class RecordService {
     const record = await this.recordRepository.findById(recordId);
     return this.recordMapper.toRecordDto(record);
   }
-
-  async deleteOne(userId: number | string, record: Record) {
-    await this.recordRepository.delete(record.id);
-    const recordFilepath = `${userId}/${record.recordGroupId}/${record.id}.m4a`;
-    return this.cloudStorageService.deleteRecord(recordFilepath);
-  }
-
-  getFilepath(userId: number, recordGroupId: number) {
-    return `${userId}/${recordGroupId}/${nanoid()}.m4a`;
-  }
 }
