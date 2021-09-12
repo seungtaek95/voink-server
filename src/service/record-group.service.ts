@@ -34,8 +34,13 @@ export class RecordGroupService {
   }
 
   async findByUserId(userId: string | number) {
-    const recordGroup = await this.recordGroupRepository.findByUserId(userId);
-    return this.recordGroupMapper.toRecordGroupDto(recordGroup);
+    const recordGroups = await this.recordGroupRepository.findByUserId(userId);
+    const recordGroupDtos = this.recordGroupMapper.toRecordGroupDto(recordGroups);
+    return Promise.all(recordGroupDtos.map(async recordGroupDto => {
+      const recordDtos = await Promise.all(this.recordService.toDownloadable(recordGroupDto.records));
+      recordGroupDto.records = recordDtos as any;
+      return recordGroupDto;
+    }));
   }
 
   async deleteOne(userId: string | number, recordGroup: RecordGroup) {

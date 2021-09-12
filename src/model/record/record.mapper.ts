@@ -5,9 +5,17 @@ import { Record } from './record.entity';
 
 @injectable()
 export class RecordMapper {
-  toRecordDto(record: Record): RecordDto {
-    const { point, ...rest } = record;
+  toRecordDto(record: Record, downloadUrl?: string): RecordDto {
+    const { point, filepath, ...rest } = record;
     const { latitude, longitude } = parsePointToObject(point);
+    if (downloadUrl) {
+      return {
+        ...rest,
+        latitude,
+        longitude,
+        path: downloadUrl,
+      };
+    }
     return {
       ...rest,
       latitude,

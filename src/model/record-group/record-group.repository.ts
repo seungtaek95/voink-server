@@ -1,6 +1,5 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { Record } from '../record/record.entity';
-import { User } from '../user/user.entity';
 import { CreateRecordGroupDto } from './record-group.dto';
 import { RecordGroup } from './record-group.entity';
 
@@ -20,16 +19,15 @@ export class RecordGroupRepository extends Repository<RecordGroup> {
 
   findById(id: string | number) {
     return this.createQueryBuilder('rg')
-      .leftJoinAndMapOne('rg.user', User, 'user', 'rg.userId = user.id')
       .leftJoinAndMapMany('rg.records', Record, 'record', 'rg.id = record.recordGroupId')
       .where('rg.id = :id', { id })
       .getOne();
-  }
+    }
 
   findByUserId(userId: string | number) {
-    return this.createQueryBuilder('record_group')
-      .leftJoinAndSelect('record_group.user', 'user')
-      .where('record_group.user_id = :userId', { userId })
+    return this.createQueryBuilder('rg')
+      .leftJoinAndMapMany('rg.records', Record, 'record', 'rg.id = record.recordGroupId')
+      .where('rg.user_id = :userId', { userId })
       .getMany();
   }
 }
