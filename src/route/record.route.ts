@@ -9,6 +9,13 @@ export default function (app: Router) {
 
   app.use('/records', router);
 
+  router.get(/.*\.m4a/,
+    tokenParser(),
+    (req, res) => {
+      res.status(200).json({ message: req.originalUrl });
+    }
+  );
+  
   router.get('/:id',
     tokenParser(),
     attachRecord(),
