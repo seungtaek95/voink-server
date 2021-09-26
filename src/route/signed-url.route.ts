@@ -1,8 +1,6 @@
 import { Response, Router } from 'express';
-import { RequestWithData, RequestWithUser } from '../interface/request.interface';
+import { RequestWithUser } from '../interface/request.interface';
 import { tokenParser } from '../middleware/auth.middleware';
-import { attachRecord } from '../middleware/record.middleware';
-import { Record } from '../model/record/record.entity';
 import { CloudStorageService } from '../service/cloud-storage.service';
 import container from '../utils/container';
 import { wrapAsync } from '../utils/util';
