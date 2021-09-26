@@ -3,7 +3,9 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 export const serverConfig = {
+  host: process.env.SERVER_HOST || '0.0.0.0',
   port: parseInt(process.env.SERVER_PORT) || 3000,
+  baseUrl: process.env.SERVER_BASE_URL || 'http://0.0.0.0:3000',
   jwtSecretKey: process.env.JWT_SECRET_KEY || 'voink',
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '365d'
 };
