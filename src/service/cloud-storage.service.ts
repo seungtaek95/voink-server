@@ -39,15 +39,13 @@ export class CloudStorageService {
     };
   }
 
-  async getDownloadUrl(recordPath: string): Promise<string> {
-    const [url] = await this.recordBucket
-      .file(recordPath)
-      .getSignedUrl({
-        version: 'v4',
-        action: 'read',
-        expires: Date.now() + 10 * 60 * 1000, // 10 minutes
-      });
-    return url;
+  async getRecordSize(recordPath: string): Promise<number> {
+    const [meta] = await this.recordBucket.file(recordPath).getMetadata();
+    return meta.size;
+  }
+
+  getRecordStream(recordPath: string, options?: any) {
+    return this.recordBucket.file(recordPath).createReadStream(options);
   }
 
   getTempDirPath(userId: number) {
