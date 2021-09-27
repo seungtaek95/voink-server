@@ -25,6 +25,9 @@ export class RecordService {
 
   mapToDto<T extends Record | Record[]>(record: T): T extends Record ? RecordDto : RecordDto[];
   mapToDto(records: Record | Record[]) {
+    if (Array.isArray(records)) {
+      return records.map(record => this.recordMapper.toRecordDto(record));
+    }
     return this.recordMapper.toRecordDto(records);
   }
 }

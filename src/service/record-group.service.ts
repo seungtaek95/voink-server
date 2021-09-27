@@ -33,16 +33,16 @@ export class RecordGroupService {
 
   async findById(id: string | number) {
     const recordGroup = await this.recordGroupRepository.findById(id);
-    return this.matToDto(recordGroup);
+    return this.mapToDto(recordGroup);
   }
 
   async findByUserId(userId: string | number) {
     const recordGroups = await this.recordGroupRepository.findByUserId(userId);
-    return this.matToDto(recordGroups);
+    return this.mapToDto(recordGroups);
   }
 
-  matToDto<T extends RecordGroup | RecordGroup[]>(recordGroups: T): T extends RecordGroup ? RecordGroupDto : RecordGroupDto[];
-  matToDto(recordGroups: RecordGroup | RecordGroup[]) {
+  mapToDto<T extends RecordGroup | RecordGroup[]>(recordGroups: T): T extends RecordGroup ? RecordGroupDto : RecordGroupDto[];
+  mapToDto(recordGroups: RecordGroup | RecordGroup[]) {
     if (Array.isArray(recordGroups)) {
       return recordGroups.map(recordGroup => {
         const recordDtos = this.recordService.mapToDto(recordGroup.records);
