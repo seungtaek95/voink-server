@@ -14,8 +14,8 @@ export default function (app: Router) {
   router.get('/upload',
     tokenParser(),
     wrapAsync(async (req: RequestWithUser, res: Response) => {
-      const result = await cloudStorageService.getUploadUrl(req.user.id);
-      res.status(200).json(result);
+      const recordUploadUrls = await cloudStorageService.getRecordUploadUrls(req.user.id);
+      res.status(200).json(recordUploadUrls);
     })
   );
 }

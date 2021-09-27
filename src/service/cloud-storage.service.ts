@@ -22,9 +22,19 @@ export class CloudStorageService {
     });
   }
 
-  async getUploadUrl(userId: number) {
+  async getRecordUploadUrls(userId: string | number) {
     const key = nanoid();
-    const filepath = `${userId}/${this.tempDirName}/${key}.m4a`;
+    const thumbnailPath = `${userId}/${this.tempDirName}/${key}.jpeg`;
+    const recordPath = `${userId}/${this.tempDirName}/${key}.m4a`;
+
+    return {
+      key,
+      thumbnailUrl: await this.getUploadUrl(thumbnailPath),
+      recordUrl: await this.getUploadUrl(recordPath),
+    };
+  }
+
+  async getUploadUrl(filepath: string): Promise<string> {
     const [url] = await this.recordBucket
       .file(filepath)
       .getSignedUrl({
@@ -33,10 +43,7 @@ export class CloudStorageService {
         expires: Date.now() + 10 * 60 * 1000, // 10 minutes
         contentType: 'application/octet-stream',
       });
-    return {
-      url,
-      key
-    };
+    return url;
   }
 
   async getRecordSize(recordPath: string): Promise<number> {
