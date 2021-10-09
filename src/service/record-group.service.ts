@@ -41,15 +41,11 @@ export class RecordGroupService {
     return this.mapToDto(recordGroups);
   }
 
-  mapToDto<T extends RecordGroup | RecordGroup[]>(recordGroups: T): T extends RecordGroup ? RecordGroupDto : RecordGroupDto[];
-  mapToDto(recordGroups: RecordGroup | RecordGroup[]) {
+  private mapToDto<T extends RecordGroup | RecordGroup[]>(recordGroups: T): T extends RecordGroup ? RecordGroupDto : RecordGroupDto[];
+  private mapToDto(recordGroups: RecordGroup | RecordGroup[]) {
     if (Array.isArray(recordGroups)) {
-      return recordGroups.map(recordGroup => {
-        const recordDtos = this.recordService.mapToDto(recordGroup.records);
-        return this.recordGroupMapper.toRecordGroupDto(recordGroup, recordDtos);
-      });
+      return recordGroups.map(recordGroup => this.recordGroupMapper.toRecordGroupDto(recordGroup));
     }
-    const recordDtos = this.recordService.mapToDto(recordGroups.records);
-    return this.recordGroupMapper.toRecordGroupDto(recordGroups, recordDtos);
+    return this.recordGroupMapper.toRecordGroupDto(recordGroups);
   }
 }
