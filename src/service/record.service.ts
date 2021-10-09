@@ -5,14 +5,12 @@ import { RecordDto } from '../model/record/dto/record.dto';
 import { Record } from '../model/record/record.entity';
 import { RecordMapper } from '../model/record/record.mapper';
 import { RecordRepository } from '../model/record/record.repository';
-import { CloudStorageService } from './cloud-storage.service';
 
 @injectable()
 export class RecordService {
   constructor(
     @inject(TYPE.recordRepository) private recordRepository: RecordRepository,
     private recordMapper: RecordMapper,
-    private cloudStorageService: CloudStorageService,
   ) {}
 
   save<T extends CreateRecordDto | CreateRecordDto[]>(userId: number, recordGroupId: number, recordGroupPath: string, createRecordDto: T): T extends CreateRecordDto ? Promise<Record> : Promise<Record[]>
@@ -31,13 +29,5 @@ export class RecordService {
       return records.map(record => this.recordMapper.toRecordDto(record));
     }
     return this.recordMapper.toRecordDto(records);
-  }
-
-  getRecordSize(recordPath: string) {
-    return this.cloudStorageService.getRecordSize(recordPath);
-  }
-
-  getRecordStream(recordPath: string, options?: any) {
-    return this.cloudStorageService.getRecordStream(recordPath, options);
   }
 }
