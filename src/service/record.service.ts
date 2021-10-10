@@ -1,7 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { TYPE } from '../loader/container';
 import { CreateRecordDto } from '../model/record/dto/create-record.dto';
-import { RecordDto } from '../model/record/dto/record.dto';
 import { Record } from '../model/record/record.entity';
 import { RecordMapper } from '../model/record/record.mapper';
 import { RecordRepository } from '../model/record/record.repository';
@@ -20,14 +19,6 @@ export class RecordService {
 
   async findById(recordId: number | string) {
     const record = await this.recordRepository.findById(recordId);
-    return this.mapToDto(record);
-  }
-
-  mapToDto<T extends Record | Record[]>(record: T): T extends Record ? RecordDto : RecordDto[];
-  mapToDto(records: Record | Record[]) {
-    if (Array.isArray(records)) {
-      return records.map(record => this.recordMapper.toRecordDto(record));
-    }
-    return this.recordMapper.toRecordDto(records);
+    return this.recordMapper.toRecordDto(record);
   }
 }
