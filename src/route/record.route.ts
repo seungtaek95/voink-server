@@ -1,11 +1,12 @@
 import { Readable } from 'stream';
 import { Request, Response, Router } from 'express';
-import { RequestWithData } from '../interface/request.interface';
+import { RequestWithData, RequestWithUser } from '../interface/request.interface';
 import { tokenParser } from '../middleware/auth.middleware';
 import { attachRecord } from '../middleware/record.middleware';
 import { Record } from '../model/record/record.entity';
 import container from '../utils/container';
 import { CloudStorageService } from '../service/cloud-storage.service';
+import { wrapAsync } from '../utils/util';
 
 export default function (app: Router) {
   const router = Router();
@@ -14,7 +15,7 @@ export default function (app: Router) {
   app.use('/records', router);
 
   router.get(/.*\.m4a/,
-    // tokenParser(),
+    tokenParser(),
     async (req: Request, res: Response) => {
       const recordPath = req.url.slice(1);
       const range = req.headers.range;
@@ -46,6 +47,14 @@ export default function (app: Router) {
         .pipe(res)
         .on('close', () => recordStream.destroy());
     }
+  );
+
+  router.get('/upload-url',
+    tokenParser(),
+    wrapAsync(async (req: RequestWithUser, res: Response) => {
+      const recordUploadUrls = await cloudStorageService.getRecordUploadUrls(req.user.id);
+      res.status(200).json(recordUploadUrls);
+    })
   );
   
   router.get('/:id',
