@@ -14,11 +14,16 @@ export class RecordService {
 
   save<T extends CreateRecordDto | CreateRecordDto[]>(userId: number, recordGroupId: number, recordGroupPath: string, createRecordDto: T): T extends CreateRecordDto ? Promise<Record> : Promise<Record[]>
   save(userId: number, recordGroupId: number, recordGroupPath: string, createRecordDtos: CreateRecordDto | CreateRecordDto[]) {
-    return this.recordRepository.createAndSave(userId, recordGroupId, recordGroupPath, createRecordDtos);
+    if (Array.isArray(createRecordDtos)) {
+      const records = createRecordDtos.map(createRecordDto => this.recordMapper.toEntity(userId, recordGroupId, recordGroupPath, createRecordDto));
+      return this.recordRepository.save(records);
+    }
+    const record = this.recordMapper.toEntity(userId, recordGroupId, recordGroupPath, createRecordDtos);
+    return this.recordRepository.save(record);
   }
 
   async findById(recordId: number | string) {
     const record = await this.recordRepository.findById(recordId);
-    return this.recordMapper.toRecordDto(record);
+    return this.recordMapper.toDto(record);
   }
 }

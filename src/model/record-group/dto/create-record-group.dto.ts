@@ -3,6 +3,9 @@ import { IsArray, IsNumber, IsOptional, IsString, ValidateNested } from 'class-v
 import { CreateRecordDto } from '../../record/dto/create-record.dto';
 
 export class CreateRecordGroupDto {
+  @IsNumber()
+  userId: number;
+  
   @IsString()
   category: string;
 

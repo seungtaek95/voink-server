@@ -1,8 +1,10 @@
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { RecordDto } from '../../record/dto/record.dto';
-import { Record } from '../../record/record.entity';
 
 export class RecordGroupDto {
+  @IsNumber()
+  id: number;
+
   @IsNumber()
   userId: number;
 
@@ -11,6 +13,9 @@ export class RecordGroupDto {
 
   @IsString()
   title: string;
+
+  @IsString()
+  content: string;
 
   @IsString()
   location: string;
