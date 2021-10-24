@@ -2,6 +2,8 @@ import { Response, Router } from 'express';
 import { RequestWithData, RequestWithUser } from '../interface/request.interface';
 import { tokenParser } from '../middleware/auth.middleware';
 import { attachRecordGroup } from '../middleware/record-group.middleware';
+import { validateBody } from '../middleware/validate.middleware';
+import { PostRecordGroupDto } from '../model/record-group/dto/post-record-group.dto';
 import { RecordGroup } from '../model/record-group/record-group.entity';
 import { RecordGroupService } from '../service/record-group.service';
 import container from '../utils/container';
@@ -15,6 +17,7 @@ export default function (app: Router) {
 
   router.post('/',
     tokenParser(),
+    validateBody(PostRecordGroupDto),
     wrapAsync(async (req: RequestWithUser, res: Response) => {
       const recordGroup = await recordGroupService.saveOne(req.user.id, req.body);
       res.status(201).json({ id: recordGroup.id });
