@@ -1,6 +1,8 @@
 import { Response, Router } from 'express';
 import { OAuthRequest, RequestWithUser } from '../interface/request.interface';
 import { tokenParser } from '../middleware/auth.middleware';
+import { validateBody } from '../middleware/validate.middleware';
+import { PostAuthLoginDto } from '../model/auth/dto/post-auth-login.dto';
 import { AuthService } from '../service/auth.service';
 import { UserService } from '../service/user.service';
 import container from '../utils/container';
@@ -31,6 +33,7 @@ export default function (app: Router) {
   ));
 
   router.post('/login/facebook',
+    validateBody(PostAuthLoginDto),
     wrapAsync(async (req: OAuthRequest, res: Response) => {
       const user = await authService.handleFacebookLogin(req.body.accessToken);
       const jwt = await authService.createJwt({ id: user.id, email: user.email });
