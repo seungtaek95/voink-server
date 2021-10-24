@@ -74,8 +74,12 @@ export class CloudStorageService {
   }
 
   moveRecordToGroupDir(userId: number, recordGroupPath: string, key: string) {
+    const thumbnailPath = `${this.getTempDirPath(userId)}/${key}.jpg`;
     const recordPath = `${this.getTempDirPath(userId)}/${key}.m4a`;
-    return this.recordBucket.file(recordPath).move(`${recordGroupPath}/${key}.m4a`);
+    return Promise.all([
+      this.recordBucket.file(thumbnailPath).move(`${userId}/${recordGroupPath}/${key}.jpg`),
+      this.recordBucket.file(recordPath).move(`${userId}/${recordGroupPath}/${key}.m4a`),
+    ]);
   }
 
   deleteRecord(recordPath: string) {
