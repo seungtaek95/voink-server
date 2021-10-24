@@ -21,6 +21,11 @@ export class Record {
   point: string;
 
   @Column({
+    name: 'thumbnail_path',
+  })
+  thumbnailPath: string;
+
+  @Column({
     name: 'record_path',
   })
   recordPath: string;

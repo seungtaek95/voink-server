@@ -18,6 +18,10 @@ export class RecordDto {
 
   @IsOptional()
   @IsString()
+  thumbnailUrl: string;
+
+  @IsOptional()
+  @IsString()
   recordUrl: string;
 
   @IsNumber()
