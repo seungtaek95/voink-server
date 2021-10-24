@@ -52,7 +52,8 @@ export default function (app: Router) {
   router.get('/upload-url',
     tokenParser(),
     wrapAsync(async (req: RequestWithUser, res: Response) => {
-      const recordUploadUrls = await cloudStorageService.getRecordUploadUrls(req.user.id);
+      const count = req.query.count as string || '1';
+      const recordUploadUrls = await cloudStorageService.getRecordUploadUrls(req.user.id, parseInt(count));
       res.status(200).json(recordUploadUrls);
     })
   );

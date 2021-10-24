@@ -22,11 +22,19 @@ export class CloudStorageService {
     });
   }
 
-  async getRecordUploadUrls(userId: string | number) {
+  getRecordUploadUrls(userId: string | number, count: number) {
+    const getUploadUrlPromises = new Array(count);
+    for (let i = 0; i < count; i++) {
+      getUploadUrlPromises[i] = this.getRecordUploadUrl(userId);
+    }
+    return Promise.all(getUploadUrlPromises);
+  }
+
+  async getRecordUploadUrl(userId: string | number) {
     const key = nanoid();
     const thumbnailPath = `${userId}/${this.tempDirName}/${key}.jpeg`;
     const recordPath = `${userId}/${this.tempDirName}/${key}.m4a`;
-
+    
     return {
       key,
       thumbnailUrl: await this.getUploadUrl(thumbnailPath),

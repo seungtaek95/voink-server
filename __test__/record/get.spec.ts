@@ -7,6 +7,28 @@ import { setup } from '../setup';
 const app = express();
 setup(app);
 
+describe('GET records upload urls', () => {
+  const agent = supertest(app);
+  const testUser1 = testUsers[0];
+  const token = getTestUserToken(testUser1);
+
+  describe('GET /records:id', () => {
+    test('200 response, 레코드 조회', async () => {
+      // given
+      const count = 5;
+
+      // when
+      const res = await agent
+        .get(`/records/upload-url?count=${count}`)
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200);
+
+      //then
+      expect(res.body.length).toBe(count);
+    });
+  });
+});
+
 describe('GET records requests', () => {
   const agent = supertest(app);
   const testUser1 = testUsers[0];
