@@ -23,7 +23,7 @@ export class CloudStorageService {
     });
   }
 
-  getRecordUploadUrls(userId: string | number, count: number = 1) {
+  getRecordUploadUrls(userId: string | number, count: number) {
     const getUploadUrlPromises = new Array(count);
     for (let i = 0; i < count; i++) {
       getUploadUrlPromises[i] = this.getRecordUploadUrl(userId);

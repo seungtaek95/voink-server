@@ -12,8 +12,8 @@ describe('GET records upload urls', () => {
   const testUser1 = testUsers[0];
   const token = getTestUserToken(testUser1);
 
-  describe('GET /records:id', () => {
-    test('200 response, 레코드 조회', async () => {
+  describe('GET /records/upload-url', () => {
+    test('200 response, upload url들 가져오기', async () => {
       // given
       const count = 5;
 
@@ -25,6 +25,16 @@ describe('GET records upload urls', () => {
 
       //then
       expect(res.body.length).toBe(count);
+    });
+
+    test('400 response, count query가 없음', done => {
+      // given
+
+      // when
+      agent
+        .get('/records/upload-url')
+        .set('Authorization', `Bearer ${token}`)
+        .expect(400, done); //then
     });
   });
 });

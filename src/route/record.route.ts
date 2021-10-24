@@ -52,6 +52,9 @@ export default function (app: Router) {
   router.get('/upload-url',
     tokenParser(),
     wrapAsync(async (req: RequestWithUser, res: Response) => {
+      if (!req.query.count) {
+        res.status(400).json('Request query "count" is required');
+      }
       const count = req.query.count as string;
       const recordUploadUrls = await cloudStorageService.getRecordUploadUrls(req.user.id, parseInt(count));
       res.status(200).json(recordUploadUrls);
