@@ -3,6 +3,7 @@ import { Bucket } from '@google-cloud/storage';
 import { inject, injectable } from 'inversify';
 import { TYPE } from '../loader/container';
 import { nanoid } from 'nanoid';
+import { RecordUploadUrlDto } from '../model/record/dto/record-upload-urls.dto';
 
 @injectable()
 export class CloudStorageService {
@@ -22,7 +23,7 @@ export class CloudStorageService {
     });
   }
 
-  getRecordUploadUrls(userId: string | number, count: number) {
+  getRecordUploadUrls(userId: string | number, count: number = 1) {
     const getUploadUrlPromises = new Array(count);
     for (let i = 0; i < count; i++) {
       getUploadUrlPromises[i] = this.getRecordUploadUrl(userId);
@@ -30,19 +31,20 @@ export class CloudStorageService {
     return Promise.all(getUploadUrlPromises);
   }
 
-  async getRecordUploadUrl(userId: string | number) {
+  private async getRecordUploadUrl(userId: string | number) {
     const key = nanoid();
     const thumbnailPath = `${userId}/${this.tempDirName}/${key}.jpeg`;
     const recordPath = `${userId}/${this.tempDirName}/${key}.m4a`;
     
-    return {
-      key,
-      thumbnailUrl: await this.getUploadUrl(thumbnailPath),
-      recordUrl: await this.getUploadUrl(recordPath),
-    };
+    const recordUploadUrlDto = new RecordUploadUrlDto();
+    recordUploadUrlDto.key = key;
+    recordUploadUrlDto.thumbnailUrl = await this.getUploadUrl(thumbnailPath);
+    recordUploadUrlDto.recordUrl = await this.getUploadUrl(recordPath);
+
+    return recordUploadUrlDto;
   }
 
-  async getUploadUrl(filepath: string): Promise<string> {
+  private async getUploadUrl(filepath: string): Promise<string> {
     const [url] = await this.recordBucket
       .file(filepath)
       .getSignedUrl({
