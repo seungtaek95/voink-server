@@ -15,6 +15,7 @@ export class RecordGroupMapper {
     const recordGroup = new RecordGroup();
     recordGroup.userId = userId;
     recordGroup.category = createRecordGroupDto.category;
+    recordGroup.recordType = createRecordGroupDto.recordType;
     recordGroup.title = createRecordGroupDto.title;
     recordGroup.content = createRecordGroupDto.content;
     recordGroup.location = createRecordGroupDto.location;
@@ -25,14 +26,16 @@ export class RecordGroupMapper {
   toDto(recordGroup: RecordGroup): RecordGroupDto {
     const recordGroupDto = new RecordGroupDto();
     const { latitude, longitude } = parsePointToObject(recordGroup.point);
+    recordGroupDto.id = recordGroup.id;
     recordGroupDto.userId = recordGroup.userId;
     recordGroupDto.category = recordGroup.category;
     recordGroupDto.title = recordGroup.title;
+    recordGroupDto.recordType = recordGroup.recordType;
     recordGroupDto.content = recordGroup.content;
     recordGroupDto.location = recordGroup.location;
     recordGroupDto.latitude = latitude;
     recordGroupDto.longitude = longitude;
-    recordGroupDto.records = recordGroup.records.map(record => this.recordMapper.toDto(record));
+    recordGroupDto.records = recordGroup.records?.map(record => this.recordMapper.toDto(record));
     return recordGroupDto;
   }
 }

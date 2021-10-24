@@ -27,7 +27,7 @@ export class RecordGroupService {
         this.cloudStorageService.moveRecordToGroupDir(userId, recordGroupPath, record.key);
       }));
     }
-    return this.recordGroupMapper.toDto(recordGroup);
+    return this.recordGroupMapper.toDto(newRecordGroup);
   }
 
   async findById(id: string | number) {

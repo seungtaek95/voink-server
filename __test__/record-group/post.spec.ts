@@ -18,7 +18,7 @@ describe('POST record-groups requests', () => {
     test('201 response, 레코드 없는 레코드 그룹 생성', async () => {
       // given
       const newRecordGroupTitle = 'test title';
-      const recordGroup: CreateRecordGroupDto = {
+      const recordGroup = {
         category: 'testCategory',
         title: newRecordGroupTitle,
         content: 'hello',
@@ -39,7 +39,7 @@ describe('POST record-groups requests', () => {
       expect(res.body).toHaveProperty('id');
     });
 
-    test('201 response, 레코드 없는 레코드 그룹 생성', async () => {
+    test('201 response, 레코드 있는 레코드 그룹 생성', async () => {
       // given
       const newRecordGroupTitle = 'test title';
       const record: CreateRecordDto = {
@@ -49,7 +49,7 @@ describe('POST record-groups requests', () => {
         latitude: 30,
         longitude: 30,
       };
-      const recordGroup: CreateRecordGroupDto = {
+      const recordGroup = {
         category: 'testCategory',
         title: newRecordGroupTitle,
         content: 'hello',
