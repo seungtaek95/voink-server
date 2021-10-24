@@ -33,7 +33,7 @@ export class CloudStorageService {
 
   private async getRecordUploadUrl(userId: string | number) {
     const key = nanoid();
-    const thumbnailPath = `${userId}/${this.tempDirName}/${key}.jpeg`;
+    const thumbnailPath = `${userId}/${this.tempDirName}/${key}.jpg`;
     const recordPath = `${userId}/${this.tempDirName}/${key}.m4a`;
     
     const recordUploadUrlDto = new RecordUploadUrlDto();
