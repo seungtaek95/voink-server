@@ -24,7 +24,7 @@ export class RecordGroupMapper {
   }
 
   toDto(recordGroup: RecordGroup): RecordGroupDto {
-    const recordGroupDto = new RecordGroupDto();
+    const recordGroupDto = new RecordGroupDto();    
     const { latitude, longitude } = parsePointToObject(recordGroup.point);
     recordGroupDto.id = recordGroup.id;
     recordGroupDto.userId = recordGroup.userId;
@@ -35,7 +35,7 @@ export class RecordGroupMapper {
     recordGroupDto.location = recordGroup.location;
     recordGroupDto.latitude = latitude;
     recordGroupDto.longitude = longitude;
-    recordGroupDto.createdAt = recordGroup.createdAt;
+    recordGroupDto.createdAt = recordGroup.createdAt.getTime();
     recordGroupDto.records = recordGroup.records?.map(record => this.recordMapper.toDto(record));
     return recordGroupDto;
   }

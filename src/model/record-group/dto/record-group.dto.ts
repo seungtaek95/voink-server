@@ -29,8 +29,8 @@ export class RecordGroupDto {
   @IsNumber()
   longitude: number;
   
-  @IsDate()
-  createdAt: Date;
+  @IsNumber()
+  createdAt: Number;
 
   @IsOptional()
   records?: RecordDto[]
