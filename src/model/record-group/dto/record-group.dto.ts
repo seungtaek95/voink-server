@@ -1,4 +1,4 @@
-import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { RecordDto } from '../../record/dto/record.dto';
 
 export class RecordGroupDto {
@@ -30,7 +30,7 @@ export class RecordGroupDto {
   longitude: number;
   
   @IsNumber()
-  createdAt: Number;
+  time: Number;
 
   @IsOptional()
   records?: RecordDto[]

@@ -34,7 +34,7 @@ describe('GET record-groups requests', () => {
         recordType: expect.any(String),
         latitude: expect.any(Number),
         longitude: expect.any(Number),
-        createdAt: expect.any(String),
+        time: expect.any(Number),
         records: expect.any(Array),
       };
       const expectedRecord = {
@@ -47,7 +47,7 @@ describe('GET record-groups requests', () => {
         duration: expect.any(Number),
         recordUrl: expect.any(String),
         thumbnailUrl: expect.any(String),
-        createdAt: expect.any(String)
+        time: expect.any(Number)
       };
       res.body.forEach((recordGroup: any) => {
         expect(recordGroup).toEqual(expectedRecordGroup);
@@ -80,7 +80,7 @@ describe('GET record-groups requests', () => {
         recordType: expect.any(String),
         latitude: expect.any(Number),
         longitude: expect.any(Number),
-        createdAt: expect.any(String),
+        time: expect.any(Number),
         records: expect.any(Array),
       };
       const expectedRecord = {
@@ -93,7 +93,7 @@ describe('GET record-groups requests', () => {
         duration: expect.any(Number),
         recordUrl: expect.any(String),
         thumbnailUrl: expect.any(String),
-        createdAt: expect.any(String)
+        time: expect.any(Number)
       };
       expect(res.body).toEqual(expectedRecordGroup);
       res.body.records.forEach((record: any) => expect(record).toEqual(expectedRecord));
