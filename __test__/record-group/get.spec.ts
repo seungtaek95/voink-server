@@ -25,15 +25,30 @@ describe('GET record-groups requests', () => {
         .expect(200);
 
       // then
-      expect(res.body.id).toBe(targetRecordGroup.id);
-      expect(res.body.title).toBe(targetRecordGroup.title);
-      expect(res.body.location).toBe(targetRecordGroup.location);
-      expect(res.body.category).toBe(targetRecordGroup.category);
-      expect(res.body.recordType).toBe(targetRecordGroup.recordType);
-      expect(res.body).toHaveProperty('latitude');
-      expect(res.body).toHaveProperty('longitude');
-      expect(res.body).toHaveProperty('user');
-      expect(res.body).toHaveProperty('records');
+      const expectedBody = {
+        id: expect.any(Number),
+        userId: targetRecordGroup.userId,
+        category: targetRecordGroup.category,
+        title: targetRecordGroup.title,
+        content: targetRecordGroup.content,
+        location: targetRecordGroup.location,
+        recordType: targetRecordGroup.recordType,
+        latitude: expect.any(Number),
+        longitude: expect.any(Number),
+        createdAt: expect.any(String),
+        records: expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(Number),
+            title: expect.any(String),
+            latitude: expect.any(Number),
+            longitude: expect.any(Number),
+            duration: expect.any(Number),
+            recordUrl: expect.any(String),
+            thumbnailUrl: expect.any(String)
+          })
+        ]),
+      };
+      expect(res.body).toEqual(expectedBody);
     });
 
     test('200 response, 다른 사용자의 레코드 그룹 가져올 수 없음', (done) => {

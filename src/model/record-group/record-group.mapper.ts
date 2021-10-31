@@ -35,6 +35,7 @@ export class RecordGroupMapper {
     recordGroupDto.location = recordGroup.location;
     recordGroupDto.latitude = latitude;
     recordGroupDto.longitude = longitude;
+    recordGroupDto.createdAt = recordGroup.createdAt;
     recordGroupDto.records = recordGroup.records?.map(record => this.recordMapper.toDto(record));
     return recordGroupDto;
   }
