@@ -1,7 +1,7 @@
 import { Readable } from 'stream';
 import { Request, Response, Router } from 'express';
 import { RequestWithData, RequestWithUser } from '../interface/request.interface';
-import { headerTokenParser } from '../middleware/auth.middleware';
+import { headerTokenParser, queryTokenParser } from '../middleware/auth.middleware';
 import { attachRecord } from '../middleware/record.middleware';
 import { Record } from '../model/record/record.entity';
 import container from '../utils/container';
@@ -15,7 +15,7 @@ export default function (app: Router) {
   app.use('/records', router);
 
   router.get(/.*\.m4a/,
-    headerTokenParser(),
+    queryTokenParser(),
     async (req: Request, res: Response) => {
       const recordPath = req.url.slice(1);
       const range = req.headers.range;
