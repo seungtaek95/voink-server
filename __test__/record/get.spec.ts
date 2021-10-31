@@ -24,7 +24,13 @@ describe('GET records upload urls', () => {
         .expect(200);
 
       //then
+      const expectedBody = {
+        key: expect.any(String),
+        recordUrl: expect.any(String),
+        thumbnailUrl: expect.any(String),
+      };
       expect(res.body.length).toBe(count);
+      res.body.forEach((record: any) => expect(record).toEqual(expectedBody));
     });
 
     test('400 response, count query가 없음', done => {
@@ -56,8 +62,19 @@ describe('GET records requests', () => {
         .expect(200);
 
       //then
-      expect(res.body.id).toBe(recordId);
-      expect(res.body.userId).toBe(testUser1.id);
+      const expectedBody = {
+        id: expect.any(Number),
+        userId: testUser1.id,
+        recordGroupId: expect.any(Number),
+        title: expect.any(String),
+        latitude: expect.any(Number),
+        longitude: expect.any(Number),
+        duration: expect.any(Number),
+        recordUrl: expect.any(String),
+        thumbnailUrl: expect.any(String),
+        createdAt: expect.any(String)
+      };
+      expect(res.body).toEqual(expectedBody);
     });
 
     test('403 response, 다른 사용자의 레코드 조회 불가능', (done) => {
