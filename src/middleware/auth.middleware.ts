@@ -5,7 +5,7 @@ import { AuthService } from '../service/auth.service';
 import container from '../utils/container';
 import { HttpError } from '../utils/util';
 
-export function tokenParser() {
+export function headerTokenParser() {
   return async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const authService = container.get(AuthService);
 

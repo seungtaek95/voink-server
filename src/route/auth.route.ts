@@ -1,6 +1,6 @@
 import { Response, Router } from 'express';
 import { OAuthRequest, RequestWithUser } from '../interface/request.interface';
-import { tokenParser } from '../middleware/auth.middleware';
+import { headerTokenParser } from '../middleware/auth.middleware';
 import { validateBody } from '../middleware/validate.middleware';
 import { PostAuthLoginDto } from '../model/auth/dto/post-auth-login.dto';
 import { AuthService } from '../service/auth.service';
@@ -16,7 +16,7 @@ export default function (app: Router) {
   app.use('/auth', router);
 
   router.get('/',
-    tokenParser(),
+    headerTokenParser(),
     wrapAsync(async (req: RequestWithUser, res: Response) => {
       const user = await userService.findById(req.user.id);
       if (!user) {

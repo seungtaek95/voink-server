@@ -1,6 +1,6 @@
 import { Response, Router } from 'express';
 import { RequestWithData, RequestWithUser } from '../interface/request.interface';
-import { tokenParser } from '../middleware/auth.middleware';
+import { headerTokenParser } from '../middleware/auth.middleware';
 import { attachRecordGroup } from '../middleware/record-group.middleware';
 import { validateBody } from '../middleware/validate.middleware';
 import { PostRecordGroupDto } from '../model/record-group/dto/post-record-group.dto';
@@ -16,7 +16,7 @@ export default function (app: Router) {
   app.use('/record-groups', router);
 
   router.post('/',
-    tokenParser(),
+    headerTokenParser(),
     validateBody(PostRecordGroupDto),
     wrapAsync(async (req: RequestWithUser, res: Response) => {
       const recordGroup = await recordGroupService.saveOne(req.user.id, req.body);
@@ -25,7 +25,7 @@ export default function (app: Router) {
   );
 
   router.get('/',
-    tokenParser(),
+    headerTokenParser(),
     wrapAsync(async (req: RequestWithUser, res: Response) => {
       const recordGroups = await recordGroupService.findByUserId(req.user.id);
       res.status(200).json(recordGroups);
@@ -33,7 +33,7 @@ export default function (app: Router) {
   );
 
   router.get('/:id',
-    tokenParser(),
+    headerTokenParser(),
     attachRecordGroup(),
     wrapAsync(async (req: RequestWithData<RecordGroup>, res: Response) => {
       res.status(200).json(req.data);

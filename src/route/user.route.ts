@@ -1,6 +1,6 @@
 import { Response, Router } from 'express';
 import { RequestWithUser } from '../interface/request.interface';
-import { tokenParser } from '../middleware/auth.middleware';
+import { headerTokenParser } from '../middleware/auth.middleware';
 import { attachRecord } from '../middleware/record.middleware';
 import { UserService } from '../service/user.service';
 import container from '../utils/container';
@@ -13,7 +13,7 @@ export default function (app: Router) {
   app.use('/users', router);
 
   router.get('/me',
-    tokenParser(),
+    headerTokenParser(),
     attachRecord(),
     wrapAsync(async (req: RequestWithUser, res: Response) => {
       const user = await userService.findById(req.user.id);

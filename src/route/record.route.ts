@@ -1,7 +1,7 @@
 import { Readable } from 'stream';
 import { Request, Response, Router } from 'express';
 import { RequestWithData, RequestWithUser } from '../interface/request.interface';
-import { tokenParser } from '../middleware/auth.middleware';
+import { headerTokenParser } from '../middleware/auth.middleware';
 import { attachRecord } from '../middleware/record.middleware';
 import { Record } from '../model/record/record.entity';
 import container from '../utils/container';
@@ -15,7 +15,7 @@ export default function (app: Router) {
   app.use('/records', router);
 
   router.get(/.*\.m4a/,
-    tokenParser(),
+    headerTokenParser(),
     async (req: Request, res: Response) => {
       const recordPath = req.url.slice(1);
       const range = req.headers.range;
@@ -50,7 +50,7 @@ export default function (app: Router) {
   );
 
   router.get('/upload-url',
-    tokenParser(),
+    headerTokenParser(),
     wrapAsync(async (req: RequestWithUser, res: Response) => {
       if (!req.query.count) {
         res.status(400).json('Request query "count" is required');
@@ -62,7 +62,7 @@ export default function (app: Router) {
   );
   
   router.get('/:id',
-    tokenParser(),
+    headerTokenParser(),
     attachRecord(),
     (req: RequestWithData<Record>, res: Response) => {
       res.status(200).json(req.data);
