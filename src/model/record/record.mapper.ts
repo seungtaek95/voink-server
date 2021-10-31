@@ -1,4 +1,3 @@
-import { plainToClass } from 'class-transformer';
 import { injectable } from 'inversify';
 import { serverConfig } from '../../config';
 import { parseLocationToPoint, parsePointToObject } from '../../utils/geomatric';
@@ -20,17 +19,21 @@ export class RecordMapper {
     return record;
   }
 
-  toDto(records: Record): RecordDto {
-    const { point, thumbnailPath, recordPath, ...rest } = records;
-    const thumbnailUrl = `${serverConfig.baseUrl}/records/${thumbnailPath}`;
-    const recordUrl = `${serverConfig.baseUrl}/records/${recordPath}`;
-    const { latitude, longitude } = parsePointToObject(point);
-    return plainToClass(RecordDto, {
-      ...rest,
-      thumbnailUrl,
-      recordUrl,
-      latitude,
-      longitude
-    });
+  toDto(record: Record): RecordDto {
+    const recordDto = new RecordDto();    
+    const thumbnailUrl = `${serverConfig.baseUrl}/records/${record.thumbnailPath}`;
+    const recordUrl = `${serverConfig.baseUrl}/records/${record.recordPath}`;
+    const { latitude, longitude } = parsePointToObject(record.point);
+    recordDto.id = record.id;
+    recordDto.userId = record.userId;
+    recordDto.title = record.title;
+    recordDto.latitude = latitude;
+    recordDto.longitude = longitude;
+    recordDto.thumbnailUrl = thumbnailUrl;
+    recordDto.recordUrl = recordUrl;
+    recordDto.duration = record.duration;
+    recordDto.recordGroupId = record.recordGroupId;
+    recordDto.time = record.createdAt.getTime();
+    return recordDto;
   }
 }

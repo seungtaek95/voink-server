@@ -30,6 +30,6 @@ export class RecordDto {
   @IsNumber()
   longitude: number;
 
-  @IsDate()
-  createdAt: Date;
+  @IsNumber()
+  time: number;
 }

@@ -63,7 +63,7 @@ describe('GET records requests', () => {
 
       //then
       const expectedBody = {
-        id: expect.any(Number),
+        id: recordId,
         userId: testUser1.id,
         recordGroupId: expect.any(Number),
         title: expect.any(String),
@@ -72,7 +72,7 @@ describe('GET records requests', () => {
         duration: expect.any(Number),
         recordUrl: expect.any(String),
         thumbnailUrl: expect.any(String),
-        createdAt: expect.any(String)
+        time: expect.any(Number)
       };
       expect(res.body).toEqual(expectedBody);
     });
