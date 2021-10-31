@@ -56,13 +56,13 @@ export class CloudStorageService {
     return url;
   }
 
-  async getRecordSize(recordPath: string): Promise<number> {
-    const [meta] = await this.recordBucket.file(recordPath).getMetadata();
+  async getFileSize(filePath: string): Promise<number> {
+    const [meta] = await this.recordBucket.file(filePath).getMetadata();
     return meta.size;
   }
 
-  getRecordStream(recordPath: string, options?: any) {
-    return this.recordBucket.file(recordPath).createReadStream(options);
+  getFileStream(filePath: string, options?: any) {
+    return this.recordBucket.file(filePath).createReadStream(options);
   }
 
   getTempDirPath(userId: number) {

@@ -14,12 +14,36 @@ export default function (app: Router) {
 
   app.use('/records', router);
 
+  /**
+   * thumbnail 파일 제공
+   */
+  router.get(/.*\.jpg/,
+    queryTokenParser(),
+    wrapAsync(async (req: Request, res: Response) => {
+      const thumbnailPath = req.path.slice(1);
+      const size = await cloudStorageService.getFileSize(thumbnailPath);
+      const thumbnailStream = cloudStorageService.getFileStream(thumbnailPath);
+      res.writeHead(200, {
+        'Content-Length': size,
+        'Content-Type': 'image/jpg'
+      });
+
+      thumbnailStream
+        .on('error', () => res.end())
+        .pipe(res)
+        .on('close', () => thumbnailStream.destroy());
+    })
+  );
+
+  /**
+   * record 파일 제공
+   */
   router.get(/.*\.m4a/,
     queryTokenParser(),
-    async (req: Request, res: Response) => {
+    wrapAsync(async (req: Request, res: Response) => {
       const recordPath = req.path.slice(1);
       const range = req.headers.range;
-      const size = await cloudStorageService.getRecordSize(recordPath);
+      const size = await cloudStorageService.getFileSize(recordPath);
       let recordStream: Readable;
       
       if (range) {
@@ -27,26 +51,27 @@ export default function (app: Router) {
         const start = parseInt(parts[0]);
         const end = parts[1] ? parseInt(parts[1]) : size - 1;
 
-        recordStream = cloudStorageService.getRecordStream(recordPath, { start, end }); 
+        recordStream = cloudStorageService.getFileStream(recordPath, { start, end }); 
         res.writeHead(206, {
           'Content-Range': `bytes ${start}-${end}/${size}`,
           'Accept-Ranges': 'bytes',
           'Content-Length': end - start + 1,
-          'Content-Type': 'video/mp4'
+          'Content-Type': 'audio/m4a'
         });
       } else {
-        recordStream = cloudStorageService.getRecordStream(recordPath); 
+        recordStream = cloudStorageService.getFileStream(recordPath); 
         res.writeHead(206, {
           'Accept-Ranges': 'bytes',
           'Content-Length': size,
-          'Content-Type': 'video/mp4'
+          'Content-Type': 'audio/m4a'
         });
       }
       
-      recordStream.on('error', () => res.end())
+      recordStream
+        .on('error', () => res.end())
         .pipe(res)
         .on('close', () => recordStream.destroy());
-    }
+    })
   );
 
   router.get('/upload-url',
