@@ -17,7 +17,7 @@ export default function (app: Router) {
   router.get(/.*\.m4a/,
     queryTokenParser(),
     async (req: Request, res: Response) => {
-      const recordPath = req.url.slice(1);
+      const recordPath = req.path.slice(1);
       const range = req.headers.range;
       const size = await cloudStorageService.getRecordSize(recordPath);
       let recordStream: Readable;
