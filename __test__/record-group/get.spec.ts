@@ -13,6 +13,44 @@ describe('GET record-groups requests', () => {
   const testUser1 = testUsers[0];
   const token = getTestUserToken(testUser1);
 
+  describe('GET /record-groups', () => {
+    test('200 response, 사용자의 레코드 그룹들 가져오기', async () => {
+      // given
+
+      // when
+      const res = await agent
+        .get('/record-groups')
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200);
+
+      // then
+      const expectedBody = expect.arrayContaining([{
+        id: expect.any(Number),
+        userId: testUser1.id,
+        category: expect.any(String),
+        title: expect.any(String),
+        content: expect.any(String),
+        location: expect.any(String),
+        recordType: expect.any(String),
+        latitude: expect.any(Number),
+        longitude: expect.any(Number),
+        createdAt: expect.any(String),
+        records: expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(Number),
+            title: expect.any(String),
+            latitude: expect.any(Number),
+            longitude: expect.any(Number),
+            duration: expect.any(Number),
+            recordUrl: expect.any(String),
+            thumbnailUrl: expect.any(String)
+          })
+        ]),
+      }]);
+      expect(res.body).toEqual(expectedBody);
+    });
+  });
+
   describe('GET /record-groups/:id', () => {
     test('200 response, 레코드 그룹 하나 가져오기', async () => {
       // given
