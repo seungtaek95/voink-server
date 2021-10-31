@@ -24,7 +24,7 @@ describe('GET record-groups requests', () => {
         .expect(200);
 
       // then
-      const expectedBody = expect.arrayContaining([{
+      const expectedRecordGroup = {
         id: expect.any(Number),
         userId: testUser1.id,
         category: expect.any(String),
@@ -35,19 +35,26 @@ describe('GET record-groups requests', () => {
         latitude: expect.any(Number),
         longitude: expect.any(Number),
         createdAt: expect.any(String),
-        records: expect.arrayContaining([
-          expect.objectContaining({
-            id: expect.any(Number),
-            title: expect.any(String),
-            latitude: expect.any(Number),
-            longitude: expect.any(Number),
-            duration: expect.any(Number),
-            recordUrl: expect.any(String),
-            thumbnailUrl: expect.any(String)
-          })
-        ]),
-      }]);
-      expect(res.body).toEqual(expectedBody);
+        records: expect.any(Array),
+      };
+      const expectedRecord = {
+        id: expect.any(Number),
+        userId: testUser1.id,
+        recordGroupId: expect.any(Number),
+        title: expect.any(String),
+        latitude: expect.any(Number),
+        longitude: expect.any(Number),
+        duration: expect.any(Number),
+        recordUrl: expect.any(String),
+        thumbnailUrl: expect.any(String),
+        createdAt: expect.any(String)
+      };
+      res.body.forEach((recordGroup: any) => {
+        expect(recordGroup).toEqual(expectedRecordGroup);
+        recordGroup.records.forEach((record: any) => {
+          expect(record).toEqual(expectedRecord);
+        });
+      });
     });
   });
 
@@ -63,30 +70,33 @@ describe('GET record-groups requests', () => {
         .expect(200);
 
       // then
-      const expectedBody = {
+      const expectedRecordGroup = {
         id: expect.any(Number),
-        userId: targetRecordGroup.userId,
-        category: targetRecordGroup.category,
-        title: targetRecordGroup.title,
-        content: targetRecordGroup.content,
-        location: targetRecordGroup.location,
-        recordType: targetRecordGroup.recordType,
+        userId: testUser1.id,
+        category: expect.any(String),
+        title: expect.any(String),
+        content: expect.any(String),
+        location: expect.any(String),
+        recordType: expect.any(String),
         latitude: expect.any(Number),
         longitude: expect.any(Number),
         createdAt: expect.any(String),
-        records: expect.arrayContaining([
-          expect.objectContaining({
-            id: expect.any(Number),
-            title: expect.any(String),
-            latitude: expect.any(Number),
-            longitude: expect.any(Number),
-            duration: expect.any(Number),
-            recordUrl: expect.any(String),
-            thumbnailUrl: expect.any(String)
-          })
-        ]),
+        records: expect.any(Array),
       };
-      expect(res.body).toEqual(expectedBody);
+      const expectedRecord = {
+        id: expect.any(Number),
+        userId: testUser1.id,
+        recordGroupId: expect.any(Number),
+        title: expect.any(String),
+        latitude: expect.any(Number),
+        longitude: expect.any(Number),
+        duration: expect.any(Number),
+        recordUrl: expect.any(String),
+        thumbnailUrl: expect.any(String),
+        createdAt: expect.any(String)
+      };
+      expect(res.body).toEqual(expectedRecordGroup);
+      res.body.records.forEach((record: any) => expect(record).toEqual(expectedRecord));
     });
 
     test('200 response, 다른 사용자의 레코드 그룹 가져올 수 없음', (done) => {
