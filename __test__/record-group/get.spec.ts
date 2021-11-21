@@ -99,7 +99,7 @@ describe('GET record-groups requests', () => {
       res.body.records.forEach((record: any) => expect(record).toEqual(expectedRecord));
     });
 
-    test('200 response, 다른 사용자의 레코드 그룹 가져올 수 없음', (done) => {
+    test('404 response, 다른 사용자의 레코드 그룹 가져올 수 없음', (done) => {
       // given
       const targetId = 3;
 
@@ -107,7 +107,7 @@ describe('GET record-groups requests', () => {
       agent
         .get(`/record-groups/${targetId}`)
         .set('Authorization', `Bearer ${token}`)
-        .expect(403, done);
+        .expect(404, done);
     });
   });
 });

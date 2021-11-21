@@ -24,6 +24,6 @@ export class RecordService {
 
   async findById(recordId: number) {
     const record = await this.recordRepository.findById(recordId);
-    return this.recordMapper.toDto(record);
+    return record && this.recordMapper.toDto(record);
   }
 }

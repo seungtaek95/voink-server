@@ -1,15 +1,15 @@
 import { Readable } from 'stream';
 import { Request, Response, Router } from 'express';
-import { RequestWithData, RequestWithUser } from '../interface/request.interface';
+import { RequestWithUser } from '../interface/request.interface';
 import { headerTokenParser, queryTokenParser } from '../middleware/auth.middleware';
-import { attachRecord } from '../middleware/record.middleware';
-import { Record } from '../model/record/record.entity';
 import container from '../utils/container';
 import { CloudStorageService } from '../service/cloud-storage.service';
-import { wrapAsync } from '../utils/util';
+import { HttpError, wrapAsync } from '../utils/util';
+import { RecordService } from '../service/record.service';
 
 export default function (app: Router) {
   const router = Router();
+  const recordService = container.get(RecordService);
   const cloudStorageService = container.get(CloudStorageService);
 
   app.use('/records', router);
@@ -88,9 +88,13 @@ export default function (app: Router) {
   
   router.get('/:id',
     headerTokenParser(),
-    attachRecord(),
-    (req: RequestWithData<Record>, res: Response) => {
-      res.status(200).json(req.data);
-    }
+    wrapAsync(async (req: RequestWithUser, res: Response) => {
+      const recordId = Number(req.params.id);
+      const record = await recordService.findById(recordId);
+      if (!record || record.userId !== req.user.id) {
+        throw new HttpError('Not found', 404);
+      }
+      res.status(200).json(record);
+    })
   );
 }

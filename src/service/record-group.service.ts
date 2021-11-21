@@ -3,7 +3,6 @@ import { TYPE } from '../loader/container';
 import { CreateRecordGroupDto } from '../model/record-group/dto/create-record-group.dto';
 import { RecordGroupMapper } from '../model/record-group/record-group.mapper';
 import { RecordGroupRepository } from '../model/record-group/record-group.repository';
-import { HttpError } from '../utils/util';
 import { CloudStorageService } from './cloud-storage.service';
 import { RecordService } from './record.service';
 
@@ -33,7 +32,7 @@ export class RecordGroupService {
 
   async findById(id: number) {
     const recordGroup = await this.recordGroupRepository.findById(id);
-    return this.recordGroupMapper.toDto(recordGroup);
+    return recordGroup && this.recordGroupMapper.toDto(recordGroup);
   }
 
   async findByUserId(userId: number) {

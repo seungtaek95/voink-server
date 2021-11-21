@@ -1,13 +1,11 @@
 import { Response, Router } from 'express';
-import { RequestWithData, RequestWithUser } from '../interface/request.interface';
+import { RequestWithUser } from '../interface/request.interface';
 import { headerTokenParser } from '../middleware/auth.middleware';
-import { attachRecordGroup } from '../middleware/record-group.middleware';
 import { validateBody } from '../middleware/validate.middleware';
 import { PostRecordGroupDto } from '../model/record-group/dto/post-record-group.dto';
-import { RecordGroup } from '../model/record-group/record-group.entity';
 import { RecordGroupService } from '../service/record-group.service';
 import container from '../utils/container';
-import { wrapAsync } from '../utils/util';
+import { HttpError, wrapAsync } from '../utils/util';
 
 export default function (app: Router) {
   const router = Router();
@@ -34,16 +32,19 @@ export default function (app: Router) {
 
   router.get('/:id',
     headerTokenParser(),
-    attachRecordGroup(),
-    wrapAsync(async (req: RequestWithData<RecordGroup>, res: Response) => {
-      res.status(200).json(req.data);
+    wrapAsync(async (req: RequestWithUser, res: Response) => {
+      const recordGroupId = Number(req.params.id);
+      const recordGroup = await recordGroupService.findById(recordGroupId);
+      if (!recordGroup || recordGroup.userId !== req.user.id) {
+        throw new HttpError('Not found', 404);
+      }
+      res.status(200).json(recordGroup);
     })
   );
 
   router.delete('/:id',
     headerTokenParser(),
-    attachRecordGroup(),
-    wrapAsync(async (req: RequestWithData<RecordGroup>, res: Response) => {
+    wrapAsync(async (req: RequestWithUser, res: Response) => {
       const recordGorupId = Number(req.params.id);
       await recordGroupService.setToDeleted(recordGorupId);
       res.status(200).json({ message: 'Record group deleted' });

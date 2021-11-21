@@ -25,6 +25,10 @@ export class RecordGroupRepository extends Repository<RecordGroup> {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
+      const recordGroup = await queryRunner.manager.findOne(RecordGroup, id);
+      if (!recordGroup) {
+        throw new Error('Record group Not found');
+      }
       await queryRunner.manager.update(RecordGroup, id, { isDeleted: true });
       await queryRunner.manager.update(Record, { recordGroup: { id } }, { isDeleted: true });
       await queryRunner.commitTransaction();

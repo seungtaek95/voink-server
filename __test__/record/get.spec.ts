@@ -77,7 +77,7 @@ describe('GET records requests', () => {
       expect(res.body).toEqual(expectedBody);
     });
 
-    test('403 response, 다른 사용자의 레코드 조회 불가능', (done) => {
+    test('404 response, 다른 사용자의 레코드 조회 불가능', (done) => {
       // given
       const recordId = 5;
 
@@ -85,7 +85,7 @@ describe('GET records requests', () => {
       agent
         .get(`/records/${recordId}`)
         .set('Authorization', `Bearer ${token}`)
-        .expect(403, done);
+        .expect(404, done);
     });
   });
 });
