@@ -3,6 +3,7 @@ import { TYPE } from '../loader/container';
 import { CreateRecordGroupDto } from '../model/record-group/dto/create-record-group.dto';
 import { RecordGroupMapper } from '../model/record-group/record-group.mapper';
 import { RecordGroupRepository } from '../model/record-group/record-group.repository';
+import { HttpError } from '../utils/util';
 import { CloudStorageService } from './cloud-storage.service';
 import { RecordService } from './record.service';
 
@@ -38,5 +39,12 @@ export class RecordGroupService {
   async findByUserId(userId: string | number) {
     const recordGroups = await this.recordGroupRepository.findByUserId(userId);
     return recordGroups.map(recordGroup => this.recordGroupMapper.toDto(recordGroup));
+  }
+
+  async deleteById(id: string | number) {
+    const result = await this.recordGroupRepository.update(id, { isDeleted: true });
+    if (result.affected !== 1) {
+      throw new HttpError(`Failed to set recordGroup.isDelete to true. id: ${id}`, 500);
+    }
   }
 }
