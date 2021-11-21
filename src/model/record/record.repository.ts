@@ -3,8 +3,8 @@ import { Record } from './record.entity';
 
 @EntityRepository(Record)
 export class RecordRepository extends Repository<Record> {
-  async findById(recordId: number | string) {
-    const result = await this.findOne(recordId);
+  async findById(recordId: number) {
+    const result = await this.findOne({ id: recordId, isDeleted: false });
     return result;
   }
 }

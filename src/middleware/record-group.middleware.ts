@@ -26,13 +26,13 @@ export function attachRecordGroup(paramLocation = 'path') {
   };
 }
 
-function getRecordGroupId(req: RequestWithUser, paramLocation: string): string {
+function getRecordGroupId(req: RequestWithUser, paramLocation: string) {
   switch (paramLocation) {
     case 'query':
-      return req.query.recordGroupId as string;
+      return Number(req.query.recordGroupId);
     case 'path':
-      return req.params.id;
+      return Number(req.params.id);
     default:
-      return req.params.id;
+      return Number(req.params.id);
   }
 }

@@ -31,17 +31,17 @@ export class RecordGroupService {
     return this.recordGroupMapper.toDto(newRecordGroup);
   }
 
-  async findById(id: string | number) {
+  async findById(id: number) {
     const recordGroup = await this.recordGroupRepository.findById(id);
     return this.recordGroupMapper.toDto(recordGroup);
   }
 
-  async findByUserId(userId: string | number) {
+  async findByUserId(userId: number) {
     const recordGroups = await this.recordGroupRepository.findByUserId(userId);
     return recordGroups.map(recordGroup => this.recordGroupMapper.toDto(recordGroup));
   }
 
-  setToDeleted(id: string | number) {
+  setToDeleted(id: number) {
     return this.recordGroupRepository.setToDeleted(id);
   }
 }

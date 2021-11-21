@@ -22,7 +22,7 @@ export class RecordService {
     return this.recordRepository.save(record);
   }
 
-  async findById(recordId: number | string) {
+  async findById(recordId: number) {
     const record = await this.recordRepository.findById(recordId);
     return this.recordMapper.toDto(record);
   }

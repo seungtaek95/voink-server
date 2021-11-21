@@ -25,13 +25,13 @@ export function attachRecord(paramLocation = 'path') {
   };
 }
 
-function getRecordId(req: RequestWithUser, paramLocation: string): string {
+function getRecordId(req: RequestWithUser, paramLocation: string) {
   switch (paramLocation) {
     case 'query':
-      return req.query.recordId as string;
+      return Number(req.query.recordId);
     case 'path':
-      return req.params.id;
+      return Number(req.params.id);
     default:
-      return req.params.id;
+      return Number(req.params.id);
   }
 }
