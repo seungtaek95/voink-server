@@ -8,13 +8,15 @@ export class RecordGroupRepository extends Repository<RecordGroup> {
     return this.createQueryBuilder('rg')
       .leftJoinAndMapMany('rg.records', Record, 'record', 'rg.id = record.recordGroupId')
       .where('rg.id = :id', { id })
+      .andWhere('rg.isDeleted = :isDeleted', { isDeleted: false })
       .getOne();
     }
-
-  findByUserId(userId: string | number) {
-    return this.createQueryBuilder('rg')
+    
+    findByUserId(userId: string | number) {
+      return this.createQueryBuilder('rg')
       .leftJoinAndMapMany('rg.records', Record, 'record', 'rg.id = record.recordGroupId')
       .where('rg.user_id = :userId', { userId })
+      .andWhere('rg.isDeleted = :isDeleted', { isDeleted: false })
       .getMany();
   }
 }

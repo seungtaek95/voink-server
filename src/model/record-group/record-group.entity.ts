@@ -48,6 +48,13 @@ export class RecordGroup {
     srid: 4326,
   })
   point: string;
+  
+  @Column({
+    name: 'is_deleted',
+    select: false,
+    default: false,
+  })
+  isDeleted: boolean;
 
   @OneToMany(() => Record, record => record.recordGroupId)
   records: Record[];
