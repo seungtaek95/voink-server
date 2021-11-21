@@ -47,7 +47,14 @@ export class Record {
     nullable: true,
   })
   recordGroupId: number
-
+  
+  @Column({
+    name: 'is_deleted',
+    select: false,
+    default: false,
+  })
+  isDeleted: boolean;
+  
   @ManyToOne(() => RecordGroup, recordGroup => recordGroup.records, {
     onDelete: 'CASCADE',
   })

@@ -41,10 +41,7 @@ export class RecordGroupService {
     return recordGroups.map(recordGroup => this.recordGroupMapper.toDto(recordGroup));
   }
 
-  async deleteById(id: string | number) {
-    const result = await this.recordGroupRepository.update(id, { isDeleted: true });
-    if (result.affected !== 1) {
-      throw new HttpError(`Failed to set recordGroup.isDelete to true. id: ${id}`, 500);
-    }
+  setToDeleted(id: string | number) {
+    return this.recordGroupRepository.setToDeleted(id);
   }
 }

@@ -14,15 +14,17 @@ describe('DELETE record-groups requests', () => {
   const token = getTestUserToken(testUser1);
 
   describe('DELETE /record-groups/{id}', () => {
-    test('200 response, 사용자의 레코드 그룹 삭제', done => {
+    test('200 response, 사용자의 레코드 그룹 삭제', async () => {
       // given
       const targetRecordGroup = recordGroups[0];
 
       // when
-      agent
+      await agent
         .delete(`/record-groups/${targetRecordGroup.id}`)
         .set('Authorization', `Bearer ${token}`)
-        .expect(200, done); // then
+        .expect(200); // then
+
+      agent;
     });
   });
 });
