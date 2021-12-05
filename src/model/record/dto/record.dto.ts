@@ -1,35 +1,34 @@
-import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
+import { Exclude, Expose } from 'class-transformer';
 
+@Exclude()
 export class RecordDto {
-  @IsNumber()
+  @Expose()
   id: number;
 
-  @IsNumber()
+  @Expose()
   userId: number;
 
-  @IsNumber()
+  @Expose()
   recordGroupId: number;
 
-  @IsString()
+  @Expose()
   title: string;
 
-  @IsNumber()
+  @Expose()
   duration: number;
 
-  @IsOptional()
-  @IsString()
+  @Expose()
   thumbnailUrl: string;
 
-  @IsOptional()
-  @IsString()
+  @Expose()
   recordUrl: string;
 
-  @IsNumber()
+  @Expose()
   latitude: number;
-  
-  @IsNumber()
+
+  @Expose()
   longitude: number;
 
-  @IsNumber()
+  @Expose()
   time: number;
 }

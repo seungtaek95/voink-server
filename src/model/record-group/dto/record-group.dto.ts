@@ -1,37 +1,38 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { Exclude, Expose } from 'class-transformer';
 import { RecordDto } from '../../record/dto/record.dto';
 
+@Exclude()
 export class RecordGroupDto {
-  @IsNumber()
+  @Expose()
   id: number;
 
-  @IsNumber()
+  @Expose()
   userId: number;
 
-  @IsString()
+  @Expose()
   category: string;
 
-  @IsString()
+  @Expose()
   title: string;
 
-  @IsString()
+  @Expose()
   content: string;
 
-  @IsString()
+  @Expose()
   location: string;
 
-  @IsString()
+  @Expose()
   recordType: string;
 
-  @IsNumber()
+  @Expose()
   latitude: number;
   
-  @IsNumber()
+  @Expose()
   longitude: number;
   
-  @IsNumber()
+  @Expose()
   time: Number;
 
-  @IsOptional()
+  @Expose()
   records?: RecordDto[]
 }

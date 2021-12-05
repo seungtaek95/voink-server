@@ -1,3 +1,4 @@
+import { plainToClass } from 'class-transformer';
 import { injectable } from 'inversify';
 import { parseLocationToPoint, parsePointToObject } from '../../utils/geomatric';
 import { RecordMapper } from '../record/record.mapper';
@@ -24,19 +25,14 @@ export class RecordGroupMapper {
   }
 
   toDto(recordGroup: RecordGroup): RecordGroupDto {
-    const recordGroupDto = new RecordGroupDto();    
+    const recordGroupDto = plainToClass(RecordGroupDto, recordGroup, { exposeUnsetFields: false });
     const { latitude, longitude } = parsePointToObject(recordGroup.point);
-    recordGroupDto.id = recordGroup.id;
-    recordGroupDto.userId = recordGroup.userId;
-    recordGroupDto.category = recordGroup.category;
-    recordGroupDto.title = recordGroup.title;
-    recordGroupDto.recordType = recordGroup.recordType;
-    recordGroupDto.content = recordGroup.content;
-    recordGroupDto.location = recordGroup.location;
     recordGroupDto.latitude = latitude;
     recordGroupDto.longitude = longitude;
     recordGroupDto.time = recordGroup.createdAt.getTime();
-    recordGroupDto.records = recordGroup.records?.map(record => this.recordMapper.toDto(record));
+    if (recordGroup.records) {
+      recordGroupDto.records = recordGroup.records.map(record => this.recordMapper.toDto(record));
+    }
     return recordGroupDto;
   }
 }
