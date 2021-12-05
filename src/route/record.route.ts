@@ -94,7 +94,7 @@ export default function (app: Router) {
       if (!record || record.userId !== req.user.id) {
         throw new HttpError('Not found', 404);
       }
-      res.status(200).json(record);
+      res.status(200).json(recordService.toDto(record));
     })
   );
 }
