@@ -12,9 +12,9 @@ export class RecordGroupMapper {
     private recordMapper: RecordMapper,
   ) {}
 
-  toEntity(userId: number, createRecordGroupDto: CreateRecordGroupDto) {
+  toEntity(createRecordGroupDto: CreateRecordGroupDto) {
     const recordGroup = new RecordGroup();
-    recordGroup.userId = userId;
+    recordGroup.userId = createRecordGroupDto.userId;
     recordGroup.category = createRecordGroupDto.category;
     recordGroup.recordType = createRecordGroupDto.recordType;
     recordGroup.title = createRecordGroupDto.title;

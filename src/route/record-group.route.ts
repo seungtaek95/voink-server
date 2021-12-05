@@ -1,7 +1,9 @@
+import { plainToClass } from 'class-transformer';
 import { Response, Router } from 'express';
 import { RequestWithUser } from '../interface/request.interface';
 import { headerTokenParser } from '../middleware/auth.middleware';
 import { validateBody } from '../middleware/validate.middleware';
+import { CreateRecordGroupDto } from '../model/record-group/dto/create-record-group.dto';
 import { PostRecordGroupDto } from '../model/record-group/dto/post-record-group.dto';
 import { RecordGroupService } from '../service/record-group.service';
 import container from '../utils/container';
@@ -17,7 +19,9 @@ export default function (app: Router) {
     headerTokenParser(),
     validateBody(PostRecordGroupDto),
     wrapAsync(async (req: RequestWithUser, res: Response) => {
-      const recordGroup = await recordGroupService.saveOne(req.user.id, req.body);
+      const createRecordGroupDto = plainToClass(CreateRecordGroupDto, req.body);
+      createRecordGroupDto.userId = req.user.id;
+      const recordGroup = await recordGroupService.saveOne(createRecordGroupDto);
       res.status(201).json({ id: recordGroup.id });
     })
   );
