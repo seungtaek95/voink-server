@@ -26,7 +26,7 @@ export default function (app: Router) {
     headerTokenParser(),
     wrapAsync(async (req: RequestWithUser, res: Response) => {
       const recordGroups = await recordGroupService.findByUserId(req.user.id);
-      res.status(200).json(recordGroups);
+      res.status(200).json(recordGroupService.toDto(recordGroups));
     } )
   );
 
@@ -38,7 +38,7 @@ export default function (app: Router) {
       if (!recordGroup || recordGroup.userId !== req.user.id) {
         throw new HttpError('Not found', 404);
       }
-      res.status(200).json(recordGroup);
+      res.status(200).json(recordGroupService.toDto(recordGroup));
     })
   );
 
