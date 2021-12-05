@@ -32,11 +32,11 @@ export class RecordGroupService {
     return newRecordGroup;
   }
 
-  async findById(id: number) {
+  findById(id: number) {
     return this.recordGroupRepository.findById(id);
   }
 
-  async findByUserId(userId: number) {
+  findByUserId(userId: number) {
     return this.recordGroupRepository.findByUserId(userId);
   }
 
