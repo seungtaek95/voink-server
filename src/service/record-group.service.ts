@@ -27,15 +27,14 @@ export class RecordGroupService {
       const recordGroup = this.recordGroupMapper.toEntity(createRecordGroupDto);
       const savedRecordGroup = await queryRunner.manager.save(recordGroup);
       if (createRecordGroupDto.records?.length > 0) {
-        const recordGroupPath = this.cloudStorageService.getRecordGroupPath(createRecordGroupDto.userId, savedRecordGroup.id);
         // 레코드 저장
         const records = createRecordGroupDto.records.map(createRecordDto => (
-          this.recordMapper.toEntity(createRecordGroupDto.userId, savedRecordGroup.id, recordGroupPath, createRecordDto)
+          this.recordMapper.toEntity(createRecordGroupDto.userId, savedRecordGroup.id, createRecordDto)
         ));
-        await queryRunner.manager.save(records);
+        const savedRecords = await queryRunner.manager.save(records);
         // 임시 폴더의 레코드 파일을 그룹 디렉토리로 이동
-        await Promise.all(createRecordGroupDto.records.map(createRecordDto => {
-          this.cloudStorageService.moveRecordToGroupDir(createRecordGroupDto.userId, recordGroupPath, createRecordDto.key);
+        await Promise.all(savedRecords.map(record => {
+          this.cloudStorageService.moveRecordToGroupDir(record);
         }));
       }
       await queryRunner.commitTransaction();

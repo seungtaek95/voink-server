@@ -41,17 +41,16 @@ describe('POST record-groups requests', () => {
 
     test('201 response, 레코드 있는 레코드 그룹 생성', async () => {
       // given
-      const newRecordGroupTitle = 'test title';
       const record: CreateRecordDto = {
-        key: '',
-        title: '',
+        key: 'recordKey',
+        title: 'record',
         duration: 100,
         latitude: 30,
         longitude: 30,
       };
       const recordGroup: PostRecordGroupDto = {
         category: 'testCategory',
-        title: newRecordGroupTitle,
+        title: 'test title',
         content: 'hello',
         location: 'testLocation',
         recordType: 'testRecordType',
@@ -71,7 +70,7 @@ describe('POST record-groups requests', () => {
       
       // then
       expect(res.body).toHaveProperty('id');
-    });
+    }, 500000000);
 
     test('400 response, request body에 정보 부족', done => {
       // given

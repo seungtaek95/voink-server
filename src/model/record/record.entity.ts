@@ -67,4 +67,8 @@ export class Record {
     name: 'created_at'
   })
   createdAt: Date;
+
+  get key() {
+    return this.recordPath.split('/').pop().split('.')[0];
+  }
 }

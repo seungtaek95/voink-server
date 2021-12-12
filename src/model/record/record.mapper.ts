@@ -8,12 +8,12 @@ import { Record } from './record.entity';
 
 @injectable()
 export class RecordMapper {
-  toEntity(userId: number, recordGroupId: number, recordGroupPath: string, createRecordDto: CreateRecordDto) {
+  toEntity(userId: number, recordGroupId: number, createRecordDto: CreateRecordDto) {
     const record = new Record();
     record.userId = userId;
     record.recordGroupId = recordGroupId;
-    record.thumbnailPath = `${recordGroupPath}/${createRecordDto.key}.jpg`;
-    record.recordPath = `${recordGroupPath}/${createRecordDto.key}.m4a`;
+    record.thumbnailPath = `${userId}/${recordGroupId}/${createRecordDto.key}.jpg`;
+    record.recordPath = `${userId}/${recordGroupId}/${createRecordDto.key}.m4a`;
     record.title = createRecordDto.title;
     record.duration = createRecordDto.duration;
     record.point = parseLocationToPoint(createRecordDto.latitude, createRecordDto.longitude);

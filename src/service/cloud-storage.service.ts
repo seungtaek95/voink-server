@@ -3,6 +3,7 @@ import { inject, injectable } from 'inversify';
 import { TYPE } from '../loader/container';
 import { nanoid } from 'nanoid';
 import { RecordUploadUrlDto } from '../model/record/dto/record-upload-urls.dto';
+import { Record } from '../model/record/record.entity';
 
 @injectable()
 export class CloudStorageService {
@@ -54,20 +55,10 @@ export class CloudStorageService {
     return this.recordBucket.file(filePath).createReadStream(options);
   }
 
-  getTempDirPath(userId: number) {
-    return `${userId}/${this.tempDirName}`;
-  }
-
-  getRecordGroupPath(userId: number, recordGroupId: number) {
-    return `${userId}/${recordGroupId}`;
-  }
-
-  moveRecordToGroupDir(userId: number, recordGroupPath: string, key: string) {
-    const thumbnailPath = `${this.getTempDirPath(userId)}/${key}.jpg`;
-    const recordPath = `${this.getTempDirPath(userId)}/${key}.m4a`;
+  moveRecordToGroupDir(record: Record) {
     return Promise.all([
-      this.recordBucket.file(thumbnailPath).move(`${recordGroupPath}/${key}.jpg`),
-      this.recordBucket.file(recordPath).move(`${recordGroupPath}/${key}.m4a`),
+      this.recordBucket.file(`${record.userId}/${this.tempDirName}/${record.key}.jpg`).move(record.thumbnailPath),
+      this.recordBucket.file(`${record.userId}/${this.tempDirName}/${record.key}.m4a`).move(record.recordPath),
     ]);
   }
 
