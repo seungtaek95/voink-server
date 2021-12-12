@@ -24,12 +24,11 @@ export class RecordGroupService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      const recordGroup = this.recordGroupMapper.toEntity(createRecordGroupDto);
-      const savedRecordGroup = await queryRunner.manager.save(recordGroup);
+      const recordGroup = await queryRunner.manager.save(createRecordGroupDto.toEntity());
       if (createRecordGroupDto.records?.length > 0) {
         // 레코드 저장
         const records = createRecordGroupDto.records.map(createRecordDto => (
-          this.recordMapper.toEntity(createRecordGroupDto.userId, savedRecordGroup.id, createRecordDto)
+          this.recordMapper.toEntity(createRecordGroupDto.userId, recordGroup.id, createRecordDto)
         ));
         const savedRecords = await queryRunner.manager.save(records);
         // 임시 폴더의 레코드 파일을 그룹 디렉토리로 이동
@@ -39,7 +38,7 @@ export class RecordGroupService {
       }
       await queryRunner.commitTransaction();
       await queryRunner.release();
-      return savedRecordGroup;
+      return recordGroup;
     } catch (error) {
       await queryRunner.rollbackTransaction();
       await queryRunner.release();
