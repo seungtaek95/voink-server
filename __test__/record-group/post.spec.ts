@@ -41,7 +41,7 @@ describe('POST record-groups requests', () => {
 
     test('201 response, 레코드 있는 레코드 그룹 생성', async () => {
       // given
-      const record: CreateRecordDto = {
+      const record: any = {
         key: 'recordKey',
         title: 'record',
         duration: 100,
@@ -75,7 +75,7 @@ describe('POST record-groups requests', () => {
     test('400 response, request body에 정보 부족', done => {
       // given
       const newRecordGroupTitle = 'test title';
-      const record: CreateRecordDto = {
+      const record: any = {
         key: '',
         title: '',
         duration: 100,

@@ -6,7 +6,6 @@ import { RecordGroupDto } from '../model/record-group/dto/record-group.dto';
 import { RecordGroup } from '../model/record-group/record-group.entity';
 import { RecordGroupMapper } from '../model/record-group/record-group.mapper';
 import { RecordGroupRepository } from '../model/record-group/record-group.repository';
-import { RecordMapper } from '../model/record/record.mapper';
 import { CloudStorageService } from './cloud-storage.service';
 
 @injectable()
@@ -16,7 +15,6 @@ export class RecordGroupService {
     @inject(TYPE.recordGroupRepository) private recordGroupRepository: RecordGroupRepository,
     private cloudStorageService: CloudStorageService,
     private recordGroupMapper: RecordGroupMapper,
-    private recordMapper: RecordMapper,
   ) {}
 
   async saveOne(createRecordGroupDto: CreateRecordGroupDto) {
@@ -24,17 +22,17 @@ export class RecordGroupService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
+      // 레코드 그룹 저장
       const recordGroup = await queryRunner.manager.save(createRecordGroupDto.toEntity());
       if (createRecordGroupDto.records?.length > 0) {
         // 레코드 저장
-        const records = createRecordGroupDto.records.map(createRecordDto => (
-          this.recordMapper.toEntity(createRecordGroupDto.userId, recordGroup.id, createRecordDto)
+        const records = await queryRunner.manager.save(createRecordGroupDto.records.map(
+          record => record.toEntity(recordGroup.userId, recordGroup.id)
         ));
-        const savedRecords = await queryRunner.manager.save(records);
         // 임시 폴더의 레코드 파일을 그룹 디렉토리로 이동
-        await Promise.all(savedRecords.map(record => {
-          this.cloudStorageService.moveRecordToGroupDir(record);
-        }));
+        await Promise.all(records.map(
+          record => this.cloudStorageService.moveRecordToGroupDir(record)
+        ));
       }
       await queryRunner.commitTransaction();
       await queryRunner.release();

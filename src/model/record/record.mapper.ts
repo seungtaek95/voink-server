@@ -1,25 +1,12 @@
 import { plainToClass } from 'class-transformer';
 import { injectable } from 'inversify';
 import { serverConfig } from '../../config';
-import { parseLocationToPoint, parsePointToObject } from '../../utils/geomatric';
-import { CreateRecordDto } from './dto/create-record.dto';
+import { parsePointToObject } from '../../utils/geomatric';
 import { RecordDto } from './dto/record.dto';
 import { Record } from './record.entity';
 
 @injectable()
 export class RecordMapper {
-  toEntity(userId: number, recordGroupId: number, createRecordDto: CreateRecordDto) {
-    const record = new Record();
-    record.userId = userId;
-    record.recordGroupId = recordGroupId;
-    record.thumbnailPath = `${userId}/${recordGroupId}/${createRecordDto.key}.jpg`;
-    record.recordPath = `${userId}/${recordGroupId}/${createRecordDto.key}.m4a`;
-    record.title = createRecordDto.title;
-    record.duration = createRecordDto.duration;
-    record.point = parseLocationToPoint(createRecordDto.latitude, createRecordDto.longitude);
-    return record;
-  }
-
   toDto(record: Record): RecordDto {
     const recordDto = plainToClass(RecordDto, record);
     const thumbnailUrl = `${serverConfig.baseUrl}/records/${record.thumbnailPath}`;
