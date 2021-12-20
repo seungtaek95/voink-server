@@ -4,4 +4,4 @@
 
 ## stack
 
-Typescript, express.js
+Typescript, express, TypeORM, inversify
