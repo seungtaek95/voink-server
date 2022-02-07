@@ -1,4 +1,4 @@
-import databaseLoader from '../src/loader/database';
+import databaseLoader from '../src/common/loader/database';
 import { emptyDatabase, seedDatabase } from './setup';
 
 async function main() {

@@ -3,8 +3,7 @@ import * as supertest from 'supertest';
 import testUsers from '../seed/user.seed';
 import { setup } from '../setup';
 import { getTestUserToken } from '../seed/auth.seed';
-import { CreateRecordDto } from '../../src/model/record/dto/create-record.dto';
-import { PostRecordGroupDto } from '../../src/model/record-group/dto/post-record-group.dto';
+import { PostRecordGroupDto } from '../../src/record-group/model/dto/post-record-group.dto';
 
 const app = express();
 setup(app);
