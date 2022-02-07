@@ -1,5 +1,5 @@
 import * as typeorm from 'typeorm';
-import { RecordGroupRepository } from '../../record-group/model/record-group.repository';
+import { RecordGroup } from '../../record-group/model/record-group.entity';
 import { Record } from '../../record/model/record.entity';
 import { User } from '../../user/model/user.entity';
 import { mysqlConfig } from '../config';
@@ -15,7 +15,7 @@ export default async function () {
     legacySpatialSupport: false,
     entities: [
       User,
-      RecordGroupRepository,
+      RecordGroup,
       Record,
     ],
     synchronize: true,

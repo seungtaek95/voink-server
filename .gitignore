@@ -4,6 +4,7 @@
 
 ### dev
 foo.*
+data/*
 
 ### macOS ###
 # General
