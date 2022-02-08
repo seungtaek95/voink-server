@@ -1,6 +1,6 @@
 import { EntityRepository, getConnection, Repository } from 'typeorm';
-import { Record } from '../../record/model/record.entity';
-import { RecordGroup } from './record-group.entity';
+import { Record } from '../record/model/record.entity';
+import { RecordGroup } from './model/record-group.entity';
 
 @EntityRepository(RecordGroup)
 export class RecordGroupRepository extends Repository<RecordGroup> {

@@ -4,9 +4,9 @@ import { Connection } from 'typeorm';
 import axios, { AxiosInstance } from 'axios';
 import { gcpConfig, serverConfig } from '../config';
 import container from '../utils/container';
-import { UserRepository } from '../../user/model/user.repository';
-import { RecordGroupRepository } from '../../record-group/model/record-group.repository';
-import { RecordRepository } from '../../record/model/record.repository';
+import { UserRepository } from '../../user/user.repository';
+import { RecordGroupRepository } from '../../record-group/record-group.repository';
+import { RecordRepository } from '../../record/record.repository';
 
 export default function (connection: Connection) {
   const storage = new Storage({

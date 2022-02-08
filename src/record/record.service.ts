@@ -3,7 +3,7 @@ import { TYPE } from '../common/loader/container';
 import { RecordDto } from './model/dto/record.dto';
 import { Record } from './model/record.entity';
 import { RecordMapper } from './model/record.mapper';
-import { RecordRepository } from './model/record.repository';
+import { RecordRepository } from './record.repository';
 
 @injectable()
 export class RecordService {

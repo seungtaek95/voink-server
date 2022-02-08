@@ -5,7 +5,7 @@ import { CreateRecordGroupDto } from './model/dto/create-record-group.dto';
 import { RecordGroupDto } from './model/dto/record-group.dto';
 import { RecordGroup } from './model/record-group.entity';
 import { RecordGroupMapper } from './model/record-group.mapper';
-import { RecordGroupRepository } from './model/record-group.repository';
+import { RecordGroupRepository } from './record-group.repository';
 import { CloudStorageService } from '../cloud-storage/cloud-storage.service';
 
 @injectable()
