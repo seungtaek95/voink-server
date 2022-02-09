@@ -3,7 +3,6 @@ import * as supertest from 'supertest';
 import testUsers from '../seed/user.seed';
 import { setup } from '../setup';
 import { getTestUserToken } from '../seed/auth.seed';
-import { PostRecordGroupDto } from '../../src/record-group/model/dto/post-record-group.dto';
 
 const app = express();
 setup(app);
@@ -17,7 +16,7 @@ describe('POST record-groups requests', () => {
     test('201 response, 레코드 없는 레코드 그룹 생성', async () => {
       // given
       const newRecordGroupTitle = 'test title';
-      const recordGroup: PostRecordGroupDto = {
+      const recordGroup = {
         category: 'testCategory',
         title: newRecordGroupTitle,
         content: 'hello',
@@ -40,14 +39,14 @@ describe('POST record-groups requests', () => {
 
     test('201 response, 레코드 있는 레코드 그룹 생성', async () => {
       // given
-      const record: any = {
+      const record = {
         key: 'recordKey',
         title: 'record',
         duration: 100,
         latitude: 30,
         longitude: 30,
       };
-      const recordGroup: PostRecordGroupDto = {
+      const recordGroup = {
         category: 'testCategory',
         title: 'test title',
         content: 'hello',
@@ -74,7 +73,7 @@ describe('POST record-groups requests', () => {
     test('400 response, request body에 정보 부족', done => {
       // given
       const newRecordGroupTitle = 'test title';
-      const record: any = {
+      const record = {
         key: '',
         title: '',
         duration: 100,

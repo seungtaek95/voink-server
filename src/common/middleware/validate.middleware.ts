@@ -14,6 +14,7 @@ export function validateBody(targetDto: any) {
       if (error.length > 0) {
         return next(new HttpError(Object.values(error[0].constraints)[0], 400));
       }
+      req.body = dto;
       next();
     });
   };

@@ -1,32 +1,38 @@
-import { IsNumber, IsString } from 'class-validator';
-import { parseLocationToPoint } from '../../../common/utils/geomatric';
+import { Exclude, Expose } from 'class-transformer';
 import { Record } from '../record.entity';
 
+@Exclude()
 export class CreateRecordDto {
-  @IsString()
+  @Expose()
+  userId: number;
+
+  @Expose()
+  recordGroupId: number;
+
+  @Expose()
   key: string;
   
-  @IsString()
+  @Expose()
   title: string;
 
-  @IsNumber()
+  @Expose()
   duration: number;
 
-  @IsNumber()
+  @Expose()
   latitude: number;
   
-  @IsNumber()
+  @Expose()
   longitude: number;
 
-  toEntity(userId: number, recordGroupId: number) {
-    const record = new Record();
-    record.userId = userId;
-    record.recordGroupId = recordGroupId;
-    record.thumbnailPath = `${userId}/${recordGroupId}/${this.key}.jpg`;
-    record.recordPath = `${userId}/${recordGroupId}/${this.key}.m4a`;
-    record.title = this.title;
-    record.duration = this.duration;
-    record.point = parseLocationToPoint(this.latitude, this.longitude);
-    return record;
+  toEntity() {
+    return Record.from(
+      this.userId,
+      this.recordGroupId,
+      this.title,
+      this.duration,
+      this.latitude,
+      this.longitude,
+      this.key,
+    );
   }
 }

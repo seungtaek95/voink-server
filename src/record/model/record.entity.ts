@@ -1,4 +1,5 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { parseLocationToPoint } from '../../common/utils/geomatric';
 import { RecordGroup } from '../../record-group/model/record-group.entity';
 import { User } from '../../user/model/user.entity';
 
@@ -34,7 +35,7 @@ export class Record {
     name: 'user_id',
     nullable: true,
   })
-  userId: number
+  userId: number;
 
   @ManyToOne(() => User)
   @JoinColumn({
@@ -46,7 +47,7 @@ export class Record {
     name: 'record_group_id',
     nullable: true,
   })
-  recordGroupId: number
+  recordGroupId: number;
   
   @Column({
     name: 'is_deleted',
@@ -61,12 +62,34 @@ export class Record {
   @JoinColumn({
     name: 'record_group_id'
   })
-  recordGroup: RecordGroup
+  recordGroup: RecordGroup;
 
   @CreateDateColumn({
     name: 'created_at'
   })
   createdAt: Date;
+
+  static from(
+    userId: number,
+    recordGroupId: number,
+    title: string,
+    duration: number,
+    latitude: number,
+    longitude: number,
+    key: string,
+  ) {
+    const record = new Record();
+    record.userId = userId;
+    record.recordGroupId = recordGroupId;
+    record.title = title;
+    record.duration = duration;
+    record.point = parseLocationToPoint(latitude, longitude);
+    record.thumbnailPath = `${userId}/${recordGroupId}/${key}.jpg`;
+    record.recordPath = `${userId}/${recordGroupId}/${key}.m4a`;
+    record.isDeleted = false;
+    record.createdAt = new Date();
+    return record;
+  }
 
   get key() {
     return this.recordPath.split('/').pop().split('.')[0];

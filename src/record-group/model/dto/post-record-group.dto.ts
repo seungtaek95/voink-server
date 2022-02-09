@@ -1,6 +1,7 @@
-import { Type } from 'class-transformer';
+import { plainToClass, Type } from 'class-transformer';
 import { IsArray, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
-import { CreateRecordDto } from '../../../record/model/dto/create-record.dto';
+import { PostRecordGroupRecordDto } from '../../../record/model/dto/post-record-group-record.dto';
+import { CreateRecordGroupDto } from './create-record-group.dto';
 
 export class PostRecordGroupDto {
   @IsString()
@@ -27,6 +28,12 @@ export class PostRecordGroupDto {
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => CreateRecordDto)
-  records?: CreateRecordDto[];
+  @Type(() => PostRecordGroupRecordDto)
+  records?: PostRecordGroupRecordDto[];
+
+  toCreateRecordGroupDto(userId: number) {
+    const createRecordGroupDto = plainToClass(CreateRecordGroupDto, this);
+    createRecordGroupDto.userId = userId;
+    return createRecordGroupDto;
+  }
 }

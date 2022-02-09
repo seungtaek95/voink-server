@@ -1,49 +1,65 @@
-import { Type } from 'class-transformer';
-import { IsArray, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
-import { parseLocationToPoint } from '../../../common/utils/geomatric';
-import { CreateRecordDto } from '../../../record/model/dto/create-record.dto';
+import { Exclude, Expose, Type } from 'class-transformer';
+import { IsArray, IsOptional, ValidateNested } from 'class-validator';
+import { PostRecordGroupRecordDto } from '../../../record/model/dto/post-record-group-record.dto';
+import { Record } from '../../../record/model/record.entity';
 import { RecordGroup } from '../record-group.entity';
 
+@Exclude()
 export class CreateRecordGroupDto {
-  @IsNumber()
+  @Expose()
   userId: number;
   
-  @IsString()
+  @Expose()
   category: string;
 
-  @IsString()
+  @Expose()
   title: string;
 
-  @IsString()
+  @Expose()
   content: string;
 
-  @IsString()
+  @Expose()
   location: string;
 
-  @IsString()
+  @Expose()
   recordType: string;
 
-  @IsNumber()
+  @Expose()
   latitude: number;
   
-  @IsNumber()
+  @Expose()
   longitude: number;
 
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => CreateRecordDto)
-  records?: CreateRecordDto[];
+  @Type (() => PostRecordGroupRecordDto)
+  records?: PostRecordGroupRecordDto[];
 
-  toEntity() {
-    const recordGroup = new RecordGroup();
-    recordGroup.userId = this.userId;
-    recordGroup.category = this.category;
-    recordGroup.recordType = this.recordType;
-    recordGroup.title = this.title;
-    recordGroup.content = this.content;
-    recordGroup.location = this.location;
-    recordGroup.point = parseLocationToPoint(this.latitude, this.longitude);
-    return recordGroup;
+  toRecordGroup() {
+    return RecordGroup.from(
+      this.userId,
+      this.category,
+      this.title,
+      this.content,
+      this.location,
+      this.latitude,
+      this.longitude,
+      this.recordType,
+    );
+  }
+
+  toRecords(recordGroupId: number) {
+    return this.records?.map(
+      record => Record.from(
+        this.userId,
+        recordGroupId,
+        record.title,
+        record.duration,
+        record.latitude,
+        record.longitude,
+        record.key,
+      )
+    );
   }
 }

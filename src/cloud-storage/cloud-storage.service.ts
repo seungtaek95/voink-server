@@ -1,7 +1,7 @@
 import { Bucket } from '@google-cloud/storage';
 import { inject, injectable } from 'inversify';
-import { TYPE } from '../common/loader/container';
 import { nanoid } from 'nanoid';
+import { TYPE } from '../common/loader/container';
 import { RecordUploadUrlDto } from '../record/model/dto/record-upload-urls.dto';
 import { Record } from '../record/model/record.entity';
 
@@ -55,10 +55,12 @@ export class CloudStorageService {
     return this.recordBucket.file(filePath).createReadStream(options);
   }
 
-  moveRecordToGroupDir(record: Record) {
+  moveRecordFromTempToGroupDir(record: Record) {
+    const tempThumbnailPath = this.getTempThumbnailPath(record);
+    const tempRecordPath = this.getTempRecordPath(record);
     return Promise.all([
-      this.recordBucket.file(`${record.userId}/${this.tempDirName}/${record.key}.jpg`).move(record.thumbnailPath),
-      this.recordBucket.file(`${record.userId}/${this.tempDirName}/${record.key}.m4a`).move(record.recordPath),
+      this.recordBucket.file(tempThumbnailPath).move(record.thumbnailPath),
+      this.recordBucket.file(tempRecordPath).move(record.recordPath),
     ]);
   }
 
@@ -68,5 +70,13 @@ export class CloudStorageService {
 
   deleteRecordGroup(recordGroupPath: string) {
     return this.recordBucket.file(recordGroupPath).delete();
+  }
+
+  private getTempThumbnailPath(record: Record) {
+    return `${record.userId}/${this.tempDirName}/${record.key}.jpg`;
+  }
+
+  private getTempRecordPath(record: Record) {
+    return `${record.userId}/${this.tempDirName}/${record.key}.m4a`;
   }
 }

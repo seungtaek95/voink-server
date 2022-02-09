@@ -1,4 +1,5 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { parseLocationToPoint } from '../../common/utils/geomatric';
 import { Record } from '../../record/model/record.entity';
 import { User } from '../../user/model/user.entity';
 
@@ -13,7 +14,7 @@ export class RecordGroup {
     name: 'user_id',
     nullable: true,
   })
-  userId: number
+  userId: number;
 
   @ManyToOne(() => User)
   @JoinColumn({
@@ -63,4 +64,27 @@ export class RecordGroup {
     name: 'created_at'
   })
   createdAt: Date;
+
+  static from(
+    userId: number,
+    category: string,
+    title: string,
+    content: string,
+    location: string,
+    latitude: number,
+    longitude: number,
+    recordType: string,
+  ) {
+    const recordGroup = new RecordGroup();
+    recordGroup.userId = userId;
+    recordGroup.category = category;
+    recordGroup.title = title;
+    recordGroup.content = content;
+    recordGroup.location = location;
+    recordGroup.point = parseLocationToPoint(latitude, longitude);
+    recordGroup.recordType = recordType;
+    recordGroup.isDeleted = false;
+    recordGroup.createdAt = new Date();
+    return recordGroup;
+  }
 }
