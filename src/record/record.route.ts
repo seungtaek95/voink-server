@@ -4,7 +4,7 @@ import { RequestWithUser } from '../common/interface/request.interface';
 import { headerTokenParser, queryTokenParser } from '../common/middleware/auth.middleware';
 import container from '../common/utils/container';
 import { CloudStorageService } from '../cloud-storage/cloud-storage.service';
-import { HttpError, wrapAsync } from '../common/utils/util';
+import { wrapAsync } from '../common/utils/util';
 import { RecordService } from './record.service';
 
 export default function (app: Router) {
