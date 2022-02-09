@@ -2,11 +2,10 @@ import { inject, injectable } from 'inversify';
 import { Connection } from 'typeorm';
 import { TYPE } from '../common/loader/container';
 import { CreateRecordGroupDto } from './model/dto/create-record-group.dto';
-import { RecordGroupDto } from './model/dto/record-group.dto';
-import { RecordGroup } from './model/record-group.entity';
 import { RecordGroupMapper } from './model/record-group.mapper';
 import { RecordGroupRepository } from './record-group.repository';
 import { CloudStorageService } from '../cloud-storage/cloud-storage.service';
+import { HttpError } from '../common/utils/util';
 
 @injectable()
 export class RecordGroupService {
@@ -34,7 +33,7 @@ export class RecordGroupService {
       }
       await queryRunner.commitTransaction();
       await queryRunner.release();
-      return recordGroup;
+      return recordGroup.id;
     } catch (error) {
       await queryRunner.rollbackTransaction();
       await queryRunner.release();
@@ -42,23 +41,20 @@ export class RecordGroupService {
     }
   }
 
-  findById(id: number) {
-    return this.recordGroupRepository.findById(id);
+  async findById(id: number, userId: number) {
+    const recordGroup = await this.recordGroupRepository.findById(id);
+    if (!recordGroup || recordGroup.userId !== userId) {
+      throw new HttpError('Not found', 404);
+    }
+    return this.recordGroupMapper.toDto(recordGroup);
   }
 
-  findByUserId(userId: number) {
-    return this.recordGroupRepository.findByUserId(userId);
+  async findByUserId(userId: number) {
+    const recordGroups = await this.recordGroupRepository.findByUserId(userId);
+    return recordGroups.map(recordGroup => this.recordGroupMapper.toDto(recordGroup));
   }
 
   setToDeleted(id: number) {
     return this.recordGroupRepository.setToDeleted(id);
-  }
-
-  toDto<T extends RecordGroup | RecordGroup[]>(recordGroups: T): T extends RecordGroup ? RecordGroupDto : RecordGroupDto[];
-  toDto(recordGroups: RecordGroup | RecordGroup[]) {
-    if (Array.isArray(recordGroups)) {
-      return recordGroups.map(recordGroup => this.recordGroupMapper.toDto(recordGroup));
-    }
-    return this.recordGroupMapper.toDto(recordGroups);
   }
 }

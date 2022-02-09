@@ -90,11 +90,8 @@ export default function (app: Router) {
     headerTokenParser(),
     wrapAsync(async (req: RequestWithUser, res: Response) => {
       const recordId = Number(req.params.id);
-      const record = await recordService.findById(recordId);
-      if (!record || record.userId !== req.user.id) {
-        throw new HttpError('Not found', 404);
-      }
-      res.status(200).json(recordService.toDto(record));
+      const recordDto = await recordService.findById(recordId, req.user.id);
+      res.status(200).json(recordDto);
     })
   );
 }

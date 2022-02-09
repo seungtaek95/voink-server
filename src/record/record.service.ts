@@ -1,7 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { TYPE } from '../common/loader/container';
-import { RecordDto } from './model/dto/record.dto';
-import { Record } from './model/record.entity';
+import { HttpError } from '../common/utils/util';
 import { RecordMapper } from './model/record.mapper';
 import { RecordRepository } from './record.repository';
 
@@ -12,15 +11,11 @@ export class RecordService {
     private recordMapper: RecordMapper,
   ) {}
 
-  findById(recordId: number) {
-    return this.recordRepository.findById(recordId);
-  }
-
-  toDto<T extends Record | Record[]>(records: T): T extends Record ? RecordDto : RecordDto[];
-  toDto(records: Record | Record[]) {
-    if (Array.isArray(records)) {
-      return records.map(record => this.recordMapper.toDto(record));
+  async findById(recordId: number, userId: number) {
+    const record = await this.recordRepository.findById(recordId);
+    if (!record  || record.userId !== userId) {
+      throw new HttpError('Not found', 404);
     }
-    return this.recordMapper.toDto(records);
+    return this.recordMapper.toDto(record);
   }
 }
