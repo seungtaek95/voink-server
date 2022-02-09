@@ -1,4 +1,4 @@
-import { plainToClass, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 import { IsArray, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { PostRecordGroupRecordDto } from '../../../record/model/dto/post-record-group-record.dto';
 import { CreateRecordGroupDto } from './create-record-group.dto';
@@ -32,8 +32,16 @@ export class PostRecordGroupDto {
   records?: PostRecordGroupRecordDto[];
 
   toCreateRecordGroupDto(userId: number) {
-    const createRecordGroupDto = plainToClass(CreateRecordGroupDto, this);
-    createRecordGroupDto.userId = userId;
-    return createRecordGroupDto;
+    return new CreateRecordGroupDto(
+      userId,
+      this.category,
+      this.title,
+      this.content,
+      this.location,
+      this.recordType,
+      this.latitude,
+      this.longitude,
+      this.records,
+    );
   }
 }

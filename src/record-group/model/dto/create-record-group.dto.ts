@@ -1,40 +1,19 @@
-import { Exclude, Expose, Type } from 'class-transformer';
-import { IsArray, IsOptional, ValidateNested } from 'class-validator';
 import { PostRecordGroupRecordDto } from '../../../record/model/dto/post-record-group-record.dto';
 import { Record } from '../../../record/model/record.entity';
 import { RecordGroup } from '../record-group.entity';
 
-@Exclude()
 export class CreateRecordGroupDto {
-  @Expose()
-  userId: number;
-  
-  @Expose()
-  category: string;
-
-  @Expose()
-  title: string;
-
-  @Expose()
-  content: string;
-
-  @Expose()
-  location: string;
-
-  @Expose()
-  recordType: string;
-
-  @Expose()
-  latitude: number;
-  
-  @Expose()
-  longitude: number;
-
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type (() => PostRecordGroupRecordDto)
-  records?: PostRecordGroupRecordDto[];
+  constructor(
+    public userId: number,
+    public category: string,
+    public title: string,
+    public content: string,
+    public location: string,
+    public recordType: string,
+    public latitude: number,
+    public longitude: number,
+    public records?: PostRecordGroupRecordDto[],
+  ) {}
 
   toRecordGroup() {
     return RecordGroup.from(
